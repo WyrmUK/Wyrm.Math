@@ -9,7 +9,7 @@
   <PropertyGroup>
     <Company>Wyrm Software</Company>
     <Authors>WyrmUK</Authors>
-    <Copyright>&#169; $([System.DateTime]::now.Year) $(Company). All rights reserved.</Copyright>
+    <Copyright>© $([System.DateTime]::now.Year) $(Company). All rights reserved.</Copyright>
     <Description>A collection of mathematical methods and algorithms.</Description>
     <RepositoryUrl>https://github.com/WyrmUK/Wyrm.Math</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
