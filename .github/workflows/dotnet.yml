@@ -19,6 +19,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -26,12 +28,21 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release
     - name: Test
-      run: dotnet test --no-build --verbosity normal --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v4
       with:
         name: dotnet-results-${{ matrix.dotnet-version }}
         path: TestResults-${{ matrix.dotnet-version }}
       if: ${{ always() }}
+    - name: Build
+      run: dotnet build src/Wyrm.Math/Wyrm.Math.csproj --no-restore --configuration Release --output "Build-${{ matrix.dotnet-version }}"
+      if: ${{ success() }}
+    - name: Upload dotnet build
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-package-${{ matrix.dotnet-version }}
+        path: Build-${{ matrix.dotnet-version }}
+      if: ${{ success() }}
