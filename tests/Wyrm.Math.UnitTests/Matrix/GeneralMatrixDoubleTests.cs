@@ -105,7 +105,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestDoubleAdditionTheoryData))]
+    [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Double_To_Matrix(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
         (m + value)
@@ -113,7 +113,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestDoubleAdditionTheoryData))]
+    [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Matrix_To_Double(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
         (value + m)
@@ -145,7 +145,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestDoubleSubtractionTheoryData))]
+    [MemberData(nameof(TestScalarSubtractionTheoryData))]
     public void Operator_Subtract_Should_Subtract_Double_From_Matrix(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
         (m - value)
@@ -153,7 +153,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestSubtractionDoubleTheoryData))]
+    [MemberData(nameof(TestSubtractionScalarTheoryData))]
     public void Operator_Subtract_Should_Subtract_Matrix_From_Double(double value, GeneralMatrixDouble m, GeneralMatrixDouble expected)
     {
         (value - m)
@@ -185,7 +185,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestDoubleMultiplicationTheoryData))]
+    [MemberData(nameof(TestScalarMultiplicationTheoryData))]
     public void Operator_Multiply_Should_Multiply_Double_From_Matrix(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
         (m * value)
@@ -193,7 +193,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestDoubleMultiplicationTheoryData))]
+    [MemberData(nameof(TestScalarMultiplicationTheoryData))]
     public void Operator_Multiply_Should_Multiply_Matrix_From_Double(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
         (value * m)
@@ -217,7 +217,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestDoubleDivisionTheoryData))]
+    [MemberData(nameof(TestScalarDivisionTheoryData))]
     public void Operator_Divide_Should_Divide_Matrix_By_Double(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
         (m / value)
@@ -225,7 +225,7 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestDivisionDoubleTheoryData))]
+    [MemberData(nameof(TestDivisionScalarTheoryData))]
     public void Operator_Divide_Should_Divide_Double_By_Matrix(double value, GeneralMatrixDouble m, GeneralMatrixDouble expected)
     {
         (value / m)
@@ -235,81 +235,97 @@ public class GeneralMatrixDoubleTests
     #region Test Data
 
     public const double TestValue = 10.1;
+    public const double TestValueNeg4 = -4.0;
+    public const double TestValueNeg1 = -1.0;
+    public const double TestValue0 = 0.0;
+    public const double TestValue1_1 = 1.1;
+    public const double TestValue2 = 2.0;
+    public const double TestValue2_2 = 2.2;
+    public const double TestValue3 = 3.0;
+    public const double TestValue3_3 = 3.3;
+    public const double TestValue4 = 4.0;
+    public const double TestValue4_4 = 4.4;
+    public const double TestValue5 = 5.0;
+    public const double TestValue5_5 = 5.5;
+    public const double TestValue6_6 = 6.6;
+    public const double TestValue7_7 = 7.7;
+    public const double TestValue8_8 = 8.8;
+    public const double TestValue20_2 = 20.2;
 
     public static readonly TheoryData<GeneralMatrixDouble> TestGeneralMatrixTheoryData =
-        new(new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]));
+        new(new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]));
 
     public static readonly TheoryData<IEnumerable<IEnumerable<double>>, GeneralMatrixDouble> TestMatrixTheoryData =
         new()
         {
-            { [[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]], new GeneralMatrixDouble(new GeneralMatrix<double>(3, [1.1, 2.2, 3.3, 4.4, 5.5, 6.6])) }
+            { [[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]], new GeneralMatrixDouble(new GeneralMatrix<double>(3, [TestValue1_1, TestValue2_2, TestValue3_3, TestValue4_4, TestValue5_5, TestValue6_6])) }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble> TestGeneralMatrixTransposeTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), new GeneralMatrixDouble([[1.1, 4.4], [2.2, 5.5], [3.3, 6.6]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDouble([[TestValue1_1, TestValue4_4], [TestValue2_2, TestValue5_5], [TestValue3_3, TestValue6_6]]) }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, double> TestGeneralMatrixTraceTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2], [3.3, 4.4]]), 1.1 + 4.4 }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), TestValue1_1 + TestValue4_4 }
         };
 
-    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestDoubleAdditionTheoryData =
+    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestScalarAdditionTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), 20.2, new GeneralMatrixDouble([[1.1 + 20.2, 2.2 + 20.2, 3.3 + 20.2], [4.4 + 20.2, 5.5 + 20.2, 6.6 + 20.2]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), TestValue20_2, new GeneralMatrixDouble([[TestValue1_1 + TestValue20_2, TestValue2_2 + TestValue20_2, TestValue3_3 + TestValue20_2], [TestValue4_4 + TestValue20_2, TestValue5_5 + TestValue20_2, TestValue6_6 + TestValue20_2]]) }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble> TestAdditionTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), new GeneralMatrixDouble([[2.2, 3.3, 4.4], [5.5, 6.6, 7.7]]), new GeneralMatrixDouble([[1.1 + 2.2, 2.2 + 3.3, 3.3 + 4.4], [4.4 + 5.5, 5.5 + 6.6, 6.6 + 7.7]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDouble([[TestValue2_2, TestValue3_3, TestValue4_4], [TestValue5_5, TestValue6_6, TestValue7_7]]), new GeneralMatrixDouble([[TestValue1_1 + TestValue2_2, TestValue2_2 + TestValue3_3, TestValue3_3 + TestValue4_4], [TestValue4_4 + TestValue5_5, TestValue5_5 + TestValue6_6, TestValue6_6 + TestValue7_7]]) }
         };
 
-    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestDoubleSubtractionTheoryData =
+    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestScalarSubtractionTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), 20.2, new GeneralMatrixDouble([[1.1 - 20.2, 2.2 - 20.2, 3.3 - 20.2], [4.4 - 20.2, 5.5 - 20.2, 6.6 - 20.2]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), TestValue20_2, new GeneralMatrixDouble([[TestValue1_1 - TestValue20_2, TestValue2_2 - TestValue20_2, TestValue3_3 - TestValue20_2], [TestValue4_4 - TestValue20_2, TestValue5_5 - TestValue20_2, TestValue6_6 - TestValue20_2]]) }
         };
 
-    public static readonly TheoryData<double, GeneralMatrixDouble, GeneralMatrixDouble> TestSubtractionDoubleTheoryData =
+    public static readonly TheoryData<double, GeneralMatrixDouble, GeneralMatrixDouble> TestSubtractionScalarTheoryData =
         new()
         {
-            { 20.2, new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), new GeneralMatrixDouble([[20.2 - 1.1, 20.2 - 2.2, 20.2 - 3.3], [20.2 - 4.4, 20.2 - 5.5, 20.2 - 6.6]]) }
+            { TestValue20_2, new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDouble([[TestValue20_2 - TestValue1_1, TestValue20_2 - TestValue2_2, TestValue20_2 - TestValue3_3], [TestValue20_2 - TestValue4_4, TestValue20_2 - TestValue5_5, TestValue20_2 - TestValue6_6]]) }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble> TestSubtractionTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), new GeneralMatrixDouble([[2.2, 3.3, 4.4], [5.5, 6.6, 7.7]]), new GeneralMatrixDouble([[1.1 - 2.2, 2.2 - 3.3, 3.3 - 4.4], [4.4 - 5.5, 5.5 - 6.6, 6.6 - 7.7]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDouble([[TestValue2_2, TestValue3_3, TestValue4_4], [TestValue5_5, TestValue6_6, TestValue7_7]]), new GeneralMatrixDouble([[TestValue1_1 - TestValue2_2, TestValue2_2 - TestValue3_3, TestValue3_3 - TestValue4_4], [TestValue4_4 - TestValue5_5, TestValue5_5 - TestValue6_6, TestValue6_6 - TestValue7_7]]) }
         };
 
-    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestDoubleMultiplicationTheoryData =
+    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestScalarMultiplicationTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), 20.2, new GeneralMatrixDouble([[1.1 * 20.2, 2.2 * 20.2, 3.3 * 20.2], [4.4 * 20.2, 5.5 * 20.2, 6.6 * 20.2]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), TestValue20_2, new GeneralMatrixDouble([[TestValue1_1 * TestValue20_2, TestValue2_2 * TestValue20_2, TestValue3_3 * TestValue20_2], [TestValue4_4 * TestValue20_2, TestValue5_5 * TestValue20_2, TestValue6_6 * TestValue20_2]]) }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble> TestMultiplicationTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2], [3.3, 4.4]]), new GeneralMatrixDouble([[5.5, 6.6], [7.7, 8.8]]), new GeneralMatrixDouble([[1.1 * 5.5 + 2.2 * 7.7, 1.1 * 6.6 + 2.2 * 8.8], [3.3 * 5.5 + 4.4 * 7.7, 3.3 * 6.6 + 4.4 * 8.8]]) },
-            { new GeneralMatrixDouble([[-1.0, 2.0, 3.0], [4.0, 0.0, 5.0]]), new GeneralMatrixDouble([[5.0, -1.0], [-4.0, 0.0], [2.0, 3.0]]), new GeneralMatrixDouble([[-1.0 * 5.0 + 2.0 * -4.0 + 3.0 * 2.0, -1.0 * -1.0 + 2.0 * 0.0 + 3.0 * 3.0], [4.0 * 5.0 + 0.0 * -4.0 + 5.0 * 2.0, 4.0 * -1.0 + 0.0 * 0.0 + 5.0 * 3.0]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue5_5, TestValue6_6], [TestValue7_7, TestValue8_8]]), new GeneralMatrixDouble([[TestValue1_1 * TestValue5_5 + TestValue2_2 * TestValue7_7, TestValue1_1 * TestValue6_6 + TestValue2_2 * TestValue8_8], [TestValue3_3 * TestValue5_5 + TestValue4_4 * TestValue7_7, TestValue3_3 * TestValue6_6 + TestValue4_4 * TestValue8_8]]) },
+            { new GeneralMatrixDouble([[TestValueNeg1, TestValue2, TestValue3], [TestValue4, TestValue0, TestValue5]]), new GeneralMatrixDouble([[TestValue5, TestValueNeg1], [TestValueNeg4, TestValue0], [TestValue2, TestValue3]]), new GeneralMatrixDouble([[TestValueNeg1 * TestValue5 + TestValue2 * TestValueNeg4 + TestValue3 * TestValue2, TestValueNeg1 * TestValueNeg1 + TestValue2 * TestValue0 + TestValue3 * TestValue3], [TestValue4 * TestValue5 + TestValue0 * TestValueNeg4 + TestValue5 * TestValue2, TestValue4 * TestValueNeg1 + TestValue0 * TestValue0 + TestValue5 * TestValue3]]) }
         };
 
-    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestDoubleDivisionTheoryData =
+    public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestScalarDivisionTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), 20.2, new GeneralMatrixDouble([[1.1 / 20.2, 2.2 / 20.2, 3.3 / 20.2], [4.4 / 20.2, 5.5 / 20.2, 6.6 / 20.2]]) }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), TestValue20_2, new GeneralMatrixDouble([[TestValue1_1 / TestValue20_2, TestValue2_2 / TestValue20_2, TestValue3_3 / TestValue20_2], [TestValue4_4 / TestValue20_2, TestValue5_5 / TestValue20_2, TestValue6_6 / TestValue20_2]]) }
         };
 
-    public static readonly TheoryData<double, GeneralMatrixDouble, GeneralMatrixDouble> TestDivisionDoubleTheoryData =
+    public static readonly TheoryData<double, GeneralMatrixDouble, GeneralMatrixDouble> TestDivisionScalarTheoryData =
         new()
         {
-            { 20.2, new GeneralMatrixDouble([[1.1, 2.2, 3.3], [4.4, 5.5, 6.6]]), new GeneralMatrixDouble([[20.2 / 1.1, 20.2 / 2.2, 20.2 / 3.3], [20.2 / 4.4, 20.2 / 5.5, 20.2 / 6.6]]) }
+            { TestValue20_2, new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDouble([[TestValue20_2 / TestValue1_1, TestValue20_2 / TestValue2_2, TestValue20_2 / TestValue3_3], [TestValue20_2 / TestValue4_4, TestValue20_2 / TestValue5_5, TestValue20_2 / TestValue6_6]]) }
         };
 
     #endregion

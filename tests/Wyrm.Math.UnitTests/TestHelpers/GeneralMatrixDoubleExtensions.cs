@@ -15,4 +15,14 @@ public static class GeneralMatrixDoubleExtensions
         m1.Rows.ShouldBe(m2.Rows);
         m1.Values.SequenceEqual(m2.Values).ShouldBeTrue();
     }
+
+    public static void ShouldMatch(this GeneralMatrixDecimal m1, GeneralMatrixDecimal m2) =>
+        m1.Matrix.ShouldMatch(m2.Matrix);
+
+    internal static void ShouldMatch(this GeneralMatrix<decimal> m1, GeneralMatrix<decimal> m2)
+    {
+        m1.Columns.ShouldBe(m2.Columns);
+        m1.Rows.ShouldBe(m2.Rows);
+        m1.Values.SequenceEqual(m2.Values).ShouldBeTrue();
+    }
 }
