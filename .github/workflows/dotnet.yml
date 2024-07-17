@@ -5,9 +5,9 @@ name: Wyrm.Math Package
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -38,7 +38,7 @@ jobs:
         path: TestResults-${{ matrix.dotnet-version }}
       if: ${{ always() }}
     - name: Build
-      run: dotnet build src/Wyrm.Math/Wyrm.Math.csproj --no-restore --configuration Release --output "Build-${{ matrix.dotnet-version }}"
+      run: dotnet pack src/Wyrm.Math/Wyrm.Math.csproj --no-restore --configuration Release --output "Build-${{ matrix.dotnet-version }}"
       if: ${{ success() }}
     - name: Upload dotnet build
       uses: actions/upload-artifact@v4
