@@ -37,7 +37,7 @@ jobs:
         name: dotnet-results-${{ matrix.dotnet-version }}
         path: TestResults-${{ matrix.dotnet-version }}
       if: ${{ always() }}
-    - name: Build
+    - name: Pack
       run: dotnet pack src/Wyrm.Math/Wyrm.Math.csproj --no-restore --configuration Release --output "Build-${{ matrix.dotnet-version }}"
       if: ${{ success() }}
     - name: Upload dotnet build
