@@ -1,0 +1,10 @@
+legacy-semver-padding: 0
+build-metadata-padding: 0
+mode: ContinuousDeployment
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 0}'
+assembly-informational-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 0}{env:branchName ?? "-local"}'
+branches:
+  main:
+    increment: Minor
+    is-release-branch: true
