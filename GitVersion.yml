@@ -1,9 +1,9 @@
 legacy-semver-padding: 0
 build-metadata-padding: 0
-mode: ContinuousDeployment
+mode: ContinuousDelivery
 assembly-versioning-scheme: MajorMinorPatch
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 0}'
-assembly-informational-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 0}{env:branchName ?? "-local"}'
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{Tag}'
+assembly-informational-format: '{Major}.{Minor}.{Patch}.{Tag}'
 branches:
   main:
     increment: Minor
