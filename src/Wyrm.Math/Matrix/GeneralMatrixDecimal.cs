@@ -90,6 +90,13 @@ public readonly struct GeneralMatrixDecimal
     public decimal Trace() => Matrix.Trace((v1, v2) => v1 + v2);
 
     /// <summary>
+    /// Returns the Determinant of a square matrix (same number of columns as rows).
+    /// </summary>
+    /// <returns>The Determinant as a <see cref="double"/>.</returns>
+    /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
+    public double Determinant() => Matrix.Determinant(v => (double)v);
+
+    /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDecimal"/>.
     /// </summary>
     /// <param name="m">Left hand <see cref="GeneralMatrixDecimal"/>.</param>
@@ -181,6 +188,7 @@ public readonly struct GeneralMatrixDecimal
 
     /// <summary>
     /// Multiplies each value of a <see cref="GeneralMatrixDecimal"/> with another <see cref="GeneralMatrixDecimal"/>.
+    /// This uses the naive method.
     /// </summary>
     /// <param name="m1">Left hand <see cref="GeneralMatrixDecimal"/>.</param>
     /// <param name="m2">Right hand <see cref="GeneralMatrixDecimal"/>.</param>
