@@ -71,6 +71,14 @@ public class GeneralMatrixDecimalTests
     }
 
     [Theory]
+    [InlineData(2, 3, false)]
+    [InlineData(3, 3, true)]
+    public void IsSquare_Should_Return_Expected(int columns, int rows, bool expected)
+    {
+        new GeneralMatrixDouble(columns, rows).IsSquare.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void ToEnumerableOfEnumerable_Should_Get_Values(IEnumerable<IEnumerable<decimal>> expected, GeneralMatrixDecimal matrix)
     {
@@ -113,9 +121,9 @@ public class GeneralMatrixDecimalTests
 
     [Theory]
     [MemberData(nameof(TestGeneralMatrixDeterminantTheoryData))]
-    public void Determinant_Should_Return_Determinant_Of_Matrix(GeneralMatrixDecimal matrix, double expected)
+    public void Determinant_Should_Return_Determinant_Of_Matrix(GeneralMatrixDecimal matrix, decimal expected)
     {
-        System.Math.Round(matrix.Determinant(), 14).ShouldBe(expected);
+        System.Math.Round(matrix.Determinant(), 26).ShouldBe(expected);
     }
 
     [Theory]
@@ -303,14 +311,14 @@ public class GeneralMatrixDecimalTests
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), TestValue1_1 + TestValue4_4 }
         };
 
-    public static readonly TheoryData<GeneralMatrixDecimal, double> TestGeneralMatrixDeterminantTheoryData =
+    public static readonly TheoryData<GeneralMatrixDecimal, decimal> TestGeneralMatrixDeterminantTheoryData =
         new()
         {
-            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), -2.42 },
-            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), 10.648 },
-            { new GeneralMatrixDecimal([[TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1]]), 0.0 },
-            { new GeneralMatrixDecimal([[TestValue0, TestValue0, TestValue1_1], [TestValue3_3, TestValue2_2, TestValue1_1], [TestValue1_1, TestValue2_2, TestValue3_3]]), 5.324 },
-            { new GeneralMatrixDecimal([[TestValue2, TestValue3, TestValue4, TestValue0], [TestValue5, TestValue2, TestValue4, TestValue3], [TestValue2, TestValue2, TestValue3, TestValue4], [TestValue5, TestValue3, TestValue2, TestValue4]]), -119.0 }
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), -2.42M },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), 10.648M },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1]]), 0.0M },
+            { new GeneralMatrixDecimal([[TestValue0, TestValue0, TestValue1_1], [TestValue3_3, TestValue2_2, TestValue1_1], [TestValue1_1, TestValue2_2, TestValue3_3]]), 5.324M },
+            { new GeneralMatrixDecimal([[TestValue2, TestValue3, TestValue4, TestValue0], [TestValue5, TestValue2, TestValue4, TestValue3], [TestValue2, TestValue2, TestValue3, TestValue4], [TestValue5, TestValue3, TestValue2, TestValue4]]), -119.0M }
         };
 
     public static readonly TheoryData<GeneralMatrixDecimal, int> TestGeneralMatrixRankTheoryData =

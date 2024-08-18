@@ -71,6 +71,11 @@ public readonly struct GeneralMatrixDecimal
     }
 
     /// <summary>
+    /// Returns true only if the matrix is square (rows == columns).
+    /// </summary>
+    public bool IsSquare => Matrix.Rows == Matrix.Columns;
+
+    /// <summary>
     /// Gets the values of the matrix as an enumeration of enumerations of the values.
     /// </summary>
     /// <returns>An enumeration of rows of enumeration of column values.</returns>
@@ -92,21 +97,21 @@ public readonly struct GeneralMatrixDecimal
     /// <summary>
     /// Returns the Determinant of a square matrix (same number of columns as rows).
     /// </summary>
-    /// <returns>The Determinant as a <see cref="double"/>.</returns>
+    /// <returns>The Determinant as a <see cref="decimal"/>.</returns>
     /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
-    public double Determinant() => Matrix.Determinant(v => (double)v);
+    public decimal Determinant() => Matrix.Determinant((v1, v2) => v1 * v2, v => -v);
 
     /// <summary>
     /// Returns the rank of a matrix.
     /// </summary>
     /// <returns>The rank.</returns>
-    public int Rank() => Matrix.Rank(v => (double)v);
+    public int Rank() => Matrix.Rank(v => v != 0M);
 
     /// <summary>
     /// Returns the nullity of a matrix.
     /// </summary>
     /// <returns>The nullity.</returns>
-    public int Nullity() => Matrix.Nullity(v => (double)v);
+    public int Nullity() => Matrix.Nullity(v => v != 0M);
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDecimal"/>.

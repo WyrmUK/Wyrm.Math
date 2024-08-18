@@ -4,9 +4,11 @@ namespace Wyrm.Math.Matrix.Extensions;
 
 internal static class GaussianEliminationExtensions
 {
-    internal static GeneralMatrix<double> TriangularForm<T>(this GeneralMatrix<T> matrix, Func<T, double> castFunc, Action swapFunc) where T : struct
+    internal static GeneralMatrix<T> TriangularForm<T>(this GeneralMatrix<T> matrix, Action swapFunc) where T : struct
     {
-        var rowEchelonMatrix = new GeneralMatrix<double>(matrix.Columns, matrix.Values.Select(v => castFunc(v)).ToArray());
+        if (typeof(T) != typeof(double) && typeof(T) != typeof(decimal)) throw new ArgumentException("Matrix type must be a floating point type.");
+
+        var rowEchelonMatrix = new GeneralMatrix<T>(matrix.Columns, matrix.Values);
 
         while (!rowEchelonMatrix.IsInTriangularForm())
         {
@@ -22,19 +24,19 @@ internal static class GaussianEliminationExtensions
         return rowEchelonMatrix;
     }
 
-    private static bool IsInTriangularForm(this GeneralMatrix<double> matrix)
+    private static bool IsInTriangularForm<T>(this GeneralMatrix<T> matrix) where T : struct
     {
         for (var row = 1; row < matrix.Rows; ++row)
         {
             for (var col = 0; col < row; ++col)
             {
-                if (matrix[col, row] != 0.0) return false;
+                if (matrix[col, row].IsNotZero()) return false;
             }
         }
         return true;
     }
 
-    private static bool SwapRows(this GeneralMatrix<double> matrix)
+    private static bool SwapRows<T>(this GeneralMatrix<T> matrix) where T : struct
     {
         var leadingZeroes = matrix.LeadingZeroes();
         var swapWith = -1;
@@ -48,7 +50,7 @@ internal static class GaussianEliminationExtensions
                 }
                 else if (leadingZeroes[row] < leadingZeroes[swapWith])
                 {
-                    var swapValues = new double[matrix.Columns];
+                    var swapValues = new T[matrix.Columns];
                     Array.Copy(matrix.Values, swapWith * matrix.Columns, swapValues, 0, matrix.Columns);
                     Array.Copy(matrix.Values, row * matrix.Columns, matrix.Values, swapWith * matrix.Columns, matrix.Columns);
                     Array.Copy(swapValues, 0, matrix.Values, row * matrix.Columns, matrix.Columns);
@@ -59,19 +61,20 @@ internal static class GaussianEliminationExtensions
         return false;
     }
 
-    private static bool AddProductOfRowMultipliedByConstant(this GeneralMatrix<double> matrix)
+    private static bool AddProductOfRowMultipliedByConstant<T>(this GeneralMatrix<T> matrix) where T : struct
     {
         var leadingZeroes = matrix.LeadingZeroes();
         for (var row = 1; row < leadingZeroes.Count; ++row)
         {
             if (leadingZeroes[row] < row)
             {
-                var factor = matrix[leadingZeroes[row], row] / matrix[leadingZeroes[row], leadingZeroes[row]];
+                var factor = matrix[leadingZeroes[row], row].DividedBy(matrix[leadingZeroes[row], leadingZeroes[row]]);
                 for (var col = 0; col < matrix.Columns; ++col)
                 {
-                    matrix[col, row] -= col == leadingZeroes[row]
+                    var product = col == leadingZeroes[row]
                         ? matrix[col, row]
-                        : factor * matrix[col, leadingZeroes[row]];
+                        : factor.MultipliedBy(matrix[col, leadingZeroes[row]]);
+                    matrix[col, row] = matrix[col, row].Subtract(product);
                 }
                 return true;
             }
@@ -79,7 +82,7 @@ internal static class GaussianEliminationExtensions
         return false;
     }
 
-    private static List<int> LeadingZeroes(this GeneralMatrix<double> matrix)
+    private static List<int> LeadingZeroes<T>(this GeneralMatrix<T> matrix) where T : struct
     {
         var leadingZeroes = new List<int>();
         for (var row = 0; row < matrix.Rows; ++row)
@@ -87,11 +90,39 @@ internal static class GaussianEliminationExtensions
             var col = 0;
             while (col < matrix.Columns)
             {
-                if (matrix[col, row] != 0.0) break;
+                if (matrix[col, row].IsNotZero()) break;
                 ++col;
             }
             leadingZeroes.Add(col);
         }
         return leadingZeroes;
+    }
+
+    private static bool IsNotZero<T>(this T value)
+    {
+        if (value is decimal decimalValue) return decimalValue != 0M;
+        if (value is double doubleValue) return doubleValue != 0D;
+        throw new NotImplementedException();
+    }
+
+    private static T DividedBy<T>(this T v1, T v2)
+    {
+        if (v1 is decimal decimalValue1 && v2 is decimal decimalValue2) return (T)Convert.ChangeType(decimalValue1 / decimalValue2, typeof(T));
+        if (v1 is double doubleValue1 && v2 is double doubleValue2) return (T)Convert.ChangeType(doubleValue1 / doubleValue2, typeof(T));
+        throw new NotImplementedException();
+    }
+
+    private static T MultipliedBy<T>(this T v1, T v2)
+    {
+        if (v1 is decimal decimalValue1 && v2 is decimal decimalValue2) return (T)Convert.ChangeType(decimalValue1 * decimalValue2, typeof(T));
+        if (v1 is double doubleValue1 && v2 is double doubleValue2) return (T)Convert.ChangeType(doubleValue1 * doubleValue2, typeof(T));
+        throw new NotImplementedException();
+    }
+
+    private static T Subtract<T>(this T v1, T v2)
+    {
+        if (v1 is decimal decimalValue1 && v2 is decimal decimalValue2) return (T)Convert.ChangeType(decimalValue1 - decimalValue2, typeof(T));
+        if (v1 is double doubleValue1 && v2 is double doubleValue2) return (T)Convert.ChangeType(doubleValue1 - doubleValue2, typeof(T));
+        throw new NotImplementedException();
     }
 }
