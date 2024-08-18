@@ -25,31 +25,31 @@ internal static class GeneralMatrixExtensions
             .Aggregate(additionFunc);
     }
 
-    public static double Determinant<T>(this GeneralMatrix<T> matrix, Func<T, double> castFunc) where T : struct
+    public static T Determinant<T>(this GeneralMatrix<T> matrix, Func<T, T, T> multiplyFunc, Func<T, T> negateFunc) where T : struct
     {
         if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
 
         var negate = false;
-        var triangularForm = matrix.TriangularForm(castFunc, () => negate = !negate);
+        var triangularForm = matrix.TriangularForm(() => negate = !negate);
 
         var determinantAbs = Enumerable.Range(0, triangularForm.Columns)
             .Select(index => triangularForm.Values[index * triangularForm.Columns + index])
-            .Aggregate((v1, v2) => v1 * v2);
-        return negate ? - determinantAbs : determinantAbs;
+            .Aggregate((v1, v2) => multiplyFunc(v1, v2));
+        return negate ? negateFunc(determinantAbs) : determinantAbs;
     }
 
-    public static int Rank<T>(this GeneralMatrix<T> matrix, Func<T, double> castFunc) where T : struct
+    public static int Rank<T>(this GeneralMatrix<T> matrix, Func<T, bool> isNonZeroFunc) where T : struct
     {
-        var triangularForm = matrix.TriangularForm(castFunc, () => {});
+        var triangularForm = matrix.TriangularForm(() => {});
 
         return triangularForm.ToEnumerableOfEnumerable()
-            .Where(r => r.Any(c => c != 0.0))
+            .Where(r => r.Any(c => isNonZeroFunc(c)))
             .Count();
     }
 
-    public static int Nullity<T>(this GeneralMatrix<T> matrix, Func<T, double> castFunc) where T : struct
+    public static int Nullity<T>(this GeneralMatrix<T> matrix, Func<T, bool> isNonZeroFunc) where T : struct
     {
-        return matrix.Columns - matrix.Rank(castFunc);
+        return matrix.Columns - matrix.Rank(isNonZeroFunc);
     }
 
     public static GeneralMatrix<T> PerformOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> operationFunc) where T : struct

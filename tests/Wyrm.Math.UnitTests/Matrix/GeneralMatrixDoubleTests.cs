@@ -71,6 +71,14 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
+    [InlineData(2, 3, false)]
+    [InlineData(3, 3, true)]
+    public void IsSquare_Should_Return_Expected(int columns, int rows, bool expected)
+    {
+        new GeneralMatrixDouble(columns, rows).IsSquare.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void ToEnumerableOfEnumerable_Should_Get_Values(IEnumerable<IEnumerable<double>> expected, GeneralMatrixDouble matrix)
     {

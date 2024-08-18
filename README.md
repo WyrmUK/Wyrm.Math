@@ -20,7 +20,7 @@ The matrix must be square.
 #### Determinant
 V = |M|
 
-Calculates the determinant of a matrix using Gaussian Elimination to 14 decimal places.
+Calculates the determinant of a matrix using Gaussian Elimination.
 
 The matrix must be square.
 #### Rank

@@ -71,6 +71,11 @@ public readonly struct GeneralMatrixDouble
     }
 
     /// <summary>
+    /// Returns true only if the matrix is square (rows == columns).
+    /// </summary>
+    public bool IsSquare => Matrix.Rows == Matrix.Columns;
+
+    /// <summary>
     /// Gets the values of the matrix as an enumeration of enumerations of the values.
     /// </summary>
     /// <returns>An enumeration of rows of enumeration of column values.</returns>
@@ -94,19 +99,19 @@ public readonly struct GeneralMatrixDouble
     /// </summary>
     /// <returns>The Determinant.</returns>
     /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
-    public double Determinant() => Matrix.Determinant(v => v);
+    public double Determinant() => Matrix.Determinant((v1, v2) => v1 * v2, v => - v);
 
     /// <summary>
     /// Returns the rank of a matrix.
     /// </summary>
     /// <returns>The rank.</returns>
-    public int Rank() => Matrix.Rank(v => v);
+    public int Rank() => Matrix.Rank(v => v != 0D);
 
     /// <summary>
     /// Returns the nullity of a matrix.
     /// </summary>
     /// <returns>The nullity.</returns>
-    public int Nullity() => Matrix.Nullity(v => v);
+    public int Nullity() => Matrix.Nullity(v => v != 0D);
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDouble"/>.
