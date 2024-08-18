@@ -30,12 +30,26 @@ internal static class GeneralMatrixExtensions
         if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
 
         var negate = false;
-        var rowEchelonMatrix = matrix.TriangularForm(castFunc, () => negate = !negate);
+        var triangularForm = matrix.TriangularForm(castFunc, () => negate = !negate);
 
-        var determinantAbs = Enumerable.Range(0, rowEchelonMatrix.Columns)
-            .Select(index => rowEchelonMatrix.Values[index * rowEchelonMatrix.Columns + index])
+        var determinantAbs = Enumerable.Range(0, triangularForm.Columns)
+            .Select(index => triangularForm.Values[index * triangularForm.Columns + index])
             .Aggregate((v1, v2) => v1 * v2);
         return negate ? - determinantAbs : determinantAbs;
+    }
+
+    public static int Rank<T>(this GeneralMatrix<T> matrix, Func<T, double> castFunc) where T : struct
+    {
+        var triangularForm = matrix.TriangularForm(castFunc, () => {});
+
+        return triangularForm.ToEnumerableOfEnumerable()
+            .Where(r => r.Any(c => c != 0.0))
+            .Count();
+    }
+
+    public static int Nullity<T>(this GeneralMatrix<T> matrix, Func<T, double> castFunc) where T : struct
+    {
+        return matrix.Columns - matrix.Rank(castFunc);
     }
 
     public static GeneralMatrix<T> PerformOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> operationFunc) where T : struct

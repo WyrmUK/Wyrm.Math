@@ -23,6 +23,16 @@ V = |M|
 Calculates the determinant of a matrix using Gaussian Elimination to 14 decimal places.
 
 The matrix must be square.
+#### Rank
+V = rank({M})
+
+Calculates the rank of a matrix using Gaussian Elimination.
+#### Nullity
+V = nullity({M})
+
+Calculates the nullity of a matrix using Gaussian Elimination.
+
+This is the number of columns minus the rank.
 #### Add a scalar
 {Mv} = {M} + n
 

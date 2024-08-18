@@ -119,6 +119,20 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestGeneralMatrixRankTheoryData))]
+    public void Rank_Should_Return_Rank_Of_Matrix(GeneralMatrixDouble matrix, int expected)
+    {
+        matrix.Rank().ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixRankTheoryData))]
+    public void Nullity_Should_Return_Nullity_Of_Matrix(GeneralMatrixDouble matrix, int expectedRank)
+    {
+        matrix.Nullity().ShouldBe(matrix.Columns - expectedRank);
+    }
+
+    [Theory]
     [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Double_To_Matrix(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
@@ -297,6 +311,18 @@ public class GeneralMatrixDoubleTests
             { new GeneralMatrixDouble([[TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1]]), 0.0 },
             { new GeneralMatrixDouble([[TestValue0, TestValue0, TestValue1_1], [TestValue3_3, TestValue2_2, TestValue1_1], [TestValue1_1, TestValue2_2, TestValue3_3]]), 5.324 },
             { new GeneralMatrixDouble([[TestValue2, TestValue3, TestValue4, TestValue0], [TestValue5, TestValue2, TestValue4, TestValue3], [TestValue2, TestValue2, TestValue3, TestValue4], [TestValue5, TestValue3, TestValue2, TestValue4]]), -119.0 }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, int> TestGeneralMatrixRankTheoryData =
+        new()
+        {
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), 2 },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), 3 },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1]]), 1 },
+            { new GeneralMatrixDouble([[TestValue2_2, TestValue3_3, TestValue0], [-TestValue2_2, -TestValue3_3, TestValue0]]), 1 },
+            { new GeneralMatrixDouble([[TestValue2_2, -TestValue2_2], [TestValue3_3, -TestValue3_3], [TestValue0, TestValue0]]), 1 },
+            { new GeneralMatrixDouble([[TestValue2, TestValue4_4, TestValue0], [TestValue4, TestValue8_8, TestValue3]]), 2 },
+            { new GeneralMatrixDouble([[TestValue2, TestValue4], [TestValue4_4, TestValue8_8], [TestValue0, TestValue3]]), 2 }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestScalarAdditionTheoryData =

@@ -97,6 +97,18 @@ public readonly struct GeneralMatrixDouble
     public double Determinant() => Matrix.Determinant(v => v);
 
     /// <summary>
+    /// Returns the rank of a matrix.
+    /// </summary>
+    /// <returns>The rank.</returns>
+    public int Rank() => Matrix.Rank(v => v);
+
+    /// <summary>
+    /// Returns the nullity of a matrix.
+    /// </summary>
+    /// <returns>The nullity.</returns>
+    public int Nullity() => Matrix.Nullity(v => v);
+
+    /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDouble"/>.
     /// </summary>
     /// <param name="m">Left hand <see cref="GeneralMatrixDouble"/>.</param>
