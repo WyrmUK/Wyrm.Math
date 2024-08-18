@@ -105,6 +105,20 @@ public class GeneralMatrixDecimalTests
     }
 
     [Theory]
+    [InlineData(2, 3)]
+    public void Determinant_Should_Throw_ArgumentException_If_Matrix_Not_Square(int columns, int rows)
+    {
+        Should.Throw<ArgumentException>(() => new GeneralMatrixDecimal(columns, rows).Determinant());
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixDeterminantTheoryData))]
+    public void Determinant_Should_Return_Determinant_Of_Matrix(GeneralMatrixDecimal matrix, double expected)
+    {
+        System.Math.Round(matrix.Determinant(), 14).ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Decimal_To_Matrix(GeneralMatrixDecimal m, decimal value, GeneralMatrixDecimal expected)
     {
@@ -264,13 +278,25 @@ public class GeneralMatrixDecimalTests
     public static readonly TheoryData<GeneralMatrixDecimal, GeneralMatrixDecimal> TestGeneralMatrixTransposeTheoryData =
         new()
         {
-            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue4_4], [TestValue2_2, TestValue5_5], [TestValue3_3, TestValue6_6]]) }
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue4_4], [TestValue2_2, TestValue5_5], [TestValue3_3, TestValue6_6]]) },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue4_4], [TestValue2_2, TestValue5_5], [TestValue3_3, TestValue6_6]]) },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue4_4], [TestValue2_2, TestValue5_5], [TestValue3_3, TestValue6_6]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]) }
         };
 
     public static readonly TheoryData<GeneralMatrixDecimal, decimal> TestGeneralMatrixTraceTheoryData =
         new()
         {
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), TestValue1_1 + TestValue4_4 }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, double> TestGeneralMatrixDeterminantTheoryData =
+        new()
+        {
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), -2.42 },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), 10.648 },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1], [TestValue1_1, TestValue1_1, TestValue1_1]]), 0.0 },
+            { new GeneralMatrixDecimal([[TestValue0, TestValue0, TestValue1_1], [TestValue3_3, TestValue2_2, TestValue1_1], [TestValue1_1, TestValue2_2, TestValue3_3]]), 5.324 },
+            { new GeneralMatrixDecimal([[TestValue2, TestValue3, TestValue4, TestValue0], [TestValue5, TestValue2, TestValue4, TestValue3], [TestValue2, TestValue2, TestValue3, TestValue4], [TestValue5, TestValue3, TestValue2, TestValue4]]), -119.0 }
         };
 
     public static readonly TheoryData<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal> TestScalarAdditionTheoryData =

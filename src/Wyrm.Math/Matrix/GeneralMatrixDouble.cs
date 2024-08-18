@@ -90,6 +90,13 @@ public readonly struct GeneralMatrixDouble
     public double Trace() => Matrix.Trace((v1, v2) => v1 + v2);
 
     /// <summary>
+    /// Returns the Determinant of a square matrix (same number of columns as rows).
+    /// </summary>
+    /// <returns>The Determinant.</returns>
+    /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
+    public double Determinant() => Matrix.Determinant(v => v);
+
+    /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDouble"/>.
     /// </summary>
     /// <param name="m">Left hand <see cref="GeneralMatrixDouble"/>.</param>
@@ -181,10 +188,12 @@ public readonly struct GeneralMatrixDouble
 
     /// <summary>
     /// Multiplies each value of a <see cref="GeneralMatrixDouble"/> with another <see cref="GeneralMatrixDouble"/>.
+    /// This uses the naive method.
     /// </summary>
     /// <param name="m1">Left hand <see cref="GeneralMatrixDouble"/>.</param>
     /// <param name="m2">Right hand <see cref="GeneralMatrixDouble"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand multiplied by the right hand value.</returns>
+    /// <exception cref="ArgumentException">Thrown when the number of columns of m1 is not the same as the number of rows of m2.</exception>
     public static GeneralMatrixDouble operator *(GeneralMatrixDouble m1, GeneralMatrixDouble m2) =>
         new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, (v1, v2) => v1 * v2, (v1, v2) => v1 + v2));
 

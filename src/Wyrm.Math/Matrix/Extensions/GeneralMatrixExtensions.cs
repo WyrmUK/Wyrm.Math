@@ -16,13 +16,26 @@ internal static class GeneralMatrixExtensions
         return new GeneralMatrix<T>(matrix.Rows, newMatrix);
     }
 
-    public static T Trace<T>(this GeneralMatrix<T> matrix, Func<T, T, T> operationFunc) where T : struct
+    public static T Trace<T>(this GeneralMatrix<T> matrix, Func<T, T, T> additionFunc) where T : struct
     {
         if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
 
         return Enumerable.Range(0, matrix.Columns)
             .Select(index => matrix.Values[index * matrix.Columns + index])
-            .Aggregate(operationFunc);
+            .Aggregate(additionFunc);
+    }
+
+    public static double Determinant<T>(this GeneralMatrix<T> matrix, Func<T, double> castFunc) where T : struct
+    {
+        if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
+
+        var negate = false;
+        var rowEchelonMatrix = matrix.TriangularForm(castFunc, () => negate = !negate);
+
+        var determinantAbs = Enumerable.Range(0, rowEchelonMatrix.Columns)
+            .Select(index => rowEchelonMatrix.Values[index * rowEchelonMatrix.Columns + index])
+            .Aggregate((v1, v2) => v1 * v2);
+        return negate ? - determinantAbs : determinantAbs;
     }
 
     public static GeneralMatrix<T> PerformOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> operationFunc) where T : struct
@@ -42,7 +55,7 @@ internal static class GeneralMatrixExtensions
         return new GeneralMatrix<T>(matrix.Columns, newMatrix);
     }
 
-    public static GeneralMatrix<T> PerformMultiplyOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> multiplyFunc, Func<T, T, T> addFunc) where T : struct
+    public static GeneralMatrix<T> PerformMultiplyOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> multiplyFunc, Func<T, T, T> additionFunc) where T : struct
     {
         if (matrix1.Columns != matrix2.Rows) throw new ArgumentException("Columns on left hand matrix mismatch with Rows on right hand matrix.");
 
@@ -50,7 +63,7 @@ internal static class GeneralMatrixExtensions
         Parallel.For(0, newMatrix.Length, index => newMatrix[index] =
             Enumerable.Range(0, matrix1.Columns)
                 .Select(columnIndex => multiplyFunc(matrix1.Values[columnIndex + index / matrix2.Columns * matrix1.Columns], matrix2.Values[(index % matrix2.Columns) + columnIndex * matrix2.Columns]))
-                .Aggregate(addFunc));
+                .Aggregate(additionFunc));
         return new GeneralMatrix<T>(matrix2.Columns, newMatrix);
     }
 }
