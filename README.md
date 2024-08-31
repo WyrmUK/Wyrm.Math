@@ -33,6 +33,12 @@ V = nullity({M})
 Calculates the nullity of a matrix using Gaussian Elimination.
 
 This is the number of columns minus the rank.
+#### Inverse
+{Mv} = {M}^-1
+
+Calculates the inverse of a matrix using Gaussian Elimination.
+
+The matrix must be square and invertible (non-zero determinant).
 #### Add a scalar
 {Mv} = {M} + n
 

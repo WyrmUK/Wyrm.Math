@@ -114,6 +114,13 @@ public readonly struct GeneralMatrixDouble
     public int Nullity() => Matrix.Nullity(v => v != 0D);
 
     /// <summary>
+    /// Returns the inverse of a square matrix (same number of columns as rows).
+    /// </summary>
+    /// <returns>The inverse as a <see cref="GeneralMatrixDouble"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
+    public GeneralMatrixDouble Inverse() => new(Matrix.Inverse());
+
+    /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDouble"/>.
     /// </summary>
     /// <param name="m">Left hand <see cref="GeneralMatrixDouble"/>.</param>

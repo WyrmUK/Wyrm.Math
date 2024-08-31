@@ -38,7 +38,8 @@ internal readonly struct GeneralMatrix<T> where T : struct
     public GeneralMatrix(int columns, T[] values)
     {
         Columns = columns;
-        Values = values;
+        Values = new T[values.Length];
+        Array.Copy(values, Values, values.Length);
     }
 
     public void Set(int column, int row, T value) => this[column, row] = value;
