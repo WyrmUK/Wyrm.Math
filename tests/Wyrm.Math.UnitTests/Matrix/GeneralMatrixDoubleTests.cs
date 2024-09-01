@@ -141,6 +141,22 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestGeneralMatrixInverseTheoryData))]
+    public void Inverse_Should_Return_Inverse_Of_Matrix(GeneralMatrixDouble m, GeneralMatrixDouble expected)
+    {
+        m.Inverse()
+            .ShouldMatch(expected);
+    }
+
+    [Fact]
+    public void Inverse_Should_Throw_Exception()
+    {
+        Should.Throw<ArgumentException>(() =>
+            new GeneralMatrixDouble([[1D, -2D, 3D], [2D, -3D, 5D], [1D, 1D, 0D]])
+                .Inverse());
+    }
+
+    [Theory]
     [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Double_To_Matrix(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)
     {
@@ -331,6 +347,13 @@ public class GeneralMatrixDoubleTests
             { new GeneralMatrixDouble([[TestValue2_2, -TestValue2_2], [TestValue3_3, -TestValue3_3], [TestValue0, TestValue0]]), 1 },
             { new GeneralMatrixDouble([[TestValue2, TestValue4_4, TestValue0], [TestValue4, TestValue8_8, TestValue3]]), 2 },
             { new GeneralMatrixDouble([[TestValue2, TestValue4], [TestValue4_4, TestValue8_8], [TestValue0, TestValue3]]), 2 }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble> TestGeneralMatrixInverseTheoryData =
+        new()
+        {
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[-1.818181818181819, 0.9090909090909095], [1.363636363636364, -0.4545454545454547]]) },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), new GeneralMatrixDouble([[-0.34090909090909088, 0.22727272727272727, 0.11363636363636363], [-1.5909090909090908, -0.45454545454545436, 1.1363636363636362], [1.4772727272727275, 0.22727272727272718, -0.79545454545454553]]) }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestScalarAdditionTheoryData =

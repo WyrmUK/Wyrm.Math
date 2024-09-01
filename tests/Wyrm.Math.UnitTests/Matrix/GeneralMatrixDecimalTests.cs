@@ -141,6 +141,22 @@ public class GeneralMatrixDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(TestGeneralMatrixInverseTheoryData))]
+    public void Inverse_Should_Return_Inverse_Of_Matrix(GeneralMatrixDecimal m, GeneralMatrixDecimal expected)
+    {
+        m.Inverse()
+            .ShouldMatch(expected);
+    }
+
+    [Fact]
+    public void Inverse_Should_Throw_Exception()
+    {
+        Should.Throw<ArgumentException>(() =>
+            new GeneralMatrixDecimal([[1M, -2M, 3M], [2M, -3M, 5M], [1M, 1M, 0M]])
+                .Inverse());
+    }
+
+    [Theory]
     [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Decimal_To_Matrix(GeneralMatrixDecimal m, decimal value, GeneralMatrixDecimal expected)
     {
@@ -331,6 +347,13 @@ public class GeneralMatrixDecimalTests
             { new GeneralMatrixDecimal([[TestValue2_2, -TestValue2_2], [TestValue3_3, -TestValue3_3], [TestValue0, TestValue0]]), 1 },
             { new GeneralMatrixDecimal([[TestValue2, TestValue4_4, TestValue0], [TestValue4, TestValue8_8, TestValue3]]), 2 },
             { new GeneralMatrixDecimal([[TestValue2, TestValue4], [TestValue4_4, TestValue8_8], [TestValue0, TestValue3]]), 2 }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, GeneralMatrixDecimal> TestGeneralMatrixInverseTheoryData =
+        new()
+        {
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[-1.8181818181818181818181818182M, 0.9090909090909090909090909091M], [1.3636363636363636363636363636M, -0.4545454545454545454545454545M]]) },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), new GeneralMatrixDecimal([[-0.3409090909090909090909090910M, 0.2272727272727272727272727272M, 0.1136363636363636363636363637M], [-1.5909090909090909090909090908M, -0.4545454545454545454545454545M, 1.1363636363636363636363636363M], [1.4772727272727272727272727271M, 0.2272727272727272727272727272M, -0.7954545454545454545454545453M]]) }
         };
 
     public static readonly TheoryData<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal> TestScalarAdditionTheoryData =

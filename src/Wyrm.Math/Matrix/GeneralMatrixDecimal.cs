@@ -98,7 +98,7 @@ public readonly struct GeneralMatrixDecimal
     /// Returns the Determinant of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The Determinant as a <see cref="decimal"/>.</returns>
-    /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
+    /// <exception cref="ArgumentException">Thrown if the matrix isn't square.</exception>
     public decimal Determinant() => Matrix.Determinant((v1, v2) => v1 * v2, v => -v);
 
     /// <summary>
@@ -112,6 +112,13 @@ public readonly struct GeneralMatrixDecimal
     /// </summary>
     /// <returns>The nullity.</returns>
     public int Nullity() => Matrix.Nullity(v => v != 0M);
+
+    /// <summary>
+    /// Returns the inverse of a square matrix (same number of columns as rows).
+    /// </summary>
+    /// <returns>The inverse as a <see cref="GeneralMatrixDecimal"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
+    public GeneralMatrixDecimal Inverse() => new(Matrix.Inverse());
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDecimal"/>.

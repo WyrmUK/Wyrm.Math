@@ -52,6 +52,11 @@ internal static class GeneralMatrixExtensions
         return matrix.Columns - matrix.Rank(isNonZeroFunc);
     }
 
+    public static GeneralMatrix<T> Inverse<T>(this GeneralMatrix<T> matrix) where T : struct
+    {
+        return matrix.InverseForm();
+    }
+
     public static GeneralMatrix<T> PerformOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> operationFunc) where T : struct
     {
         if (matrix1.Rows != matrix2.Rows) throw new ArgumentException("Rows mismatch.");
