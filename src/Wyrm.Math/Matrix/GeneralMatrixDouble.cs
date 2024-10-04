@@ -1,4 +1,5 @@
-﻿using Wyrm.Math.Matrix.Base;
+﻿using System.Diagnostics.CodeAnalysis;
+using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
 namespace Wyrm.Math.Matrix;
@@ -49,6 +50,34 @@ public readonly struct GeneralMatrixDouble
     }
 
     /// <summary>
+    /// Returns a human-readable representation of this matrix.
+    /// </summary>
+    /// <returns>The human-readable representation.</returns>
+    public override string ToString() => Matrix.ToString();
+
+    /// <inheritdoc cref="GeneralMatrix{T}.GetHashCode()"/>
+    public override int GetHashCode() => Matrix.GetHashCode();
+
+    /// <inheritdoc cref="GeneralMatrix{T}.Equals(object?)"/>
+    public override bool Equals([NotNullWhen(true)] object? obj) => Matrix.Equals((obj as GeneralMatrixDouble?)?.Matrix);
+
+    /// <summary>
+    /// Indicates whether two <see cref="GeneralMatrixDouble"/>s are equal.
+    /// </summary>
+    /// <param name="left">A <see cref="GeneralMatrixDouble"/>.</param>
+    /// <param name="right">A <see cref="GeneralMatrixDouble"/> to compare.</param>
+    /// <returns>True if both instances are equal.</returns>
+    public static bool operator ==(GeneralMatrixDouble left, GeneralMatrixDouble right) => left.Equals(right);
+
+    /// <summary>
+    /// Indicates whether two <see cref="GeneralMatrixDouble"/>s are not equal.
+    /// </summary>
+    /// <param name="left">A <see cref="GeneralMatrixDouble"/>.</param>
+    /// <param name="right">A <see cref="GeneralMatrixDouble"/> to compare.</param>
+    /// <returns>True if both instances are not equal.</returns>
+    public static bool operator !=(GeneralMatrixDouble left, GeneralMatrixDouble right) => !(left == right);
+
+    /// <summary>
     /// Gets the number of rows for the matrix.
     /// </summary>
     public int Rows => Matrix.Rows;
@@ -59,7 +88,7 @@ public readonly struct GeneralMatrixDouble
     public int Columns => Matrix.Columns;
 
     /// <summary>
-    /// Gets and sets specific values of the matrix.
+    /// Gets specific values of the matrix.
     /// </summary>
     /// <param name="column">The column to get/set the value in.</param>
     /// <param name="row">The row to get/set the value in.</param>
@@ -67,7 +96,6 @@ public readonly struct GeneralMatrixDouble
     public double this[int column, int row]
     {
         get => Matrix[column, row];
-        set => Matrix.Set(column, row, value);
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using System.Numerics;
 using Wyrm.Math.Matrix;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.UnitTests.TestHelpers;
@@ -47,6 +48,41 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestToStringTheoryData))]
+    public void ToString_Should_Return_String_Representation(GeneralMatrixDouble matrix, string expected)
+    {
+        matrix.ToString().ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GetHashCode_Should_Return_Unique_Value()
+    {
+        var hashes = TestGeneralMatrixRankTheoryData.ToDictionary(x => ((GeneralMatrixDouble)x[0]).GetHashCode(), x => x);
+        hashes.Count.ShouldBe(TestGeneralMatrixRankTheoryData.Count);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDouble matrix1, object? obj, bool expected)
+    {
+        matrix1.Equals(obj).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Operator_Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDouble matrix1, object? obj, bool expected)
+    {
+        (matrix1 == (obj as GeneralMatrixDouble?)).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Operator_Not_Equals_Should_Return_False_When_Matrices_Have_The_Same_Values(GeneralMatrixDouble matrix1, object? obj, bool expected)
+    {
+        (matrix1 != (obj as GeneralMatrixDouble?)).ShouldBe(!expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<double>> values, GeneralMatrixDouble expected)
     {
@@ -63,11 +99,20 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
-    [MemberData(nameof(TestGeneralMatrixTheoryData))]
-    public void ArraySetter_Should_Set_ColumnValue(GeneralMatrixDouble matrix)
+    [MemberData(nameof(TestMatrixTheoryData))]
+    public void ArrayGetter_Should_Get_ColumnValue(IEnumerable<IEnumerable<double>> values, GeneralMatrixDouble expected)
     {
-        matrix[2, 1] = TestValue;
-        matrix[2, 1].ShouldBe(TestValue);
+        var rowIndex = 0;
+        foreach (var row in values)
+        {
+            var colIndex = 0;
+            foreach (var value in row)
+            {
+                expected[colIndex, rowIndex].ShouldBe(value);
+                ++colIndex;
+            }
+            ++rowIndex;
+        }
     }
 
     [Theory]
@@ -306,6 +351,23 @@ public class GeneralMatrixDoubleTests
 
     public static readonly TheoryData<GeneralMatrixDouble> TestGeneralMatrixTheoryData =
         new(new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]));
+
+    public static readonly TheoryData<GeneralMatrixDouble, string> TestToStringTheoryData =
+        new()
+        {
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "(  1.1, 10.1 )\r\n( -1.0,  2.0 )" },
+            { new GeneralMatrixDouble([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "( 0, -4 )\r\n( 2,  2 )" }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, object?, bool> TestGeneralMatrixEqualityTheoryData =
+        new()
+        {
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), null, false },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[(decimal)TestValue1_1, (decimal)TestValue2_2], [(decimal)TestValue3_3, (decimal)TestValue4_4]]), false },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue], [TestValue3_3, TestValue4_4, TestValue]]), false },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue5_5]]), false },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), true }
+        };
 
     public static readonly TheoryData<IEnumerable<IEnumerable<double>>, GeneralMatrixDouble> TestMatrixTheoryData =
         new()

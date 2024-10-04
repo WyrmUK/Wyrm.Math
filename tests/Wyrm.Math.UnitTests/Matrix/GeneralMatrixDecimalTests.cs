@@ -47,6 +47,41 @@ public class GeneralMatrixDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(TestToStringTheoryData))]
+    public void ToString_Should_Return_String_Representation(GeneralMatrixDecimal matrix, string expected)
+    {
+        matrix.ToString().ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GetHashCode_Should_Return_Unique_Value()
+    {
+        var hashes = TestGeneralMatrixRankTheoryData.ToDictionary(x => ((GeneralMatrixDecimal)x[0]).GetHashCode(), x => x);
+        hashes.Count.ShouldBe(TestGeneralMatrixRankTheoryData.Count);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDecimal matrix1, object? obj, bool expected)
+    {
+        matrix1.Equals(obj).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Operator_Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDecimal matrix1, object? obj, bool expected)
+    {
+        (matrix1 == (obj as GeneralMatrixDecimal?)).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Operator_Not_Equals_Should_Return_False_When_Matrices_Have_The_Same_Values(GeneralMatrixDecimal matrix1, object? obj, bool expected)
+    {
+        (matrix1 != (obj as GeneralMatrixDecimal?)).ShouldBe(!expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<decimal>> values, GeneralMatrixDecimal expected)
     {
@@ -63,11 +98,20 @@ public class GeneralMatrixDecimalTests
     }
 
     [Theory]
-    [MemberData(nameof(TestGeneralMatrixTheoryData))]
-    public void ArraySetter_Should_Set_ColumnValue(GeneralMatrixDecimal matrix)
+    [MemberData(nameof(TestMatrixTheoryData))]
+    public void ArraySetter_Should_Set_ColumnValue(IEnumerable<IEnumerable<decimal>> values, GeneralMatrixDecimal expected)
     {
-        matrix[2, 1] = TestValue;
-        matrix[2, 1].ShouldBe(TestValue);
+        var rowIndex = 0;
+        foreach (var row in values)
+        {
+            var colIndex = 0;
+            foreach (var value in row)
+            {
+                expected[colIndex, rowIndex].ShouldBe(value);
+                ++colIndex;
+            }
+            ++rowIndex;
+        }
     }
 
     [Theory]
@@ -306,6 +350,23 @@ public class GeneralMatrixDecimalTests
 
     public static readonly TheoryData<GeneralMatrixDecimal> TestGeneralMatrixTheoryData =
         new(new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]));
+
+    public static readonly TheoryData<GeneralMatrixDecimal, string> TestToStringTheoryData =
+        new()
+        {
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "(  1.1, 10.1 )\r\n( -1.0,  2.0 )" },
+            { new GeneralMatrixDecimal([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "( 0.0, -4.0 )\r\n( 2.0,  2.0 )" }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, object?, bool> TestGeneralMatrixEqualityTheoryData =
+        new()
+        {
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), null, false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[(double)TestValue1_1, (double)TestValue2_2], [(double)TestValue3_3, (double)TestValue4_4]]), false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue], [TestValue3_3, TestValue4_4, TestValue]]), false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue5_5]]), false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), true }
+        };
 
     public static readonly TheoryData<IEnumerable<IEnumerable<decimal>>, GeneralMatrixDecimal> TestMatrixTheoryData =
         new()
