@@ -69,6 +69,13 @@ public class GeneralMatrixDecimalTests
 
     [Theory]
     [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Equals_Should_Return_False_When_compared_With_Decimal(GeneralMatrixDecimal matrix1, object? _1, bool _2)
+    {
+        matrix1.Equals(1.0M).ShouldBe(false);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
     public void Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDecimal matrix1, object? obj, bool expected)
     {
         matrix1.Equals(obj).ShouldBe(expected);
