@@ -67,7 +67,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="left">A <see cref="GeneralMatrixDecimal"/>.</param>
     /// <param name="right">A <see cref="GeneralMatrixDecimal"/> to compare.</param>
     /// <returns>True if both instances are equal.</returns>
-    public static bool operator ==(GeneralMatrixDecimal left, GeneralMatrixDecimal right) => left.Equals(right);
+    public static bool operator ==(GeneralMatrixDecimal left, GeneralMatrixDecimal? right) => left.Equals(right);
 
     /// <summary>
     /// Indicates whether two <see cref="GeneralMatrixDecimal"/>s are not equal.
@@ -75,7 +75,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="left">A <see cref="GeneralMatrixDecimal"/>.</param>
     /// <param name="right">A <see cref="GeneralMatrixDecimal"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
-    public static bool operator !=(GeneralMatrixDecimal left, GeneralMatrixDecimal right) => !(left == right);
+    public static bool operator !=(GeneralMatrixDecimal left, GeneralMatrixDecimal? right) => !(left == right);
 
     /// <summary>
     /// Gets the number of rows for the matrix.
@@ -185,7 +185,7 @@ public readonly struct GeneralMatrixDecimal
         new(m.Matrix);
 
     /// <summary>
-    /// Subtracts a single value from each value of a <see cref="GeneralMatrixDecimal"/>.
+    /// Subtracts a scalar value from each value of a <see cref="GeneralMatrixDecimal"/>.
     /// </summary>
     /// <param name="m">Left hand <see cref="GeneralMatrixDecimal"/>.</param>
     /// <param name="scalar">Right hand <see cref="decimal"/>.</param>

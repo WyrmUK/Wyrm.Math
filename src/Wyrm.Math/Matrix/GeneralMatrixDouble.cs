@@ -185,7 +185,7 @@ public readonly struct GeneralMatrixDouble
         new(m.Matrix);
 
     /// <summary>
-    /// Subtracts a single value from each value of a <see cref="GeneralMatrixDouble"/>.
+    /// Subtracts a scalar value from each value of a <see cref="GeneralMatrixDouble"/>.
     /// </summary>
     /// <param name="m">Left hand <see cref="GeneralMatrixDouble"/>.</param>
     /// <param name="scalar">Right hand <see cref="double"/>.</param>

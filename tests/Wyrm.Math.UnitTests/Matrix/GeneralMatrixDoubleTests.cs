@@ -63,6 +63,13 @@ public class GeneralMatrixDoubleTests
 
     [Theory]
     [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
+    public void Equals_Should_Return_False_When_compared_With_Null(GeneralMatrixDouble matrix1, object? _1, bool _2)
+    {
+        matrix1.Equals(null).ShouldBe(false);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
     public void Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDouble matrix1, object? obj, bool expected)
     {
         matrix1.Equals(obj).ShouldBe(expected);
