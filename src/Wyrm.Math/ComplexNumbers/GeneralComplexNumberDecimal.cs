@@ -1,0 +1,309 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using Wyrm.Math.ComplexNumbers.Base;
+
+namespace Wyrm.Math.ComplexNumbers;
+
+/// <summary>
+/// A general complex number struct for <see cref="decimal"/> values.
+/// </summary>
+public readonly struct GeneralComplexNumberDecimal
+{
+    internal GeneralComplexNumber<decimal> ComplexNumber { get; }
+
+    /// <summary>
+    /// Creates a new <see cref="GeneralComplexNumberDecimal"/> with specific values.
+    /// </summary>
+    /// <param name="real">The real value.</param>
+    /// <param name="imaginary">The imaginary value.</param>
+    public GeneralComplexNumberDecimal(decimal real, decimal imaginary)
+    {
+        ComplexNumber = new GeneralComplexNumber<decimal>(real, imaginary);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="GeneralComplexNumberDecimal"/>.
+    /// This will be a copy of the source number.
+    /// </summary>
+    /// <param name="complexNumber">The complex number to copy from.</param>
+    public GeneralComplexNumberDecimal(GeneralComplexNumberDecimal complexNumber)
+    {
+        ComplexNumber = new GeneralComplexNumber<decimal>(complexNumber.ComplexNumber);
+    }
+
+    internal GeneralComplexNumberDecimal(GeneralComplexNumber<decimal> complexNumber)
+    {
+        ComplexNumber = complexNumber;
+    }
+
+    /// <summary>
+    /// Returns a human-readable representation of this complex number.
+    /// </summary>
+    /// <returns>The human-readable representation.</returns>
+    public override string ToString() => ComplexNumber.ToString();
+
+    /// <inheritdoc cref="GeneralComplexNumber{T}.GetHashCode()"/>
+    public override int GetHashCode() => ComplexNumber.GetHashCode();
+
+    /// <inheritdoc cref="GeneralComplexNumber{T}.Equals(object?)"/>
+    public override bool Equals([NotNullWhen(true)] object? obj) => ComplexNumber.Equals((obj as GeneralComplexNumberDecimal?)?.ComplexNumber ?? obj);
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDecimal"/> to a decimal.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDecimal"/> to convert.</param>
+    /// <exception cref="ArgumentException">Thrown if the imaginary part is non zero.</exception>
+    public static implicit operator decimal(GeneralComplexNumberDecimal complexNumber) =>
+        complexNumber.Imaginary != 0M ? throw new ArgumentException("Imaginary part is non-zero.") : complexNumber.Real;
+
+    /// <summary>
+    /// Casts a decimal to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="real">The <see cref="decimal"/> to convert.</param>
+    public static explicit operator GeneralComplexNumberDecimal(decimal real) =>
+        new GeneralComplexNumberDecimal(real, 0M);
+
+    /// <summary>
+    /// Indicates whether a scalar and a <see cref="GeneralComplexNumberDecimal"/> are equal.
+    /// </summary>
+    /// <param name="left">A <see cref="decimal"/>.</param>
+    /// <param name="right">A <see cref="GeneralComplexNumberDecimal"/> to compare.</param>
+    /// <returns>True if both instances are equal.</returns>
+    public static bool operator ==(decimal left, GeneralComplexNumberDecimal? right) => left.Equals(right);
+
+    /// <summary>
+    /// Indicates whether a <see cref="GeneralComplexNumberDecimal"/> decimal are equal.
+    /// </summary>
+    /// <param name="left">A <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="right">A <see cref="decimal"/> to compare.</param>
+    /// <returns>True if both instances are equal.</returns>
+    public static bool operator ==(GeneralComplexNumberDecimal left, decimal? right) => left.Equals(right);
+
+    /// <summary>
+    /// Indicates whether two <see cref="GeneralComplexNumberDecimal"/>s are equal.
+    /// </summary>
+    /// <param name="left">A <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="right">A <see cref="GeneralComplexNumberDecimal"/> to compare.</param>
+    /// <returns>True if both instances are equal.</returns>
+    public static bool operator ==(GeneralComplexNumberDecimal left, GeneralComplexNumberDecimal? right) => left.Equals(right);
+
+    /// <summary>
+    /// Indicates whether a scalar and a <see cref="GeneralComplexNumberDecimal"/> are not equal.
+    /// </summary>
+    /// <param name="left">A <see cref="decimal"/>.</param>
+    /// <param name="right">A <see cref="GeneralComplexNumberDecimal"/> to compare.</param>
+    /// <returns>True if both instances are equal.</returns>
+    public static bool operator !=(decimal left, GeneralComplexNumberDecimal? right) => !(left == right);
+
+    /// <summary>
+    /// Indicates whether two <see cref="GeneralComplexNumberDecimal"/> and a scalar are not equal.
+    /// </summary>
+    /// <param name="left">A <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="right">A <see cref="decimal"/> to compare.</param>
+    /// <returns>True if both instances are equal.</returns>
+    public static bool operator !=(GeneralComplexNumberDecimal left, decimal? right) => !(left == right);
+
+    /// <summary>
+    /// Indicates whether two <see cref="GeneralComplexNumberDecimal"/>s are not equal.
+    /// </summary>
+    /// <param name="left">A <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="right">A <see cref="GeneralComplexNumberDecimal"/> to compare.</param>
+    /// <returns>True if both instances are not equal.</returns>
+    public static bool operator !=(GeneralComplexNumberDecimal left, GeneralComplexNumberDecimal? right) => !(left == right);
+
+    /// <summary>
+    /// Gets the real part of the number.
+    /// </summary>
+    public decimal Real => ComplexNumber.Real;
+
+    /// <summary>
+    /// Gets the imaginary part of the number.
+    /// </summary>
+    public decimal Imaginary => ComplexNumber.Imaginary;
+
+    /// <summary>
+    /// Returns the complex conjugate as a new <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <returns>The complex conjugate as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal ComplexConjugate() =>
+        new(Real, -Imaginary);
+
+    /// <summary>
+    /// Returns the absolute value.
+    /// </summary>
+    /// <returns>The absolute value.</returns>
+    public decimal Abs() =>
+        (decimal)System.Math.Sqrt((double)((decimal)System.Math.Pow((double)Real, 2.0) + (decimal)System.Math.Pow((double)Imaginary, 2.0)));
+
+    /// <summary>
+    /// Returns the argument value.
+    /// </summary>
+    /// <returns>The argument value.</returns>
+    public decimal Argument() =>
+        (decimal)System.Math.Atan2((double)Imaginary, (double)Real);
+
+    /// <summary>
+    /// Returns the inverse value.
+    /// </summary>
+    /// <returns>The inverse value.</returns>
+    public GeneralComplexNumberDecimal Inverse()
+    {
+        var divisor = (decimal)System.Math.Pow((double)Real, 2.0) + (decimal)System.Math.Pow((double)Imaginary, 2.0);
+        var real = Real / divisor;
+        var imaginary = -(Imaginary / divisor);
+        return new(real, imaginary);
+    }
+
+    /// <summary>
+    /// Adds a scalar value to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="c">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the sum of the two operands.</returns>
+    public static GeneralComplexNumberDecimal operator +(GeneralComplexNumberDecimal c, decimal scalar) =>
+        new(c.Real + scalar, c.Imaginary);
+
+    /// <summary>
+    /// Adds a scalar value to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="scalar">Left hand <see cref="decimal"/>.</param>
+    /// <param name="c">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the sum of the two operands.</returns>
+    public static GeneralComplexNumberDecimal operator +(decimal scalar, GeneralComplexNumberDecimal c) =>
+        new(scalar + c.Real, c.Imaginary);
+
+    /// <summary>
+    /// Adds two <see cref="GeneralComplexNumberDecimal"/>s together.
+    /// </summary>
+    /// <param name="c1">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="c2">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the sum of the two operands.</returns>
+    public static GeneralComplexNumberDecimal operator +(GeneralComplexNumberDecimal c1, GeneralComplexNumberDecimal c2) =>
+        new(c1.Real + c2.Real, c1.Imaginary + c2.Imaginary);
+
+    /// <summary>
+    /// Generates a new <see cref="GeneralComplexNumberDecimal"/> from an existing one.
+    /// </summary>
+    /// <param name="c">The <see cref="GeneralComplexNumberDecimal"/> to copy from.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> with the values of the operand.</returns>
+    public static GeneralComplexNumberDecimal operator +(GeneralComplexNumberDecimal c) =>
+        new(c.ComplexNumber);
+
+    /// <summary>
+    /// Subtracts a scalar value from a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="c">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the of the left hand operand minus the right hand value.</returns>
+    public static GeneralComplexNumberDecimal operator -(GeneralComplexNumberDecimal c, decimal scalar) =>
+        new(c.Real - scalar, c.Imaginary);
+
+    /// <summary>
+    /// Subtracts a <see cref="GeneralComplexNumberDecimal"/> from a scalar.
+    /// </summary>
+    /// <param name="scalar">Left hand <see cref="decimal"/>.</param>
+    /// <param name="c">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the of the left hand operand minus the right hand value.</returns>
+    public static GeneralComplexNumberDecimal operator -(decimal scalar, GeneralComplexNumberDecimal c) =>
+        new(scalar - c.Real, 0M - c.Imaginary);
+
+    /// <summary>
+    /// Subtracts one <see cref="GeneralComplexNumberDecimal"/> from another.
+    /// </summary>
+    /// <param name="c1">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="c2">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the left hand operand minus the right hand operand.</returns>
+    public static GeneralComplexNumberDecimal operator -(GeneralComplexNumberDecimal c1, GeneralComplexNumberDecimal c2) =>
+        new(c1.Real - c2.Real, c1.Imaginary - c2.Imaginary);
+
+    /// <summary>
+    /// Negates a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="c">The <see cref="GeneralComplexNumberDecimal"/> to negate.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> which is the negated operand.</returns>
+    public static GeneralComplexNumberDecimal operator -(GeneralComplexNumberDecimal c) =>
+        new(-c.Real, -c.Imaginary);
+
+    /// <summary>
+    /// Multiplies a scalar value with a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="c">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
+    public static GeneralComplexNumberDecimal operator *(GeneralComplexNumberDecimal c, decimal scalar) =>
+        new(c.Real * scalar, c.Imaginary * scalar);
+
+    /// <summary>
+    /// Multiplies a <see cref="GeneralComplexNumberDecimal"/> with a scalar.
+    /// </summary>
+    /// <param name="scalar">Left hand <see cref="decimal"/>.</param>
+    /// <param name="c">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
+    public static GeneralComplexNumberDecimal operator *(decimal scalar, GeneralComplexNumberDecimal c) =>
+        new(scalar * c.Real, scalar * c.Imaginary);
+
+    /// <summary>
+    /// Multiplies one <see cref="GeneralComplexNumberDecimal"/> with another.
+    /// </summary>
+    /// <param name="c1">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="c2">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the left hand operand multiplied by the right hand operand.</returns>
+    public static GeneralComplexNumberDecimal operator *(GeneralComplexNumberDecimal c1, GeneralComplexNumberDecimal c2) =>
+        new(c1.Real * c2.Real - c1.Imaginary * c2.Imaginary, c1.Real * c2.Imaginary + c1.Imaginary * c2.Real);
+
+    /// <summary>
+    /// Divides a scalar value by a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="c">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
+    public static GeneralComplexNumberDecimal operator /(GeneralComplexNumberDecimal c, decimal scalar) =>
+        new(c.Real / scalar, c.Imaginary / scalar);
+
+    /// <summary>
+    /// Divides a <see cref="GeneralComplexNumberDecimal"/> by a scalar.
+    /// </summary>
+    /// <param name="scalar">Left hand <see cref="decimal"/>.</param>
+    /// <param name="c">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
+    public static GeneralComplexNumberDecimal operator /(decimal scalar, GeneralComplexNumberDecimal c) =>
+        new(scalar * c.Inverse());
+
+    /// <summary>
+    /// Divides one <see cref="GeneralComplexNumberDecimal"/> by another.
+    /// </summary>
+    /// <param name="c1">Left hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <param name="c2">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/> of the left hand operand multiplied by the right hand operand.</returns>
+    public static GeneralComplexNumberDecimal operator /(GeneralComplexNumberDecimal c1, GeneralComplexNumberDecimal c2) =>
+        new(c1 * c2.Inverse());
+
+    /// <summary>
+    /// Raises a <see cref="GeneralComplexNumberDecimal"/> by a power.
+    /// </summary>
+    /// <param name="power">The power to raise by.</param>
+    /// <returns>The power as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Pow(decimal power)
+    {
+        var multiplier = (decimal)System.Math.Pow((double)Abs(), (double)power);
+        var angle = (double)(power * Argument());
+        var real = (decimal)System.Math.Cos(angle);
+        var imaginary = (decimal)System.Math.Sin(angle);
+        return new(multiplier * real, multiplier * imaginary);
+    }
+
+    /// <summary>
+    /// Raises a <see cref="GeneralComplexNumberDecimal"/> by a power.
+    /// </summary>
+    /// <param name="power">The power to raise by.</param>
+    /// <returns>The power as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Pow(GeneralComplexNumberDecimal power)
+    {
+        var factor = (decimal)System.Math.Pow((double)Real, 2.0) + (decimal)System.Math.Pow((double)Imaginary, 2.0);
+        var atan = (decimal)System.Math.Atan((double)Imaginary / (double)Real);
+        var multiplier = (decimal)System.Math.Pow(System.Math.Sqrt((double)factor), (double)power.Real) * (decimal)System.Math.Pow(System.Math.E, (double)(-power.Imaginary * atan));
+        var angle = power.Imaginary * (decimal)System.Math.Log((double)factor) / 2M + power.Real * atan;
+        var real = (decimal)System.Math.Cos((double)angle);
+        var imaginary = (decimal)System.Math.Sin((double)angle);
+        return new(multiplier * real, multiplier * imaginary);
+    }
+}
