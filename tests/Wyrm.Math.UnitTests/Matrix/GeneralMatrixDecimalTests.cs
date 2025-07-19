@@ -62,13 +62,6 @@ public class GeneralMatrixDecimalTests
 
     [Theory]
     [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
-    public void Equals_Should_Return_False_When_compared_With_Null(GeneralMatrixDecimal matrix1, object? _1, bool _2)
-    {
-        matrix1.Equals(null).ShouldBe(false);
-    }
-
-    [Theory]
-    [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
     public void Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDecimal matrix1, object? obj, bool expected)
     {
         matrix1.Equals(obj).ShouldBe(expected);
@@ -369,6 +362,7 @@ public class GeneralMatrixDecimalTests
         new()
         {
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), null, false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), TestValue1_1, false },
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[(double)TestValue1_1, (double)TestValue2_2], [(double)TestValue3_3, (double)TestValue4_4]]), false },
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue], [TestValue3_3, TestValue4_4, TestValue]]), false },
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue5_5]]), false },
