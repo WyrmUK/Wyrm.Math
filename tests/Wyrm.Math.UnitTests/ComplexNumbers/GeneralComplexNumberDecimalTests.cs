@@ -436,23 +436,23 @@ public class GeneralComplexNumberDecimalTests
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestSqrtTheoryData = new()
     {
         { new GeneralComplexNumberDecimal(-TestValue1, TestValue0_0), new GeneralComplexNumberDecimal(TestValue0_0, TestValue1) },
-        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), new GeneralComplexNumberDecimal(0.4550898605622271712194540403M, 1.0986841134678100364912751655M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(1.6741492280355400709048720039M, 0.8959774761298380678066212872M) },
-        { new GeneralComplexNumberDecimal(-TestValue2, -TestValue3), new GeneralComplexNumberDecimal(0.8959774761298380678066213210M, -1.6741492280355400709048720054M) }
+        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), new GeneralComplexNumberDecimal(0.4550898605622271712194538316M, 1.0986841134678100364912751563M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(1.6741492280355400709048720039M, 0.8959774761298380678066212870M) },
+        { new GeneralComplexNumberDecimal(-TestValue2, -TestValue3), new GeneralComplexNumberDecimal(0.8959774761298380678066212866M, -1.6741492280355400709048720041M) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, decimal, GeneralComplexNumberDecimal> TestPowerTheoryData = new()
     {
         { new GeneralComplexNumberDecimal(-TestValue1, TestValue0_0), 1/TestValue2, new GeneralComplexNumberDecimal(TestValue0_0, TestValue1) },
-        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), 1/TestValue2, new GeneralComplexNumberDecimal(0.4550898605622272497887579254M, 1.0986841134678102261743541911M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), TestValue3, new GeneralComplexNumberDecimal(-46.000000000000223376601330191M, 9.000000000000053445287621928M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), 1/TestValue5, new GeneralComplexNumberDecimal(1.2675064916851113218053412243M, 0.2523983872193170508134812032M) }
+        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), 1/TestValue2, new GeneralComplexNumberDecimal(0.4550898605622272497887577167M, 1.0986841134678102261743541820M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), TestValue3, new GeneralComplexNumberDecimal(-46.000000000000223376612558553M, 9.000000000000053445289818786M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), 1/TestValue5, new GeneralComplexNumberDecimal(1.2675064916851113218053412244M, 0.2523983872193170508134812032M) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexPowerTheoryData = new()
     {
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue4, TestValue5), new GeneralComplexNumberDecimal(-0.7530458367485563540069365918M, -0.9864287886477580585834270746M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue1, TestValue1), new GeneralComplexNumberDecimal(-0.8636068988831294969657986744M, 1.0368893969147749068720955796M) }
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue4, TestValue5), new GeneralComplexNumberDecimal(-0.7530458367485563540069365921M, -0.9864287886477580585834270754M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue1, TestValue1), new GeneralComplexNumberDecimal(-0.8636068988831294969657986740M, 1.0368893969147749068720955794M) }
     };
 
     #endregion

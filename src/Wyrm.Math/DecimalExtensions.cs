@@ -187,15 +187,17 @@ public static class DecimalExtensions
     */
     /// <summary>
     /// Returns the natural logarithm (base e) of a number.
-    /// Throws an <see cref="OverflowException"/> if the numer is zero or lower.
+    /// Throws an <see cref="OverflowException"/> if the number is zero.
+    /// Throws an <see cref="InvalidOperationException"/> if the number of less than zero.
     /// </summary>
     /// <param name="d">The number to get the log of.</param>
     /// <returns>The natural logarithm of d.</returns>
-    /// <exception cref="OverflowException">Thrown if the number is zero or lower.</exception>
+    /// <exception cref="OverflowException">Thrown if the number is zero.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the number is less than zero.</exception>
     public static decimal Log(this decimal d)
     {
         if (d == 0M) throw new OverflowException("Log of zero is negative infinity.");
-        if (d < 0M) throw new OverflowException("Logs of negative numbers are not valid numbers.");
+        if (d < 0M) throw new InvalidOperationException("Logs of negative numbers are not valid numbers.");
 
         // TODO
         return (decimal)((double)d).Log();
