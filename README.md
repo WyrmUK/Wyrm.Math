@@ -1,6 +1,95 @@
 # Wyrm.Math
 A collection of mathematical methods and algorithms.
 
+## Wyrm.Math
+Provides double and decimal extensions.
+### Decimal
+Decimal constants E, Pi, and Tau.
+### Double extensions
+Applies all the System.Math methods as extension methods.
+### Decimal extensions
+Replicates the System.Math methods for decimals as extension methods.
+
+## Wyrm.Math.ComplexNumbers
+Provides complex number arithmetic.
+### GeneralComplexNumberDouble
+This class allows complex numbers with double values to be created, added, subtracted, and multiplied.
+### GeneralComplexNumberDecimal
+This class allows complex numbers with decimal values to be created, added, subtracted, and multiplied.
+### Operations
+#### Cast
+You can cast a complex number with no imaginary part to a scalar and cast a scalar to a complex number.
+#### Complex Conjugate
+Z' = Z.ComplexConjugate()
+
+Calculates the complex conjugate of the complex number.
+#### Abs
+|Z| = Z.Abs()
+
+Calculates the absolute value of the complex number.
+#### Argument
+P = Z.Argument()
+
+Calculates the argument (or phase) of the complex number.
+#### Inverse
+1/Z = Z.Inverse()
+
+Calculates the inverse of the complex number.
+#### Add a scalar
+Zv = Z + n
+
+Zv = n + Z
+
+Adds a scalar value to the complex number, creating a new complex number.
+#### Add another complex number
+Zv = Z1 + Z2
+
+Adds one complex number to another, creating a new complex number.
+#### Duplicate a complex number
+Z = + Z
+
+Duplicates a complex number.
+#### Subtract a scalar
+Zv = Z - n
+
+Zv = n - Z
+
+Subtracts a scalar value from a complex number or subtracts a complex number from a scalar, creating a new complex number.
+#### Subtract another complex number
+Zv = Z1 - Z2
+
+Subtracts one complex number from another, creating a new complex number.
+#### Negate a complex number
+Zv = - Z
+
+Negates the complex number, creating a new complex number.
+#### Multiply by a scalar
+Zv = Z * n
+
+Zv = n * Z
+
+Multiplies a scalar value with a complex number, creating a new complex number.
+#### Multiply another complex number
+Zv = Z1 * Z2
+
+Multiplies one complex number with another, creating a new complex number.
+#### Divide by a scalar
+Zv = Z / n
+
+Zv = n / Z
+
+Divides a scalar value into a complex number or divides a complex number into a scalar, creating a new complex number.
+#### Raise to a Power
+Z^2 = Z.Sqr()
+
+Z^0.5 = Z.Sqrt()
+
+Z^n = Z.Pow(n)
+
+Z^z = Z.Pow(z)
+
+Raises a complex number by a power either real or complex.
+
 ## Wyrm.Math.Matrix
 Provides matrix arithmetic.
 ### GeneralMatrixDouble
@@ -90,79 +179,3 @@ The number of columns of the first matrix must be the same as the number of rows
 {Mv} = n / {M}
 
 Divides a scalar value into every element in a matrix or divides each value in a matrix into a scalar, creating a new matrix.
-
-## Wyrm.Math.ComplexNumbers
-Provides complex number arithmetic.
-### GeneralComplexNumberDouble
-This class allows complex numbers with double values to be created, added, subtracted, and multiplied.
-### GeneralComplexNumberDecimal
-This class allows complex numbers with decimal values to be created, added, subtracted, and multiplied.
-### Operations
-#### Cast
-You can cast a complex number with no imaginary part to a scalar and cast a scalar to a complex number.
-#### Complex Conjugate
-Z' = Z.ComplexConjugate()
-
-Calculates the complex conjugate of the complex number.
-#### Abs
-|Z| = Z.Abs()
-
-Calculates the absolute value of the complex number.
-#### Argument
-P = Z.Argument()
-
-Calculates the argument (or phase) of the complex number.
-#### Inverse
-1/Z = Z.Inverse()
-
-Calculates the inverse of the complex number.
-#### Add a scalar
-Zv = Z + n
-
-Zv = n + Z
-
-Adds a scalar value to the complex number, creating a new complex number.
-#### Add another complex number
-Zv = Z1 + Z2
-
-Adds one complex number to another, creating a new complex number.
-#### Duplicate a complex number
-Z = + Z
-
-Duplicates a complex number.
-#### Subtract a scalar
-Zv = Z - n
-
-Zv = n - Z
-
-Subtracts a scalar value from a complex number or subtracts a complex number from a scalar, creating a new complex number.
-#### Subtract another complex number
-Zv = Z1 - Z2
-
-Subtracts one complex number from another, creating a new complex number.
-#### Negate a complex number
-Zv = - Z
-
-Negates the complex number, creating a new complex number.
-#### Multiply by a scalar
-Zv = Z * n
-
-Zv = n * Z
-
-Multiplies a scalar value with a complex number, creating a new complex number.
-#### Multiply another complex number
-Zv = Z1 * Z2
-
-Multiplies one complex number with another, creating a new complex number.
-#### Divide by a scalar
-Zv = Z / n
-
-Zv = n / Z
-
-Divides a scalar value into a complex number or divides a complex number into a scalar, creating a new complex number.
-#### Raise to a Power
-Z^n = Z.Pow(n)
-
-Z^z = Z.Pow(z)
-
-Raises a complex number by a power either real or complex.

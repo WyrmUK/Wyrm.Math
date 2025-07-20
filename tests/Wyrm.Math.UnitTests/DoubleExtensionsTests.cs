@@ -1,0 +1,174 @@
+﻿using Shouldly;
+
+namespace Wyrm.Math.UnitTests;
+
+public class DoubleExtensionsTests
+{
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Abs_Should_Return_Abs(double value)
+    {
+        value.Abs().ShouldBe(System.Math.Abs(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Atan_Should_Return_Atan(double value)
+    {
+        value.Atan().ShouldBe(System.Math.Atan(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Atan2_Should_Return_Atan2(double value)
+    {
+        value.Atan2(0.5).ShouldBe(System.Math.Atan2(value, 0.5));
+        value.Atan2(-0.5).ShouldBe(System.Math.Atan2(value, -0.5));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Ceiling_Should_Return_Ceiling(double value)
+    {
+        value.Ceiling().ShouldBe(System.Math.Ceiling(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Clamp_Should_Return_Clamp(double value)
+    {
+        value.Clamp(0.5, 1.5).ShouldBe(System.Math.Clamp(value, 0.5, 1.5));
+        value.Clamp(-0.5, 0.5).ShouldBe(System.Math.Clamp(value, -0.5, 0.5));
+        value.Clamp(-1.5, -0.5).ShouldBe(System.Math.Clamp(value, -1.5, -0.5));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Cos_Should_Return_Cos(double value)
+    {
+        value.Cos().ShouldBe(System.Math.Cos(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Exp_Should_Return_Exp(double value)
+    {
+        value.Exp().ShouldBe(System.Math.Exp(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Floor_Should_Return_Floor(double value)
+    {
+        value.Floor().ShouldBe(System.Math.Floor(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Log_Should_Return_Log(double value)
+    {
+        value.Log().ShouldBe(System.Math.Log(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Max_Should_Return_Max(double value)
+    {
+        value.Max(1.1).ShouldBe(System.Math.Max(value, 1.1));
+        value.Max(-1.1).ShouldBe(System.Math.Max(value, -1.1));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Min_Should_Return_Min(double value)
+    {
+        value.Min(1.1).ShouldBe(System.Math.Min(value, 1.1));
+        value.Min(-1.1).ShouldBe(System.Math.Min(value, -1.1));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Pow_Should_Return_Pow(double value)
+    {
+        value.Pow(1.1).ShouldBe(System.Math.Pow(value, 1.1));
+        value.Pow(-1.1).ShouldBe(System.Math.Pow(value, -1.1));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Round_Should_Return_Round(double value)
+    {
+        value.Round().ShouldBe(System.Math.Round(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void RoundDigits_Should_Return_RoundDigits(double value)
+    {
+        value.Round(2).ShouldBe(System.Math.Round(value, 2));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void RoundMidPoint_Should_Return_RoundMidPoint(double value)
+    {
+        value.Round(MidpointRounding.ToEven).ShouldBe(System.Math.Round(value, MidpointRounding.ToEven));
+        value.Round(MidpointRounding.AwayFromZero).ShouldBe(System.Math.Round(value, MidpointRounding.AwayFromZero));
+        value.Round(MidpointRounding.ToZero).ShouldBe(System.Math.Round(value, MidpointRounding.ToZero));
+        value.Round(MidpointRounding.ToNegativeInfinity).ShouldBe(System.Math.Round(value, MidpointRounding.ToNegativeInfinity));
+        value.Round(MidpointRounding.ToPositiveInfinity).ShouldBe(System.Math.Round(value, MidpointRounding.ToPositiveInfinity));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void RoundDigitsMidPoint_Should_Return_RoundDigitsMidPoint(double value)
+    {
+        value.Round(2, MidpointRounding.ToEven).ShouldBe(System.Math.Round(value, 2, MidpointRounding.ToEven));
+        value.Round(2, MidpointRounding.AwayFromZero).ShouldBe(System.Math.Round(value, 2, MidpointRounding.AwayFromZero));
+        value.Round(2, MidpointRounding.ToZero).ShouldBe(System.Math.Round(value, 2, MidpointRounding.ToZero));
+        value.Round(2, MidpointRounding.ToNegativeInfinity).ShouldBe(System.Math.Round(value, 2, MidpointRounding.ToNegativeInfinity));
+        value.Round(2, MidpointRounding.ToPositiveInfinity).ShouldBe(System.Math.Round(value, 2, MidpointRounding.ToPositiveInfinity));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Sign_Should_Return_Sign(double value)
+    {
+        value.Sign().ShouldBe(System.Math.Sign(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Sin_Should_Return_Sin(double value)
+    {
+        value.Sin().ShouldBe(System.Math.Sin(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Sqr_Should_Return_Sqr(double value)
+    {
+        value.Sqr().ShouldBe(value * value);
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Sqrt_Should_Return_Sqrt(double value)
+    {
+        value.Sqrt().ShouldBe(System.Math.Sqrt(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Truncate_Should_Return_Truncate(double value)
+    {
+        value.Truncate().ShouldBe(System.Math.Truncate(value));
+    }
+
+    #region Test Data
+
+    public static readonly TheoryData<double> DoubleValues =
+    [ 0.0, 1.1, 2.2, 0.1, 0.25, 0.625, 10.0, 100.0, double.E, -1.1, -2.2, -0.1, -0.25, -0.625, -10.0, -100.0, -double.E ];
+
+    #endregion
+}
