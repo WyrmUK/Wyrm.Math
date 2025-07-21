@@ -10,7 +10,7 @@
     <Company>Wyrm Software</Company>
     <Authors>WyrmUK</Authors>
     <Copyright>© $([System.DateTime]::now.Year) $(Company). All rights reserved.</Copyright>
-    <Description>A collection of mathematical methods and algorithms.</Description>
+    <Description>A collection of mathematical methods and algorithms - complex numbers, matrices, System.Math extension methods (including for the decimal type).</Description>
     <RepositoryUrl>https://github.com/WyrmUK/Wyrm.Math</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/WyrmUK/Wyrm.Math</PackageProjectUrl>  
