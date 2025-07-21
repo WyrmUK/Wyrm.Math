@@ -108,16 +108,14 @@ public static class DecimalExtensions
 
         var estimate = 1M;
         var prevEstimate = 0M;
-        var multiplier = -1M;
         var aSqr = a = a.Sqr();
         a /= 2M;
         var factor = 4M;
         while (estimate != prevEstimate)
         {
             prevEstimate = estimate;
-            estimate += multiplier * a;
-            multiplier = multiplier == 1M ? -1M : 1M;
-            a *= aSqr / ((factor - 1M) * factor);
+            estimate -= a;
+            a *= -aSqr / ((factor - 1M) * factor);
             factor += 2M;
         }
         return estimate;
@@ -198,9 +196,42 @@ public static class DecimalExtensions
     {
         if (d == 0M) throw new OverflowException("Log of zero is negative infinity.");
         if (d < 0M) throw new InvalidOperationException("Logs of negative numbers are not valid numbers.");
+        if (d == 1M) return 0M;
 
-        // TODO
-        return (decimal)((double)d).Log();
+        var addition = 0M;
+
+        while (d >= 1M)
+        {
+            d *= Decimal.ExpNeg1;
+            addition += 1M;
+        }
+
+        while (d <= Decimal.ExpNeg1)
+        {
+            d /= Decimal.ExpNeg1;
+            addition -= 1M;
+        }
+
+        d -= 1M;
+        var estimate = 0M;
+        var prevEstimate = 1M;
+        var dVal = d;
+        var factor = 1M;
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += d / factor;
+            try
+            {
+                d *= -dVal;
+            }
+            catch (OverflowException)
+            {
+                break;
+            }
+            factor += 1M;
+        }
+        return addition + estimate;
     }
     /*
     /// <inheritdoc cref="System.Math.Log(decimal, decimal)"/>
@@ -302,16 +333,14 @@ public static class DecimalExtensions
 
         var estimate = a;
         var prevEstimate = 0M;
-        var multiplier = -1M;
         var aSqr = a.Sqr();
         a *= aSqr / 6M;
         var factor = 5M;
         while (estimate != prevEstimate)
         {
             prevEstimate = estimate;
-            estimate += multiplier * a;
-            multiplier = multiplier == 1M ? -1M : 1M;
-            a *= aSqr / ((factor - 1M) * factor);
+            estimate -= a;
+            a *= -aSqr / ((factor - 1M) * factor);
             factor += 2M;
         }
         return estimate;
