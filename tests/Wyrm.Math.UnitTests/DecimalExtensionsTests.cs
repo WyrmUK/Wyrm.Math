@@ -12,6 +12,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalAsinValues))]
+    public void Asin_Should_Return_Asin(decimal value, decimal expected)
+    {
+        value.Asin().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Atan_Should_Return_Atan(decimal value)
     {
@@ -196,6 +203,19 @@ public class DecimalExtensionsTests
 
     public static readonly TheoryData<decimal> DecimalValues =
     [ 0.0M, 1.1M, 2.2M, 0.1M, 0.25M, 0.625M, 10.0M, 100.0M, Decimal.E, -1.1M, -2.2M, -0.1M, -0.25M, -0.625M, -10.0M, -100.0M, -Decimal.E ];
+
+    public static readonly TheoryData<decimal, decimal> DecimalAsinValues = new()
+    {
+        { -1M, -Decimal.HalfPi },
+        { -0.7071067811865475244008443621M, -0.7853981633974483096156608459M },
+        { -0.5M, -0.5235987755982988730771072302M },
+        { -0.0000000000000000000000000002M, -0.0000000000000000000000000002M },
+        { 0M, 0M },
+        { 0.0000000000000000000000000001M, 0.0000000000000000000000000001M },
+        { 0.5M, 0.5235987755982988730771072302M },
+        { 0.7071067811865475244008443621M, 0.7853981633974483096156608459M },
+        { 1M, Decimal.HalfPi }
+    };
 
     public static readonly TheoryData<decimal, decimal> DecimalCosValues = new()
     {

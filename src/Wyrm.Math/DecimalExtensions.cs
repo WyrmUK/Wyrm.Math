@@ -13,10 +13,35 @@ public static class DecimalExtensions
 
     /// <inheritdoc cref="System.Math.Acosh(decimal)"/>
     public static decimal Acosh(this decimal d) => System.Math.Acosh(d);
+    */
+    /// <summary>
+    /// Returns the angle whose sine is the number.
+    /// </summary>
+    /// <param name="d">The number to get the asin of (-1 &lt;= d &lt;= 1).</param>
+    /// <returns>The angle whose sine is the number.</returns>
+    public static decimal Asin(this decimal d)
+    {
+        if (d < -1M || d > 1M) throw new InvalidOperationException("Values must be between -1 and 1.");
 
-    /// <inheritdoc cref="System.Math.Asin(decimal)"/>
-    public static decimal Asin(this decimal d) => System.Math.Asin(d);
+        if (d == 0M) return 0M;
+        if (d == 1M) return Decimal.HalfPi;
+        if (d < 0M) return -Asin(-d);
 
+        var estimate = d;
+        var prevEstimate = 0M;
+        var dSqr = d.Sqr();
+        d = d * dSqr / 2;
+        var factor = 3M;
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += d / factor;
+            d *= dSqr * factor / (factor + 1M);
+            factor += 2M;
+        }
+        return estimate;
+    }
+    /*
     /// <inheritdoc cref="System.Math.Asinh(decimal)"/>
     public static decimal Asinh(this decimal d) => System.Math.Asinh(d);
     */
