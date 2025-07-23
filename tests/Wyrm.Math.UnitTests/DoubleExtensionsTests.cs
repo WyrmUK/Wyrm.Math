@@ -13,6 +13,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Acos_Should_Return_Acos(double value)
+    {
+        value.Acos().ShouldBe(System.Math.Acos(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Asin_Should_Return_Asin(double value)
     {
         value.Asin().ShouldBe(System.Math.Asin(value));

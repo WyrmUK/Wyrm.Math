@@ -7,10 +7,24 @@ public static class DecimalExtensions
 {
     /// <inheritdoc cref="System.Math.Abs(decimal)"/>
     public static decimal Abs(this decimal value) => System.Math.Abs(value);
-    /*
-    /// <inheritdoc cref="System.Math.Acos(decimal)"/>
-    public static decimal Acos(this decimal d) => System.Math.Acos(d);
 
+    /// <summary>
+    /// Returns the angle whose cosine is the number.
+    /// </summary>
+    /// <param name="d">The number to get the acos of (-1 &lt;= d &lt;= 1).</param>
+    /// <returns>The angle whose cosine is the number.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if d is above 1 or below -1.</exception>
+    public static decimal Acos(this decimal d)
+    {
+        if (d < -1M || d > 1M) throw new InvalidOperationException("Values must be between -1 and 1.");
+
+        if (d == -1M) return Decimal.Pi;
+        if (d == 0M) return Decimal.HalfPi;
+        if (d == 1M) return 0M;
+
+        return Decimal.HalfPi - d.Asin();
+    }
+    /*
     /// <inheritdoc cref="System.Math.Acosh(decimal)"/>
     public static decimal Acosh(this decimal d) => System.Math.Acosh(d);
     */
@@ -19,6 +33,7 @@ public static class DecimalExtensions
     /// </summary>
     /// <param name="d">The number to get the asin of (-1 &lt;= d &lt;= 1).</param>
     /// <returns>The angle whose sine is the number.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if d is above 1 or below -1.</exception>
     public static decimal Asin(this decimal d)
     {
         if (d < -1M || d > 1M) throw new InvalidOperationException("Values must be between -1 and 1.");

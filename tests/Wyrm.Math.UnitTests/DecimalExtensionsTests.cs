@@ -12,6 +12,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalAcosValues))]
+    public void Acos_Should_Return_Acos(decimal value, decimal expected)
+    {
+        value.Acos().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalAsinValues))]
     public void Asin_Should_Return_Asin(decimal value, decimal expected)
     {
@@ -202,6 +209,19 @@ public class DecimalExtensionsTests
 
     public static readonly TheoryData<decimal> DecimalValues =
     [ 0.0M, 1.1M, 2.2M, 0.1M, 0.25M, 0.625M, 10.0M, 100.0M, Decimal.E, -1.1M, -2.2M, -0.1M, -0.25M, -0.625M, -10.0M, -100.0M, -Decimal.E ];
+
+    public static readonly TheoryData<decimal, decimal> DecimalAcosValues = new()
+    {
+        { -1M, Decimal.Pi },
+        { -0.7071067811865475244008443621M, 2.3561944901923449288469825375M },
+        { -0.5M, 2.0943951023931954923084289218M },
+        { -0.0000000000000000000000000002M, 1.5707963267948966192313216918M },
+        { 0M, Decimal.HalfPi },
+        { 0.0000000000000000000000000001M, 1.5707963267948966192313216915M },
+        { 0.5M, 1.0471975511965977461542144614M },
+        { 0.7071067811865475244008443621M, 0.7853981633974483096156608457M },
+        { 1M, 0M }
+    };
 
     public static readonly TheoryData<decimal, decimal> DecimalAsinValues = new()
     {

@@ -7,10 +7,10 @@ public static class DoubleExtensions
 {
     /// <inheritdoc cref="System.Math.Abs(double)"/>
     public static double Abs(this double value) => System.Math.Abs(value);
-    /*
+
     /// <inheritdoc cref="System.Math.Acos(double)"/>
     public static double Acos(this double d) => System.Math.Acos(d);
-
+    /*
     /// <inheritdoc cref="System.Math.Acosh(double)"/>
     public static double Acosh(this double d) => System.Math.Acosh(d);
     */
