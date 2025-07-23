@@ -238,6 +238,12 @@ public class DecimalExtensionsTests
 
     public static readonly TheoryData<decimal, decimal, decimal> DecimalAtan2Values = new()
     {
+        { 0M, 0M, 0M },
+        { 0M, 2M, 0M },
+        { 2M, 0M, Decimal.HalfPi },
+        { -2M, 0M, -Decimal.HalfPi },
+        { 0.5M, -2M, 2.8966139904629290842905609020M },
+        { -0.5M, -2M, -2.8966139904629290842905609020M },
         { 0.5M, 2M, 0.2449786631268641541720824813M },
         { 0.25M, 0.5M, 0.4636476090008061162142562314M },
         { 1.5M, 2M, 0.6435011087932843868028092284M },
