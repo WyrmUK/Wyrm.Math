@@ -19,18 +19,17 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
-    [MemberData(nameof(DecimalValues))]
-    public void Atan_Should_Return_Atan(decimal value)
+    [MemberData(nameof(DecimalAtanValues))]
+    public void Atan_Should_Return_Atan(decimal value, decimal expected)
     {
-        // TODO: value.Atan().ShouldBe(System.Math.Atan(value));
+        value.Atan().ShouldBe(expected);
     }
 
     [Theory]
-    [MemberData(nameof(DecimalValues))]
-    public void Atan2_Should_Return_Atan2(decimal value)
+    [MemberData(nameof(DecimalAtan2Values))]
+    public void Atan2_Should_Return_Atan2(decimal value, decimal divisor, decimal expected)
     {
-        // TODO: value.Atan2(0.5).ShouldBe(System.Math.Atan2(value, 0.5));
-        // TODO: value.Atan2(-0.5).ShouldBe(System.Math.Atan2(value, -0.5));
+        value.Atan2(divisor).ShouldBe(expected);
     }
 
     [Theory]
@@ -217,6 +216,39 @@ public class DecimalExtensionsTests
         { 1M, Decimal.HalfPi }
     };
 
+    public static readonly TheoryData<decimal, decimal> DecimalAtanValues = new()
+    {
+        { -281474976710656M, -1.5707963267948966192313216916M },
+        { -281474976710655M, -1.5707963267948966192313216916M },
+        { -0.0000000000000000000000000001M, -0.0000000000000000000000000001M },
+        { 0M, 0M },
+        { 0.0000000000000000000000000001M, 0.0000000000000000000000000001M },
+        { 0.25M, 0.2449786631268641541720824813M },
+        { 0.5M, 0.4636476090008061162142562314M },
+        { 0.75M, 0.6435011087932843868028092284M },
+        { 0.8M, 0.6747409422235526630565209738M },
+        { 0.9M, 0.7328151017865065916407920741M },
+        { 0.99M, 0.7803730800666358988978715175M },
+        { 1M, 0.7853981633974483096156608459M },
+        { 1.01M, 0.7903732467283023870000543409M },
+        { 1.1M, 0.8329812666744317054176935616M },
+        { 281474976710655M, 1.5707963267948966192313216916M },
+        { 281474976710656M, 1.5707963267948966192313216916M }
+    };
+
+    public static readonly TheoryData<decimal, decimal, decimal> DecimalAtan2Values = new()
+    {
+        { 0.5M, 2M, 0.2449786631268641541720824813M },
+        { 0.25M, 0.5M, 0.4636476090008061162142562314M },
+        { 1.5M, 2M, 0.6435011087932843868028092284M },
+        { 4M, 5M, 0.6747409422235526630565209738M },
+        { 9M, 10M, 0.7328151017865065916407920741M },
+        { 99M, 100M, 0.7803730800666358988978715175M },
+        { 1M, 1M, 0.7853981633974483096156608459M },
+        { 202M, 200M, 0.7903732467283023870000543409M },
+        { 22M, 20M, 0.8329812666744317054176935616M }
+    };
+
     public static readonly TheoryData<decimal, decimal> DecimalCosValues = new()
     {
         { -Decimal.Pi * 9M / 4M, 0.7071067811865475244008443622M },
@@ -325,7 +357,8 @@ public class DecimalExtensionsTests
         { 1.1M, 1.0488088481701515469914535137M },
         { 2.2M, 1.4832396974191325897422794882M },
         { 0.1M, 0.3162277660168379331998893544M },
-        { 5.625M, 2.3717082451262844989991701583M }
+        { 5.625M, 2.3717082451262844989991701583M },
+        { decimal.MaxValue, 281474976710656M }
     };
 
     #endregion

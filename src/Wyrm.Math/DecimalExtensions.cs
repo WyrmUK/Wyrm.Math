@@ -55,8 +55,22 @@ public static class DecimalExtensions
     {
         if (d < 0M) return -Atan(-d);
 
-        // TODO
-        return (decimal)((double)d).Atan();
+        if (d > Decimal.MaxSqrVal) return Decimal.HalfPi;
+        if (d > 0.99M) return Asin(d / Sqrt(1M + Sqr(d)));
+
+        var estimate = d;
+        var prevEstimate = 0M;
+        var dSqr = d.Sqr();
+        d = d * -dSqr;
+        var factor = 3M;
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += d / factor;
+            d *= -dSqr;
+            factor += 2M;
+        }
+        return estimate;
     }
     /*
     /// <inheritdoc cref="System.Math.Atanh(decimal)"/>
@@ -85,8 +99,7 @@ public static class DecimalExtensions
 
         if (y < 0M) return -(-y).Atan2(x);
 
-        // TODO: Positive
-        return (decimal)((double)y).Atan2((double)x);
+        return Atan(y / x);
     }
     /*
     /// <inheritdoc cref="System.Math.BitDecrement(decimal)"/>

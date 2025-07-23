@@ -21,4 +21,5 @@ public static class Decimal
     internal const decimal ExpNeg2 = 0.1353352832366126918939994949724844034076315459095759M;
     internal const decimal MinExpPow = -65.386294361119890618834464243M;
     internal const decimal ExpNeg1 = 0.3678794411714423215955237701614608674458111310317678M;
+    internal const decimal MaxSqrVal = 281474976710655M;
 }

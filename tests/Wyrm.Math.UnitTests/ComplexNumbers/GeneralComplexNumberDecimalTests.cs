@@ -122,7 +122,7 @@ public class GeneralComplexNumberDecimalTests
         var complexNumber = new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2);
         var result = complexNumber.Argument();
         result.ShouldNotBeSameAs(complexNumber);
-        result.ShouldBe((decimal)System.Math.Atan2((double)complexNumber.Imaginary, (double)complexNumber.Real));
+        result.ShouldBe(complexNumber.Imaginary.Atan2(complexNumber.Real));
     }
 
     [Theory]
@@ -436,23 +436,23 @@ public class GeneralComplexNumberDecimalTests
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestSqrtTheoryData = new()
     {
         { new GeneralComplexNumberDecimal(-TestValue1, TestValue0_0), new GeneralComplexNumberDecimal(TestValue0_0, TestValue1) },
-        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), new GeneralComplexNumberDecimal(0.4550898605622271712194538316M, 1.0986841134678100364912751563M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(1.6741492280355400709048720039M, 0.8959774761298380678066212870M) },
-        { new GeneralComplexNumberDecimal(-TestValue2, -TestValue3), new GeneralComplexNumberDecimal(0.8959774761298380678066212866M, -1.6741492280355400709048720041M) }
+        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), new GeneralComplexNumberDecimal(0.4550898605622273413043577578M, 1.0986841134678099660398011952M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(1.6741492280355400404480393007M, 0.8959774761298381247157337555M) },
+        { new GeneralComplexNumberDecimal(-TestValue2, -TestValue3), new GeneralComplexNumberDecimal(0.8959774761298381247157337551M, -1.6741492280355400404480393007M) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, decimal, GeneralComplexNumberDecimal> TestPowerTheoryData = new()
     {
         { new GeneralComplexNumberDecimal(-TestValue1, TestValue0_0), 1/TestValue2, new GeneralComplexNumberDecimal(TestValue0_0, TestValue1) },
-        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), 1/TestValue2, new GeneralComplexNumberDecimal(0.4550898605622271712194538315M, 1.0986841134678100364912751562M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), TestValue3, new GeneralComplexNumberDecimal(-45.999999999999998164385813504M, 9.000000000000009382028064320M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), 1/TestValue5, new GeneralComplexNumberDecimal(1.2675064916851109080980019064M, 0.2523983872193169684319976292M) }
+        { new GeneralComplexNumberDecimal(-TestValue1, TestValue1), 1/TestValue2, new GeneralComplexNumberDecimal(0.4550898605622273413043577577M, 1.0986841134678099660398011950M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), TestValue3, new GeneralComplexNumberDecimal(-46.000000000000000000000000003M, 8.999999999999999999999999998M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), 1/TestValue5, new GeneralComplexNumberDecimal(1.2675064916851109046661051640M, 0.2523983872193169856664635377M) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexPowerTheoryData = new()
     {
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue4, TestValue5), new GeneralComplexNumberDecimal(-0.7530458367485594872059798956M, -0.9864287886477454743643496808M) },
-        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue1, TestValue1), new GeneralComplexNumberDecimal(-0.8636068988831278047900331897M, 1.0368893969147763162554584947M) }
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue4, TestValue5), new GeneralComplexNumberDecimal(-0.7530458367485589629719495710M, -0.9864287886477453438344641986M) },
+        { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue1, TestValue1), new GeneralComplexNumberDecimal(-0.8636068988831278165707669549M, 1.0368893969147761870488673113M) }
     };
 
     #endregion
