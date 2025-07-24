@@ -72,6 +72,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void CopySign_Should_Return_CopySign(double value)
+    {
+        value.CopySign(-0.5).ShouldBe(System.Math.CopySign(value, -0.5));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Cos_Should_Return_Cos(double value)
     {
         value.Cos().ShouldBe(System.Math.Cos(value));

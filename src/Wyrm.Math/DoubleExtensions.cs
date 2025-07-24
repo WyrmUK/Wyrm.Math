@@ -40,10 +40,10 @@ public static class DoubleExtensions
     */
     /// <inheritdoc cref="System.Math.Ceiling(double)"/>
     public static double Ceiling(this double a) => System.Math.Ceiling(a);
-    /*
+
     /// <inheritdoc cref="System.Math.CopySign(double, double)"/>
-    public static double CopySign(this double y, double x) => System.Math.CopySign(y, x);
-    */
+    public static double CopySign(this double x, double y) => System.Math.CopySign(x, y);
+
     /// <inheritdoc cref="System.Math.Clamp(double, double, double)"/>
     public static double Clamp(this double value, double min, double max) => System.Math.Clamp(value, min, max);
 

@@ -164,10 +164,19 @@ public static class DecimalExtensions
     */
     /// <inheritdoc cref="System.Math.Ceiling(decimal)"/>
     public static decimal Ceiling(this decimal a) => System.Math.Ceiling(a);
-    /*
-    /// <inheritdoc cref="System.Math.CopySign(decimal, decimal)"/>
-    public static decimal CopySign(this decimal y, decimal x) => System.Math.CopySign(y, x);
-    */
+
+    /// <summary>
+    /// Returns a value with the magnitude of x and the sign of y.
+    /// </summary>
+    /// <param name="x">Magnitude.</param>
+    /// <param name="y">Sign.</param>
+    /// <returns>A value with the magnitude of x and the sign of y.</returns>
+    public static decimal CopySign(this decimal x, decimal y)
+    {
+        var parts = decimal.GetBits(x);
+        return new decimal(parts[0], parts[1], parts[2], y < 0, (byte)((parts[3] >> 16) & 0x7F));
+    }
+
     /// <inheritdoc cref="System.Math.Clamp(decimal, decimal, decimal)"/>
     public static decimal Clamp(this decimal value, decimal min, decimal max) => System.Math.Clamp(value, min, max);
 

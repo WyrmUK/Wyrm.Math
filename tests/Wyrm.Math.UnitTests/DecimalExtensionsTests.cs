@@ -70,6 +70,14 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalValues))]
+    public void CopySign_Should_ReturnCopySign(decimal value)
+    {
+        value.CopySign(0.5M).ShouldBe(value < 0 ? -value : value);
+        value.CopySign(-0.5M).ShouldBe(value < 0 ? value : -value);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalCosValues))]
     public void Cos_Should_Return_Cos(decimal value, decimal expected)
     {
