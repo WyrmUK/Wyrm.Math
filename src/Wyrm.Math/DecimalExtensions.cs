@@ -1,4 +1,6 @@
-﻿namespace Wyrm.Math;
+﻿using System.Numerics;
+
+namespace Wyrm.Math;
 
 /// <summary>
 /// Extension methods for <see cref="decimal"/>s.
@@ -443,10 +445,15 @@ public static class DecimalExtensions
         }
         return estimate;
     }
-    /*
-    /// <inheritdoc cref="System.Math.SinCos(decimal)"/>
-    public static (decimal Sin, decimal Cos) SinCos(this decimal x) => System.Math.SinCos(x);
 
+    /// <inheritdoc cref="System.Math.SinCos(double)"/>
+    /// <summary>
+    /// </summary>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    public static (decimal Sin, decimal Cos) SinCos(this decimal x) =>
+        (x.Sin(), x.Cos());
+    /*
     /// <inheritdoc cref="System.Math.Sinh(decimal)"/>
     public static decimal Sinh(this decimal value) => System.Math.Sinh(value);
     */

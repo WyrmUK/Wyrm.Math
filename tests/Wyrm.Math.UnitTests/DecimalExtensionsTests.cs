@@ -200,6 +200,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalSinCosValues))]
+    public void SinCos_Should_Return_SinCos(decimal value, (decimal Sin, decimal Cos) expected)
+    {
+        value.SinCos().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Sqr_Should_Return_Sqr(decimal value)
     {
@@ -438,6 +445,25 @@ public class DecimalExtensionsTests
         { Decimal.Pi * 5M / 4M, -0.7071067811865475244008443620M },
         { Decimal.TwoPi, 0M },
         { Decimal.Pi * 9M / 4M, 0.7071067811865475244008443622M }
+    };
+
+    public static readonly TheoryData<decimal, (decimal Sin, decimal Cos)> DecimalSinCosValues = new()
+    {
+        { -Decimal.Pi * 9M / 4M, (-0.7071067811865475244008443622M, 0.7071067811865475244008443622M) },
+        { -Decimal.TwoPi, (0M, 1M) },
+        { -Decimal.Pi * 5M / 4M, (0.7071067811865475244008443620M, -0.7071067811865475244008443624M) },
+        { -Decimal.Pi, (0M, -1M) },
+        { -Decimal.Pi * 3M / 4M, (-0.7071067811865475244008443621M, -0.7071067811865475244008443622M) },
+        { -Decimal.HalfPi, (-1M, 0M) },
+        { -Decimal.Pi / 4M, (-0.7071067811865475244008443621M, 0.7071067811865475244008443622M) },
+        { 0M, (0M, 1M) },
+        { Decimal.Pi / 4M, (0.7071067811865475244008443621M, 0.7071067811865475244008443622M) },
+        { Decimal.HalfPi, (1M, 0M) },
+        { Decimal.Pi * 3M / 4M, (0.7071067811865475244008443621M, -0.7071067811865475244008443622M) },
+        { Decimal.Pi, (0M, -1M) },
+        { Decimal.Pi * 5M / 4M, (-0.7071067811865475244008443620M, -0.7071067811865475244008443624M) },
+        { Decimal.TwoPi, (0M, 1M) },
+        { Decimal.Pi * 9M / 4M, (0.7071067811865475244008443622M, 0.7071067811865475244008443622M) }
     };
 
     public static readonly TheoryData<decimal, decimal?> DecimalSqrtValues = new()

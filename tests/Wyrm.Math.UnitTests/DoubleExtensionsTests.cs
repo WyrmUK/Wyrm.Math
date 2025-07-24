@@ -181,6 +181,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void SinCos_Should_Return_SinCos(double value)
+    {
+        value.SinCos().ShouldBe(System.Math.SinCos(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Sqr_Should_Return_Sqr(double value)
     {
         value.Sqr().ShouldBe(value * value);

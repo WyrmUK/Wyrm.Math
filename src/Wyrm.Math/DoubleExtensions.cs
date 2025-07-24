@@ -121,10 +121,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Sin(double)"/>
     public static double Sin(this double a) => System.Math.Sin(a);
-    /*
-    /// <inheritdoc cref="System.Math.Acos(double)"/>
-    public static (double Sin, double Cos) SinCos(this double x) => System.Math.SinCos(x);
 
+    /// <inheritdoc cref="System.Math.SinCos(double)"/>
+    public static (double Sin, double Cos) SinCos(this double x) => System.Math.SinCos(x);
+    /*
     /// <inheritdoc cref="System.Math.Sinh(double)"/>
     public static double Sinh(this double value) => System.Math.Sinh(value);
     */
