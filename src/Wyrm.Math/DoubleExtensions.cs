@@ -28,13 +28,13 @@ public static class DoubleExtensions
     */
     /// <inheritdoc cref="System.Math.Atan2(double, double)"/>
     public static double Atan2(this double y, double x) => System.Math.Atan2(y, x);
-    /*
+
     /// <inheritdoc cref="System.Math.BitDecrement(double)"/>
     public static double BitDecrement(this double x) => System.Math.BitDecrement(x);
 
     /// <inheritdoc cref="System.Math.BitIncrement(double)"/>
     public static double BitIncrement(this double x) => System.Math.BitIncrement(x);
-
+    /*
     /// <inheritdoc cref="System.Math.Cbrt(double)"/>
     public static double Cbrt(this double d) => System.Math.Cbrt(d);
     */

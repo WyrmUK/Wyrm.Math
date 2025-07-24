@@ -116,13 +116,49 @@ public static class DecimalExtensions
 
         return Atan(y / x);
     }
+
+    /// <inheritdoc cref="System.Math.BitDecrement(double)"/>
+    /// <summary>
+    /// Returns the largest value that compares less than a number.
+    /// </summary>
+    /// <param name="x">The number to decrement.</param>
+    /// <returns>The largest value that compares less than a number.</returns>
+    /// <exception cref="OverflowException">Thrown if the result will be too small.</exception>
+    public static decimal BitDecrement(this decimal x)
+    {
+        if (x == decimal.MinValue) throw new OverflowException("Result too small for decimal");
+
+        var inc = 0.0000000000000000000000000001M;
+        var xd = x - inc;
+        while (xd == x)
+        {
+            inc *= 10M;
+            xd = x - inc;
+        }
+        return xd;
+    }
+
+    /// <inheritdoc cref="System.Math.BitIncrement(double)"/>
+    /// <summary>
+    /// Returns the largest value that compares greater than a number.
+    /// </summary>
+    /// <param name="x">The number to increment.</param>
+    /// <returns>The largest value that compares greater than a number.</returns>
+    /// <exception cref="OverflowException">Thrown if the result will be too large.</exception>
+    public static decimal BitIncrement(this decimal x)
+    {
+        if (x == decimal.MaxValue) throw new OverflowException("Result too large for decimal");
+
+        var inc = 0.0000000000000000000000000001M;
+        var xi = x + inc;
+        while (xi == x)
+        {
+            inc *= 10M;
+            xi = x + inc;
+        }
+        return xi;
+    }
     /*
-    /// <inheritdoc cref="System.Math.BitDecrement(decimal)"/>
-    public static decimal BitDecrement(this decimal x) => System.Math.BitDecrement(x);
-
-    /// <inheritdoc cref="System.Math.BitIncrement(decimal)"/>
-    public static decimal BitIncrement(this decimal x) => System.Math.BitIncrement(x);
-
     /// <inheritdoc cref="System.Math.Cbrt(decimal)"/>
     public static decimal Cbrt(this decimal d) => System.Math.Cbrt(d);
     */

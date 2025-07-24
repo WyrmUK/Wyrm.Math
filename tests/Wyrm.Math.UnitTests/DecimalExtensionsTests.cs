@@ -40,6 +40,20 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalBitDecValues))]
+    public void BitDecrement_Should_Return_BitDecrement(decimal value, decimal expected)
+    {
+        value.BitDecrement().ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalBitIncValues))]
+    public void BitIncrement_Should_Return_BitIncrement(decimal value, decimal expected)
+    {
+        value.BitIncrement().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Ceiling_Should_Return_Ceiling(decimal value)
     {
@@ -208,7 +222,7 @@ public class DecimalExtensionsTests
     #region Test Data
 
     public static readonly TheoryData<decimal> DecimalValues =
-    [ 0.0M, 1.1M, 2.2M, 0.1M, 0.25M, 0.625M, 10.0M, 100.0M, Decimal.E, -1.1M, -2.2M, -0.1M, -0.25M, -0.625M, -10.0M, -100.0M, -Decimal.E ];
+    [0.0M, 1.1M, 2.2M, 0.1M, 0.25M, 0.625M, 10.0M, 100.0M, Decimal.E, -1.1M, -2.2M, -0.1M, -0.25M, -0.625M, -10.0M, -100.0M, -Decimal.E];
 
     public static readonly TheoryData<decimal, decimal> DecimalAcosValues = new()
     {
@@ -273,6 +287,48 @@ public class DecimalExtensionsTests
         { 1M, 1M, 0.7853981633974483096156608459M },
         { 202M, 200M, 0.7903732467283023870000543409M },
         { 22M, 20M, 0.8329812666744317054176935616M }
+    };
+
+    public static readonly TheoryData<decimal, decimal> DecimalBitDecValues = new()
+    {
+        { 0.0M, -0.0000000000000000000000000001M },
+        { 1.1M, 1.0999999999999999999999999999M },
+        { 2.2M, 2.1999999999999999999999999999M },
+        { 0.1M, 0.0999999999999999999999999999M },
+        { 0.25M, 0.2499999999999999999999999999M },
+        { 0.625M, 0.6249999999999999999999999999M },
+        { 10.0M, 9.999999999999999999999999999M },
+        { 100.0M, 99.99999999999999999999999999M },
+        { Decimal.E, 2.7182818284590452353602874713M },
+        { -1.1M, -1.1000000000000000000000000001M },
+        { -2.2M, -2.2000000000000000000000000001M },
+        { -0.1M, -0.1000000000000000000000000001M },
+        { -0.25M, -0.2500000000000000000000000001M },
+        { -0.625M, -0.6250000000000000000000000001M },
+        { -10.0M, -10.000000000000000000000000001M },
+        { -100.0M, -100.00000000000000000000000001M },
+        { -Decimal.E, -2.7182818284590452353602874715M }
+    };
+
+    public static readonly TheoryData<decimal, decimal> DecimalBitIncValues = new()
+    {
+        { 0.0M, 0.0000000000000000000000000001M },
+        { 1.1M, 1.1000000000000000000000000001M },
+        { 2.2M, 2.2000000000000000000000000001M },
+        { 0.1M, 0.1000000000000000000000000001M },
+        { 0.25M, 0.2500000000000000000000000001M },
+        { 0.625M, 0.6250000000000000000000000001M },
+        { 10.0M, 10.000000000000000000000000001M },
+        { 100.0M, 100.00000000000000000000000001M },
+        { Decimal.E, 2.7182818284590452353602874715M },
+        { -1.1M, -1.0999999999999999999999999999M },
+        { -2.2M, -2.1999999999999999999999999999M },
+        { -0.1M, -0.0999999999999999999999999999M },
+        { -0.25M, -0.2499999999999999999999999999M },
+        { -0.625M, -0.6249999999999999999999999999M },
+        { -10.0M, -9.999999999999999999999999999M },
+        { -100.0M, -99.99999999999999999999999999M },
+        { -Decimal.E, -2.7182818284590452353602874713M }
     };
 
     public static readonly TheoryData<decimal, decimal> DecimalCosValues = new()

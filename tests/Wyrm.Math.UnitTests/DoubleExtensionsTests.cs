@@ -42,6 +42,20 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void BitDecrement_Should_Return_BitDecrement(double value)
+    {
+        value.BitDecrement().ShouldBe(System.Math.BitDecrement(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void BitIncrement_Should_Return_BitIncrement(double value)
+    {
+        value.BitIncrement().ShouldBe(System.Math.BitIncrement(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Ceiling_Should_Return_Ceiling(double value)
     {
         value.Ceiling().ShouldBe(System.Math.Ceiling(value));
