@@ -100,6 +100,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Floor_Should_Return_Floor(double value)
+    {
+        value.Floor().ShouldBe(System.Math.Floor(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void FusedMultiplyAdd_Should_Return_FusedMultiplyAdd(double value)
     {
         value.FusedMultiplyAdd(value / 0.5, value / 0.25).ShouldBe(System.Math.FusedMultiplyAdd(value, value / 0.5, value / 0.25));
@@ -107,9 +114,9 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
-    public void Floor_Should_Return_Floor(double value)
+    public void IEEERemainderAdd_Should_Return_IEEERemainder(double value)
     {
-        value.Floor().ShouldBe(System.Math.Floor(value));
+        value.IEEERemainder(value / 3.0).ShouldBe(System.Math.IEEERemainder(value, value / 3.0));
     }
 
     [Theory]

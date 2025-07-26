@@ -120,6 +120,20 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalIEEERemainderValues))]
+    public void IEEERemainder_Should_Return_IEEERemainder(decimal x, decimal y, decimal? expected)
+    {
+        if (expected.HasValue)
+        {
+            x.IEEERemainder(y).ShouldBe(expected.Value);
+        }
+        else
+        {
+            Should.Throw<OverflowException>(() => x.IEEERemainder(y));
+        }
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalLogValues))]
     public void Log_Should_Return_Log(decimal value, decimal? expected)
     {
@@ -438,6 +452,15 @@ public class DecimalExtensionsTests
         { 1000000000000000000000000000M, 20M, 0.51M, 20000000000000000000000000001M },
         { 1000000000000000000000000000M, 20M, 0.5M, 20000000000000000000000000000M },
         { 100000000000000000000000000M, 200M, 0.4M, 20000000000000000000000000000M }
+    };
+
+    public static readonly TheoryData<decimal, decimal, decimal?> DecimalIEEERemainderValues = new()
+    {
+        { 2.0M, 0.0M, null },
+        { 15.0M, 2.0M, -1.0M },
+        { 15.0M, 6.0M, 3.0M },
+        { 1.5M, 2.0M, -0.5M },
+        { 33.3M, 6.6M, 0.3M }
     };
 
     public static readonly TheoryData<decimal, decimal?> DecimalLogValues = new()

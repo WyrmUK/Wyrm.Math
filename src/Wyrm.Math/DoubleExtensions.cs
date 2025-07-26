@@ -61,10 +61,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.FusedMultiplyAdd(double, double, double)"/>
     public static double FusedMultiplyAdd(this double x, double y, double z) => System.Math.FusedMultiplyAdd(x, y, z);
-    /*
-    /// <inheritdoc cref="System.Math.IEEERemainder(double, double)"/>
-    public static double IEEERemainder(this double y, double x) => System.Math.IEEERemainder(y, x);
 
+    /// <inheritdoc cref="System.Math.IEEERemainder(double, double)"/>
+    public static double IEEERemainder(this double x, double y) => System.Math.IEEERemainder(x, y);
+    /*
     /// <inheritdoc cref="System.Math.ILogB(double)"/>
     public static int ILogB(this double d) => System.Math.ILogB(d);
     */

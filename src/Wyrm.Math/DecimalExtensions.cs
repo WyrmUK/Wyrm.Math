@@ -314,10 +314,22 @@ public static class DecimalExtensions
     /// <param name="z">Addition term.</param>
     /// <returns>Single rounded result of (x * y) + z.</returns>
     public static decimal FusedMultiplyAdd(this decimal x, decimal y, decimal z) => x * y + z;
-    /*
-    /// <inheritdoc cref="System.Math.IEEERemainder(decimal, decimal)"/>
-    public static decimal IEEERemainder(this decimal y, decimal x) => System.Math.IEEERemainder(y, x);
 
+    /// <summary>
+    /// Returns the remainder resulting from a division of a number by another.
+    /// </summary>
+    /// <param name="x">The number.</param>
+    /// <param name="y">The divisor.</param>
+    /// <returns>A number equal to x - (y Q), where Q is the quotient of x / y rounded to the nearest integer (even if exactly halfway).</returns>
+    /// <exception cref="OverflowException">Thrown if y is zero.</exception>
+    public static decimal IEEERemainder(this decimal x, decimal y)
+    {
+        if (y == 0M) throw new OverflowException("Cannot divide by zero.");
+
+        var quotient = (x / y).Round(MidpointRounding.ToEven);
+        return x - (y * quotient);
+    }
+    /*
     /// <inheritdoc cref="System.Math.ILogB(decimal)"/>
     public static int ILogB(this decimal d) => System.Math.ILogB(d);
     */
