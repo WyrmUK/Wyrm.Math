@@ -54,6 +54,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalCbrtValues))]
+    public void Cbrt_Should_Return_Cbrt(decimal value, decimal expected)
+    {
+        value.Cbrt().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Ceiling_Should_Return_Ceiling(decimal value)
     {
@@ -358,6 +365,19 @@ public class DecimalExtensionsTests
         { -10.0M, -9.999999999999999999999999999M },
         { -100.0M, -99.99999999999999999999999999M },
         { -Decimal.E, -2.7182818284590452353602874713M }
+    };
+
+    public static readonly TheoryData<decimal, decimal> DecimalCbrtValues = new()
+    {
+        { 0.0000000000000000000000000001M, 0.0000000004641588833681470289M },
+        { 1.1M, 1.0322801154563671592135852251M },
+        { 1M, 1M },
+        { 0M, 0M },
+        { 5.525M, 1.7678446318975074452506642253M },
+        { -5.625M, -1.7784466522450314030030773112M },
+        { 5.625M, 1.7784466522450314030030773112M },
+        { decimal.MinValue, -4294967296.0000000000000000001M },
+        { decimal.MaxValue, 4294967296.0000000000000000001M }
     };
 
     public static readonly TheoryData<decimal, decimal> DecimalCosValues = new()

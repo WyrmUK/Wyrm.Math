@@ -56,6 +56,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Cbrt_Should_Return_Cbrt(double value)
+    {
+        value.Cbrt().ShouldBe(System.Math.Cbrt(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Ceiling_Should_Return_Ceiling(double value)
     {
         value.Ceiling().ShouldBe(System.Math.Ceiling(value));

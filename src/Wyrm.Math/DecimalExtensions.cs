@@ -160,10 +160,42 @@ public static class DecimalExtensions
         }
         return xi;
     }
-    /*
-    /// <inheritdoc cref="System.Math.Cbrt(decimal)"/>
-    public static decimal Cbrt(this decimal d) => System.Math.Cbrt(d);
-    */
+
+    /// <summary>
+    /// Returns the cube root of a number.
+    /// </summary>
+    /// <param name="d">The number to get the cube root of.</param>
+    /// <returns>The cube root of a number.</returns>
+    public static decimal Cbrt(this decimal d)
+    {
+        if (d == 0M) return 0M;
+
+        var estimate = d.Abs().Pow(0.3M);
+        if (d < 0M)
+        {
+            estimate = -estimate;
+        }
+        var prevEstimate = 1M;
+        var term1 = d / 3.0M;
+        var term2 = 2M / 3M;
+
+        while (estimate != 0M && estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            var divisor = estimate.Sqr();
+            if (divisor == 0M) break;
+            if (term1 == 0)
+            {
+                estimate = d / (3.0M * divisor) + term2 * estimate;
+            }
+            else
+            {
+                estimate = term1 / divisor + term2 * estimate;
+            }
+        }
+        return estimate;
+    }
+
     /// <inheritdoc cref="System.Math.Ceiling(decimal)"/>
     public static decimal Ceiling(this decimal a) => System.Math.Ceiling(a);
 

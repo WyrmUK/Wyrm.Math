@@ -34,10 +34,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.BitIncrement(double)"/>
     public static double BitIncrement(this double x) => System.Math.BitIncrement(x);
-    /*
+
     /// <inheritdoc cref="System.Math.Cbrt(double)"/>
     public static double Cbrt(this double d) => System.Math.Cbrt(d);
-    */
+
     /// <inheritdoc cref="System.Math.Ceiling(double)"/>
     public static double Ceiling(this double a) => System.Math.Ceiling(a);
 
