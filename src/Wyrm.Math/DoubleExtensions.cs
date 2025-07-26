@@ -76,10 +76,10 @@ public static class DoubleExtensions
     */
     /// <inheritdoc cref="System.Math.Log2(double)"/>
     public static double Log2(this double x) => System.Math.Log2(x);
-    /*
+
     /// <inheritdoc cref="System.Math.Log10(double)"/>
     public static double Log10(this double d) => System.Math.Log10(d);
-    */
+
     /// <inheritdoc cref="System.Math.Max(double, double)"/>
     public static double Max(this double val1, double val2) => System.Math.Max(val1, val2);
     /*

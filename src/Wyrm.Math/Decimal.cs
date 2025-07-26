@@ -23,4 +23,5 @@ public static class Decimal
     internal const decimal ExpNeg1 = 0.3678794411714423215955237701614608674458111310317678M;
     internal const decimal MaxSqrVal = 281474976710655M;
     internal const decimal Log2 = 0.6931471805599453094172321218M;
+    internal const decimal Log10 = 2.3025850929940456840179914554M;
 }

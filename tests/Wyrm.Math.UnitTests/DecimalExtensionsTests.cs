@@ -162,6 +162,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalLog10Values))]
+    public void Log10_Should_Return_Log10(decimal value, decimal expected)
+    {
+        value.Log10().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Max_Should_Return_Max(decimal value)
     {
@@ -504,6 +511,7 @@ public class DecimalExtensionsTests
         { 2.7182818284590452353602874711M, 1M },
         { 2M, 0.6931471805599453094172321218M },
         { 7.3890560989306502272304274606M, 2.0000000000000000000000000007M },
+        { 10M, 2.3025850929940456840179914554M },
         { 33.115451958692313750653249350M, 3.5000000000000000000000000005M }
     };
 
@@ -518,6 +526,19 @@ public class DecimalExtensionsTests
         { 33.115451958692313750653249350M, 5.0494326431113719257597363817M },
         { 64M, 5.999999999999999999999999998M },
         { 64.1M, 6.0022524517313786799657009888M }
+    };
+
+    public static readonly TheoryData<decimal, decimal> DecimalLog10Values = new()
+    {
+        { 1M, 0M },
+        { 0.01562M, -1.8063189704587184779432316986M },
+        { 0.015625M, -1.8061799739838871712824333682M },
+        { 0.0301973834223185007397862924M, -1.5200306866613813967789512151M },
+        { 0.6065306597126334236037995352M, -0.2171472409516259138255644592M },
+        { 7.3890560989306502272304274606M, 0.8685889638065036553022578379M },
+        { 33.115451958692313750653249350M, 1.520030686661381396778951216M },
+        { 64M, 1.8061799739838871712824333681M },
+        { 64.1M, 1.806858029518817422248377009M }
     };
 
     public static readonly TheoryData<decimal, decimal, decimal?> DecimalPowValues = new()

@@ -142,6 +142,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Log10_Should_Return_Log10(double value)
+    {
+        value.Log10().ShouldBe(System.Math.Log10(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Max_Should_Return_Max(double value)
     {
         value.Max(1.1).ShouldBe(System.Math.Max(value, 1.1));

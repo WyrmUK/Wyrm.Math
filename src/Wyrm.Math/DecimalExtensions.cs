@@ -399,19 +399,24 @@ public static class DecimalExtensions
     /// <inheritdoc cref="System.Math.Log(decimal, decimal)"/>
     public static decimal Log(this decimal d, decimal newBase) => System.Math.Log(d, newBase);
     */
-    /// <inheritdoc cref="System.Math.Log2(double)"/>
     /// <summary>
     /// Returns the base 2 logarithm of a number.
     /// </summary>
-    /// <param name="x">The number to take the base 2 logarithm of.</param>
-    /// <returns></returns>
+    /// <param name="d">The number to take the base 2 logarithm of.</param>
+    /// <returns>The base 2 logarithm.</returns>
     /// <exception cref="OverflowException">Thrown if the number is zero.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the number is less than zero.</exception>
-    public static decimal Log2(this decimal x) => x.Log() / Decimal.Log2;
-    /*
-    /// <inheritdoc cref="System.Math.Log10(decimal)"/>
-    public static decimal Log10(this decimal d) => System.Math.Log10(d);
-    */
+    public static decimal Log2(this decimal d) => d.Log() / Decimal.Log2;
+
+    /// <summary>
+    /// Returns the base 10 logarithm of a number.
+    /// </summary>
+    /// <param name="d">The number to take the base 2 logarithm of.</param>
+    /// <returns>The base 10 logarithm.</returns>
+    /// <exception cref="OverflowException">Thrown if the number is zero.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the number is less than zero.</exception>
+    public static decimal Log10(this decimal d) => d.Log() / Decimal.Log10;
+
     /// <inheritdoc cref="System.Math.Max(decimal, decimal)"/>
     public static decimal Max(this decimal val1, decimal val2) => System.Math.Max(val1, val2);
     /*
