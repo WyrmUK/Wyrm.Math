@@ -329,10 +329,20 @@ public static class DecimalExtensions
         var quotient = (x / y).Round(MidpointRounding.ToEven);
         return x - (y * quotient);
     }
-    /*
-    /// <inheritdoc cref="System.Math.ILogB(decimal)"/>
-    public static int ILogB(this decimal d) => System.Math.ILogB(d);
-    */
+
+    /// <summary>
+    /// Returns the base 2 integer (binary) logarithm of a number.
+    /// </summary>
+    /// <param name="d">The number.</param>
+    /// <returns>The base 2 integer logarithm of the number.</returns>
+    public static int ILogB(this decimal d)
+    {
+        var logD = (d.Log() / Decimal.Log2).Round(26);
+        return logD >= 0M
+            ? (int)logD.Truncate()
+            : (int)(logD - 0.9999999999999999999999999999M).Truncate();
+    }
+
     /// <summary>
     /// Returns the natural logarithm (base e) of a number.
     /// Throws an <see cref="OverflowException"/> if the number is zero.

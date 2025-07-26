@@ -134,6 +134,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalILogBValues))]
+    public void ILogB_Should_Return_ILogB(decimal value, int expected)
+    {
+        value.ILogB().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalLogValues))]
     public void Log_Should_Return_Log(decimal value, decimal? expected)
     {
@@ -463,6 +470,19 @@ public class DecimalExtensionsTests
         { 33.3M, 6.6M, 0.3M }
     };
 
+    public static readonly TheoryData<decimal, int> DecimalILogBValues = new()
+    {
+        { 1M, 0 },
+        { 0.01562M, -7 },
+        { 0.015625M, -6 },
+        { 0.0301973834223185007397862924M, -6 },
+        { 0.6065306597126334236037995352M, -1 },
+        { 7.3890560989306502272304274606M, 2 },
+        { 33.115451958692313750653249350M, 5 },
+        { 64M, 6 },
+        { 64.1M, 6 }
+    };
+
     public static readonly TheoryData<decimal, decimal?> DecimalLogValues = new()
     {
         { -1M, null },
@@ -475,6 +495,7 @@ public class DecimalExtensionsTests
         { 0.6065306597126334236037995352M, -0.4999999999999999999999999995M },
         { 0.9048374180359595731642490594M, -0.0999999999999999999999999999M },
         { 2.7182818284590452353602874711M, 1M },
+        { 2M, 0.6931471805599453094172321218M },
         { 7.3890560989306502272304274606M, 2.0000000000000000000000000007M },
         { 33.115451958692313750653249350M, 3.5000000000000000000000000005M }
     };

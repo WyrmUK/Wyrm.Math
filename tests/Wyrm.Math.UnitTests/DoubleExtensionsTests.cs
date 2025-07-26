@@ -121,6 +121,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void ILogB_Should_Return_ILogB(double value)
+    {
+        value.ILogB().ShouldBe(System.Math.ILogB(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Log_Should_Return_Log(double value)
     {
         value.Log().ShouldBe(System.Math.Log(value));

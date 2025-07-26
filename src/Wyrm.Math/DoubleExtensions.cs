@@ -64,10 +64,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.IEEERemainder(double, double)"/>
     public static double IEEERemainder(this double x, double y) => System.Math.IEEERemainder(x, y);
-    /*
+
     /// <inheritdoc cref="System.Math.ILogB(double)"/>
     public static int ILogB(this double d) => System.Math.ILogB(d);
-    */
+
     /// <inheritdoc cref="System.Math.Log(double)"/>
     public static double Log(this double d) => System.Math.Log(d);
     /*
