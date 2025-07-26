@@ -488,10 +488,22 @@ public static class DecimalExtensions
 
         return estimate;
     }
-    /*
-    /// <inheritdoc cref="System.Math.Tan(decimal)"/>
-    public static decimal Tan(this decimal a) => System.Math.Tan(a);
 
+    /// <summary>
+    /// Returns the tangent of the angle.
+    /// </summary>
+    /// <param name="a">The angle to take the tangent of.</param>
+    /// <returns>The tangent of the angle.</returns>
+    /// <exception cref="OverflowException"></exception>
+    public static decimal Tan(this decimal a)
+    {
+        var sinCos = a.SinCos();
+        var sinAbs = sinCos.Sin.Abs();
+        if (sinAbs - sinCos.Cos.Abs() == sinAbs) throw new OverflowException("Result too large for decimal.");
+
+        return sinCos.Sin / sinCos.Cos;
+    }
+    /*
     /// <inheritdoc cref="System.Math.Tanh(decimal)"/>
     public static decimal Tanh(this decimal value) => System.Math.Tanh(value);
     */

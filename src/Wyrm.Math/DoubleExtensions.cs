@@ -137,10 +137,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Sqrt(double)"/>
     public static double Sqrt(this double d) => System.Math.Sqrt(d);
-    /*
+
     /// <inheritdoc cref="System.Math.Tan(double)"/>
     public static double Tan(this double a) => System.Math.Tan(a);
-
+    /*
     /// <inheritdoc cref="System.Math.Tanh(double)"/>
     public static double Tanh(this double value) => System.Math.Tanh(value);
     */

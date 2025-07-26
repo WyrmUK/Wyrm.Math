@@ -202,6 +202,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Tan_Should_Return_Tan(double value)
+    {
+        value.Tan().ShouldBe(System.Math.Tan(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Truncate_Should_Return_Truncate(double value)
     {
         value.Truncate().ShouldBe(System.Math.Truncate(value));

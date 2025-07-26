@@ -228,6 +228,20 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalTanValues))]
+    public void Tan_Should_Return_Tan(decimal value, decimal? expected)
+    {
+        if (expected.HasValue)
+        {
+            value.Tan().ShouldBe(expected.Value);
+        }
+        else
+        {
+            Should.Throw<OverflowException>(() => value.Tan());
+        }
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Truncate_Should_Return_Truncate(decimal value)
     {
@@ -475,6 +489,27 @@ public class DecimalExtensionsTests
         { 0.1M, 0.3162277660168379331998893544M },
         { 5.625M, 2.3717082451262844989991701583M },
         { decimal.MaxValue, 281474976710656M }
+    };
+
+    public static readonly TheoryData<decimal, decimal?> DecimalTanValues = new()
+    {
+        { -Decimal.Pi * 9M / 4M, -1M },
+        { -Decimal.TwoPi, 0M },
+        { -Decimal.Pi * 5M / 4M, -0.9999999999999999999999999994M },
+        { -Decimal.Pi, 0M },
+        { -Decimal.Pi * 3M / 4M, 0.9999999999999999999999999999M },
+        { -Decimal.HalfPi, null },
+        { -Decimal.Pi / 4M, -0.9999999999999999999999999999M },
+        { -Decimal.Pi / 5M, -0.7265425280053608858954667574M },
+        { 0M, 0M },
+        { Decimal.Pi / 5M, 0.7265425280053608858954667574M },
+        { Decimal.Pi / 4M, 0.9999999999999999999999999999M },
+        { Decimal.HalfPi, null },
+        { Decimal.Pi * 3M / 4M, -0.9999999999999999999999999999M },
+        { Decimal.Pi, 0M },
+        { Decimal.Pi * 5M / 4M, 0.9999999999999999999999999994M },
+        { Decimal.TwoPi, 0M },
+        { Decimal.Pi * 9M / 4M, 1M }
     };
 
     #endregion
