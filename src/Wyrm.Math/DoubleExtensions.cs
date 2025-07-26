@@ -58,10 +58,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Floor(double)"/>
     public static double Floor(this double d) => System.Math.Floor(d);
-    /*
+
     /// <inheritdoc cref="System.Math.FusedMultiplyAdd(double, double, double)"/>
     public static double FusedMultiplyAdd(this double x, double y, double z) => System.Math.FusedMultiplyAdd(x, y, z);
-
+    /*
     /// <inheritdoc cref="System.Math.IEEERemainder(double, double)"/>
     public static double IEEERemainder(this double y, double x) => System.Math.IEEERemainder(y, x);
 

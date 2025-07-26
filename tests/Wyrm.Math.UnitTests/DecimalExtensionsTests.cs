@@ -113,6 +113,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalFusedMultiplyAddValues))]
+    public void FusedMultiplyAdd_Should_Return_FusedMultiplyAdd(decimal x, decimal y, decimal z, decimal expected)
+    {
+        x.FusedMultiplyAdd(y, z).ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalLogValues))]
     public void Log_Should_Return_Log(decimal value, decimal? expected)
     {
@@ -423,6 +430,14 @@ public class DecimalExtensionsTests
         { 15M, 3269017.3724721106393018550459M },
         { Decimal.MaxExpPow, 79228162514264337593543950268M },
         { Decimal.MaxExpPow + 0.000000000000000000000000001M, null }
+    };
+
+    public static readonly TheoryData<decimal, decimal, decimal, decimal> DecimalFusedMultiplyAddValues = new()
+    {
+        { 10000000000000000000000000000M, 2M, 0.6M, 20000000000000000000000000001M },
+        { 1000000000000000000000000000M, 20M, 0.51M, 20000000000000000000000000001M },
+        { 1000000000000000000000000000M, 20M, 0.5M, 20000000000000000000000000000M },
+        { 100000000000000000000000000M, 200M, 0.4M, 20000000000000000000000000000M }
     };
 
     public static readonly TheoryData<decimal, decimal?> DecimalLogValues = new()

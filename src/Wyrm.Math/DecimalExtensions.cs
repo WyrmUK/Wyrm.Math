@@ -305,10 +305,16 @@ public static class DecimalExtensions
 
     /// <inheritdoc cref="System.Math.Floor(decimal)"/>
     public static decimal Floor(this decimal d) => System.Math.Floor(d);
-    /*
-    /// <inheritdoc cref="System.Math.FusedMultiplyAdd(decimal, decimal, decimal)"/>
-    public static decimal FusedMultiplyAdd(this decimal x, decimal y, decimal z) => System.Math.FusedMultiplyAdd(x, y, z);
 
+    /// <summary>
+    /// Returns (x * y) + z with single rounding.
+    /// </summary>
+    /// <param name="x">First multiplied term.</param>
+    /// <param name="y">Second multiplied term.</param>
+    /// <param name="z">Addition term.</param>
+    /// <returns>Single rounded result of (x * y) + z.</returns>
+    public static decimal FusedMultiplyAdd(this decimal x, decimal y, decimal z) => x * y + z;
+    /*
     /// <inheritdoc cref="System.Math.IEEERemainder(decimal, decimal)"/>
     public static decimal IEEERemainder(this decimal y, decimal x) => System.Math.IEEERemainder(y, x);
 
