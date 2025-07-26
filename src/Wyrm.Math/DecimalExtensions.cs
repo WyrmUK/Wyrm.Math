@@ -335,9 +335,11 @@ public static class DecimalExtensions
     /// </summary>
     /// <param name="d">The number.</param>
     /// <returns>The base 2 integer logarithm of the number.</returns>
+    /// <exception cref="OverflowException">Thrown if the number is zero.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the number is less than zero.</exception>
     public static int ILogB(this decimal d)
     {
-        var logD = (d.Log() / Decimal.Log2).Round(26);
+        var logD = d.Log2().Round(26);
         return logD >= 0M
             ? (int)logD.Truncate()
             : (int)(logD - 0.9999999999999999999999999999M).Truncate();
@@ -396,10 +398,17 @@ public static class DecimalExtensions
     /*
     /// <inheritdoc cref="System.Math.Log(decimal, decimal)"/>
     public static decimal Log(this decimal d, decimal newBase) => System.Math.Log(d, newBase);
-
-    /// <inheritdoc cref="System.Math.Log2(decimal)"/>
-    public static decimal Log2(this decimal x) => System.Math.Log2(x);
-
+    */
+    /// <inheritdoc cref="System.Math.Log2(double)"/>
+    /// <summary>
+    /// Returns the base 2 logarithm of a number.
+    /// </summary>
+    /// <param name="x">The number to take the base 2 logarithm of.</param>
+    /// <returns></returns>
+    /// <exception cref="OverflowException">Thrown if the number is zero.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the number is less than zero.</exception>
+    public static decimal Log2(this decimal x) => x.Log() / Decimal.Log2;
+    /*
     /// <inheritdoc cref="System.Math.Log10(decimal)"/>
     public static decimal Log10(this decimal d) => System.Math.Log10(d);
     */

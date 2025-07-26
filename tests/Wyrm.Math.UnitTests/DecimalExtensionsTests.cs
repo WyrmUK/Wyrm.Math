@@ -155,6 +155,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalLog2Values))]
+    public void Log2_Should_Return_Log2(decimal value, decimal expected)
+    {
+        value.Log2().ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Max_Should_Return_Max(decimal value)
     {
@@ -498,6 +505,19 @@ public class DecimalExtensionsTests
         { 2M, 0.6931471805599453094172321218M },
         { 7.3890560989306502272304274606M, 2.0000000000000000000000000007M },
         { 33.115451958692313750653249350M, 3.5000000000000000000000000005M }
+    };
+
+    public static readonly TheoryData<decimal, decimal> DecimalLog2Values = new()
+    {
+        { 1M, 0M },
+        { 0.01562M, -6.0004617362948324217454873067M },
+        { 0.015625M, -5.9999999999999999999999999986M },
+        { 0.0301973834223185007397862924M, -5.049432643111371925759736379M },
+        { 0.6065306597126334236037995352M, -0.7213475204444817036799623394M },
+        { 7.3890560989306502272304274606M, 2.8853900817779268147198493616M },
+        { 33.115451958692313750653249350M, 5.0494326431113719257597363817M },
+        { 64M, 5.999999999999999999999999998M },
+        { 64.1M, 6.0022524517313786799657009888M }
     };
 
     public static readonly TheoryData<decimal, decimal, decimal?> DecimalPowValues = new()
