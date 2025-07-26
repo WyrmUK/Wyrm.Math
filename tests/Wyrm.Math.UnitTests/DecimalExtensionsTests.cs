@@ -155,6 +155,13 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalLogBaseValues))]
+    public void LogBase_Should_Return_LogBase(decimal value, decimal newBase, decimal expected)
+    {
+        value.Log(newBase).ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalLog2Values))]
     public void Log2_Should_Return_Log2(decimal value, decimal expected)
     {
@@ -513,6 +520,16 @@ public class DecimalExtensionsTests
         { 7.3890560989306502272304274606M, 2.0000000000000000000000000007M },
         { 10M, 2.3025850929940456840179914554M },
         { 33.115451958692313750653249350M, 3.5000000000000000000000000005M }
+    };
+
+    public static readonly TheoryData<decimal, decimal, decimal> DecimalLogBaseValues = new()
+    {
+        { 0.01562M, 2M, -6.0004617362948324217454873067M },
+        { 0.015625M, 2M, -5.9999999999999999999999999986M },
+        { 0.01562M, 10M, -1.8063189704587184779432316986M },
+        { 0.015625M, 10M, -1.8061799739838871712824333682M },
+        { 0.01562M, 15M, -1.5358663339689012456107434063M },
+        { 0.015625M, 15M, -1.5357481488588929363260660733M },
     };
 
     public static readonly TheoryData<decimal, decimal> DecimalLog2Values = new()

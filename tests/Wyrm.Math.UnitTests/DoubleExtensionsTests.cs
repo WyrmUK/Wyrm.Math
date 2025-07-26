@@ -135,6 +135,15 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void LogBase_Should_Return_LogBase(double value)
+    {
+        value.Log(2.0).ShouldBe(System.Math.Log(value, 2.0));
+        value.Log(10.0).ShouldBe(System.Math.Log(value, 10.0));
+        value.Log(100.0).ShouldBe(System.Math.Log(value, 100.0));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Log2_Should_Return_Log2(double value)
     {
         value.Log2().ShouldBe(System.Math.Log2(value));

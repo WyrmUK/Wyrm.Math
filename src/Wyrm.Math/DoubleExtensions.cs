@@ -70,10 +70,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Log(double)"/>
     public static double Log(this double d) => System.Math.Log(d);
-    /*
+
     /// <inheritdoc cref="System.Math.Log(double, double)"/>
     public static double Log(this double d, double newBase) => System.Math.Log(d, newBase);
-    */
+
     /// <inheritdoc cref="System.Math.Log2(double)"/>
     public static double Log2(this double x) => System.Math.Log2(x);
 

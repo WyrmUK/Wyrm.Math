@@ -395,10 +395,17 @@ public static class DecimalExtensions
         }
         return addition + estimate;
     }
-    /*
-    /// <inheritdoc cref="System.Math.Log(decimal, decimal)"/>
-    public static decimal Log(this decimal d, decimal newBase) => System.Math.Log(d, newBase);
-    */
+
+    /// <summary>
+    /// Returns the logrithm of a number in a base.
+    /// </summary>
+    /// <param name="d">The number to take the logarithm of.</param>
+    /// <param name="newBase">The base of the logarithm.</param>
+    /// <returns>The logarithm of the number in the base.</returns>
+    /// <exception cref="OverflowException">Thrown if the number is zero.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the number is less than zero.</exception>
+    public static decimal Log(this decimal d, decimal newBase) => d.Log() / newBase.Log();
+
     /// <summary>
     /// Returns the base 2 logarithm of a number.
     /// </summary>
