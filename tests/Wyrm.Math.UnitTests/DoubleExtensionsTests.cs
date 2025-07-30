@@ -166,10 +166,26 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void MaxMagnitude_Should_Return_MaxMagnitude(double value)
+    {
+        value.MaxMagnitude(1.1).ShouldBe(System.Math.MaxMagnitude(value, 1.1));
+        value.MaxMagnitude(-1.1).ShouldBe(System.Math.MaxMagnitude(value, -1.1));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Min_Should_Return_Min(double value)
     {
         value.Min(1.1).ShouldBe(System.Math.Min(value, 1.1));
         value.Min(-1.1).ShouldBe(System.Math.Min(value, -1.1));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void MinMagnitude_Should_Return_MinMagnitude(double value)
+    {
+        value.MinMagnitude(1.1).ShouldBe(System.Math.MinMagnitude(value, 1.1));
+        value.MinMagnitude(-1.1).ShouldBe(System.Math.MinMagnitude(value, -1.1));
     }
 
     [Theory]

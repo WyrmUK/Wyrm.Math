@@ -426,16 +426,44 @@ public static class DecimalExtensions
 
     /// <inheritdoc cref="System.Math.Max(decimal, decimal)"/>
     public static decimal Max(this decimal val1, decimal val2) => System.Math.Max(val1, val2);
-    /*
-    /// <inheritdoc cref="System.Math.MaxMagnitude(decimal, decimal)"/>
-    public static decimal MaxMagnitude(this decimal val1, decimal val2) => System.Math.MaxMagnitude(val1, val2);
-    */
+
+    /// <summary>
+    /// Returns the number with the largest magnitude.
+    /// </summary>
+    /// <param name="val1">The first number to compare.</param>
+    /// <param name="val2">The second number to compare.</param>
+    /// <returns>The number with the largest magnitude.</returns>
+    public static decimal MaxMagnitude(this decimal val1, decimal val2)
+    {
+        var v1Abs = val1.Abs();
+        var v2Abs = val2.Abs();
+        return v1Abs > v2Abs
+            ? val1
+            : v1Abs != v2Abs
+                ? val2
+                : val1 >= val2 ? val1 : val2;
+    }
+
     /// <inheritdoc cref="System.Math.Min(decimal, decimal)"/>
     public static decimal Min(this decimal val1, decimal val2) => System.Math.Min(val1, val2);
-    /*
-    /// <inheritdoc cref="System.Math.MinMagnitude(decimal, decimal)"/>
-    public static decimal MinMagnitude(this decimal val1, decimal val2) => System.Math.MinMagnitude(val1, val2);
-    */
+
+    /// <summary>
+    /// Returns the number with the smallest magnitude.
+    /// </summary>
+    /// <param name="val1">The first number to compare.</param>
+    /// <param name="val2">The second number to compare.</param>
+    /// <returns>The number with the smallest magnitude.</returns>
+    public static decimal MinMagnitude(this decimal val1, decimal val2)
+    {
+        var v1Abs = val1.Abs();
+        var v2Abs = val2.Abs();
+        return v1Abs < v2Abs
+            ? val1
+            : v1Abs != v2Abs
+                ? val2
+                : val1 <= val2 ? val1 : val2;
+    }
+
     /// <summary>
     /// Returns a number raised to a power.
     /// Throws an <see cref="InvalidOperationException"/> if x is 0 and y is zero or negative, or if raising a negative number to a non integer power.

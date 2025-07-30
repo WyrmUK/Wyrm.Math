@@ -185,10 +185,26 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalValues))]
+    public void MaxMagnitude_Should_Return_MaxMagnitude(decimal value)
+    {
+        value.MaxMagnitude(1.1M).ShouldBe(value.Abs() > 1.1M ? value : 1.1M);
+        value.MaxMagnitude(-1.1M).ShouldBe(value.Abs() > 1.1M ? value : value == 1.1M ? value : -1.1M);
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalValues))]
     public void Min_Should_Return_Min(decimal value)
     {
         value.Min(1.1M).ShouldBe(System.Math.Min(value, 1.1M));
         value.Min(-1.1M).ShouldBe(System.Math.Min(value, -1.1M));
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalValues))]
+    public void MinMagnitude_Should_Return_MinMagnitude(decimal value)
+    {
+        value.MinMagnitude(1.1M).ShouldBe(value.Abs() < 1.1M ? value : value == -1.1M ? value : 1.1M);
+        value.MinMagnitude(-1.1M).ShouldBe(value.Abs() < 1.1M ? value : -1.1M);
     }
 
     [Theory]

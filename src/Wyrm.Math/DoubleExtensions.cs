@@ -82,16 +82,16 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Max(double, double)"/>
     public static double Max(this double val1, double val2) => System.Math.Max(val1, val2);
-    /*
+
     /// <inheritdoc cref="System.Math.MaxMagnitude(double, double)"/>
     public static double MaxMagnitude(this double val1, double val2) => System.Math.MaxMagnitude(val1, val2);
-    */
+
     /// <inheritdoc cref="System.Math.Min(double, double)"/>
     public static double Min(this double val1, double val2) => System.Math.Min(val1, val2);
-    /*
+
     /// <inheritdoc cref="System.Math.MinMagnitude(double, double)"/>
     public static double MinMagnitude(this double val1, double val2) => System.Math.MinMagnitude(val1, val2);
-    */
+
     /// <inheritdoc cref="System.Math.Pow(double, double)"/>
     public static double Pow(this double x, double y) => System.Math.Pow(x, y);
     /*
