@@ -282,6 +282,20 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalScaleBValues))]
+    public void ScaleB_Should_Return_ScaleB(decimal value, int power, decimal? expected)
+    {
+        if (expected.HasValue)
+        {
+            value.ScaleB(power).ShouldBe(expected.Value);
+        }
+        else
+        {
+            Should.Throw<OverflowException>(() => value.ScaleB(power));
+        }
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Sign_Should_Return_Sign(decimal value)
     {
@@ -615,6 +629,16 @@ public class DecimalExtensionsTests
         { 5.625M, -2.1M, 0.0265914912817991420705496454M },
         { 5.625M, 3M, 177.97851562500000000000000011M },
         { 5.625M, -3M, 0.0056186556927297668038408779M }
+    };
+
+    public static readonly TheoryData<decimal, int, decimal?> DecimalScaleBValues = new()
+    {
+        { 2M, 97, null },
+        { 2M, -94, null },
+        { 1.1M, 5, 35.2M },
+        { 1.1M, -5, 0.034375M },
+        { 2.2M, 66, 162331347848644054220.80M },
+        { 2.2M, -66, 0.0000000000000000000298155598M }
     };
 
     public static readonly TheoryData<decimal, decimal> DecimalSinValues = new()

@@ -112,10 +112,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Round(double, int, MidpointRounding)"/>
     public static double Round(this double a, int digits, MidpointRounding mode) => System.Math.Round(a, digits, mode);
-    /*
+
     /// <inheritdoc cref="System.Math.ScaleB(double, int)"/>
     public static double ScaleB(this double a, int n) => System.Math.ScaleB(a, n);
-    */
+
     /// <inheritdoc cref="System.Math.Sign(double)"/>
     public static int Sign(this double value) => System.Math.Sign(value);
 

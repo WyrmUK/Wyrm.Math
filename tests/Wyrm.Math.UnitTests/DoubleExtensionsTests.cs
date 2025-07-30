@@ -248,6 +248,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void ScaleB_Should_Return_ScaleB(double value)
+    {
+        value.ScaleB(3).ShouldBe(System.Math.ScaleB(value, 3));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Sign_Should_Return_Sign(double value)
     {
         value.Sign().ShouldBe(System.Math.Sign(value));

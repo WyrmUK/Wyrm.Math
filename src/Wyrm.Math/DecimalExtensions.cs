@@ -520,10 +520,39 @@ public static class DecimalExtensions
 
     /// <inheritdoc cref="System.Math.Round(decimal, int, MidpointRounding)"/>
     public static decimal Round(this decimal a, int digits, MidpointRounding mode) => System.Math.Round(a, digits, mode);
-    /*
-    /// <inheritdoc cref="System.Math.ScaleB(decimal, int)"/>
-    public static decimal ScaleB(this decimal a, int n) => System.Math.ScaleB(a, n);
-    */
+
+    /// <summary>
+    /// Returns x * 2^n efficiently.
+    /// </summary>
+    /// <param name="x">The number to scale.</param>
+    /// <param name="n">The power to scale by.</param>
+    /// <returns>x * 2^n</returns>
+    /// <exception cref="OverflowException">Throw if n is above 96 or below -93.</exception>
+    public static decimal ScaleB(this decimal x, int n)
+    {
+        if (n > 96 || n < -93) throw new OverflowException("Power of 2 outside decimal representation.");
+
+        if (n == 0) return x;
+        if (n == 1) return x * 2M;
+        if (n == -1) return x * 0.5M;
+
+        var inverse = false;
+        if (n < 0)
+        {
+            inverse = true;
+            n = -n;
+        }
+        var multiplier = 1.0M;
+        while (n > 0)
+        {
+            var pn = n > 62 ? 62 : n;
+            var power2 = 1L << pn;
+            multiplier *= power2;
+            n -= pn;
+        }
+        return x * (inverse ? 1M / multiplier : multiplier);
+    }
+
     /// <inheritdoc cref="System.Math.Sign(decimal)"/>
     public static int Sign(this decimal value) => System.Math.Sign(value);
 
