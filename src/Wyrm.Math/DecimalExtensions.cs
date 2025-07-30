@@ -491,13 +491,24 @@ public static class DecimalExtensions
                 ? (y * (-x).Log()).Exp()
                 : -(y * (-x).Log()).Exp();
     }
-    /*
-    /// <inheritdoc cref="System.Math.ReciprocalEstimate(decimal)"/>
-    public static decimal ReciprocalEstimate(this decimal d) => System.Math.ReciprocalEstimate(d);
 
-    /// <inheritdoc cref="System.Math.ReciprocalSqrtEstimate(decimal)"/>
-    public static decimal ReciprocalSqrtEstimate(this decimal d) => System.Math.ReciprocalSqrtEstimate(d);
-    */
+    /// <summary>
+    /// Returns an estimate of the reciprocal of a number.
+    /// </summary>
+    /// <param name="d">The number to estimate the reciprocal of.</param>
+    /// <returns>The estimate of the reciprocal of the number.</returns>
+    /// <exception cref="OverflowException">If d is zero.</exception>
+    public static decimal ReciprocalEstimate(this decimal d) => (decimal)((double)d).ReciprocalEstimate();
+
+    /// <inheritdoc cref="System.Math.ReciprocalSqrtEstimate(double)"/>
+    /// <summary>
+    /// Returns an estimate of the reciprocal square root of a number.
+    /// </summary>
+    /// <param name="d">The number to estimate the reciprocal square root of.</param>
+    /// <returns>The estimate of the reciprocal square root of the number.</returns>
+    /// <exception cref="OverflowException">If d is zero or negative.</exception>
+    public static decimal ReciprocalSqrtEstimate(this decimal d) => (decimal)((double)d).ReciprocalSqrtEstimate();
+
     /// <inheritdoc cref="System.Math.Round(decimal)"/>
     public static decimal Round(this decimal a) => System.Math.Round(a);
 

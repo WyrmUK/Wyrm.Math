@@ -223,6 +223,30 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalValues))]
+    public void ReciprocalEstimate_Should_Return_ReciprocalEstimate(decimal value)
+    {
+        if (value == 0M)
+        {
+            Should.Throw<OverflowException>(() => value.ReciprocalEstimate());
+            return;
+        }
+        value.ReciprocalEstimate().ShouldBe((decimal)System.Math.ReciprocalEstimate((double)value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalValues))]
+    public void ReciprocalSqrtEstimate_Should_Return_ReciprocalEstimate(decimal value)
+    {
+        if (value <= 0M)
+        {
+            Should.Throw<OverflowException>(() => value.ReciprocalSqrtEstimate());
+            return;
+        }
+        value.ReciprocalSqrtEstimate().ShouldBe((decimal)System.Math.ReciprocalSqrtEstimate((double)value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalValues))]
     public void Round_Should_Return_Round(decimal value)
     {
         value.Round().ShouldBe(System.Math.Round(value));

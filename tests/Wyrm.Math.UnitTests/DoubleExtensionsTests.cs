@@ -198,6 +198,20 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void ReciprocalEstimate_Should_Return_ReciprocalEstimate(double value)
+    {
+        value.ReciprocalEstimate().ShouldBe(System.Math.ReciprocalEstimate(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void ReciprocalSqrtEstimate_Should_Return_ReciprocalSqrtEstimate(double value)
+    {
+        value.ReciprocalSqrtEstimate().ShouldBe(System.Math.ReciprocalSqrtEstimate(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Round_Should_Return_Round(double value)
     {
         value.Round().ShouldBe(System.Math.Round(value));

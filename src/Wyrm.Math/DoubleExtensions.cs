@@ -94,13 +94,13 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Pow(double, double)"/>
     public static double Pow(this double x, double y) => System.Math.Pow(x, y);
-    /*
+
     /// <inheritdoc cref="System.Math.ReciprocalEstimate(double)"/>
     public static double ReciprocalEstimate(this double d) => System.Math.ReciprocalEstimate(d);
 
     /// <inheritdoc cref="System.Math.ReciprocalSqrtEstimate(double)"/>
     public static double ReciprocalSqrtEstimate(this double d) => System.Math.ReciprocalSqrtEstimate(d);
-    */
+
     /// <inheritdoc cref="System.Math.Round(double)"/>
     public static double Round(this double a) => System.Math.Round(a);
 
