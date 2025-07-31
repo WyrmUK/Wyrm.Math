@@ -27,7 +27,7 @@ public static class DecimalExtensions
         return Decimal.HalfPi - d.Asin();
     }
     /*
-    /// <inheritdoc cref="System.Math.Acosh(decimal)"/>
+    /// <inheritdoc cref="System.Math.Acosh(double)"/>
     public static decimal Acosh(this decimal d) => System.Math.Acosh(d);
     */
     /// <summary>
@@ -59,7 +59,7 @@ public static class DecimalExtensions
         return estimate;
     }
     /*
-    /// <inheritdoc cref="System.Math.Asinh(decimal)"/>
+    /// <inheritdoc cref="System.Math.Asinh(double)"/>
     public static decimal Asinh(this decimal d) => System.Math.Asinh(d);
     */
     /// <inheritdoc cref="System.Math.Atan(double)"/>
@@ -90,7 +90,7 @@ public static class DecimalExtensions
         return estimate;
     }
     /*
-    /// <inheritdoc cref="System.Math.Atanh(decimal)"/>
+    /// <inheritdoc cref="System.Math.Atanh(double)"/>
     public static decimal Atanh(this decimal d) => System.Math.Atanh(d);
     */
     /// <inheritdoc cref="System.Math.Atan2(double, double)"/>
@@ -253,7 +253,7 @@ public static class DecimalExtensions
         return estimate;
     }
     /*
-    /// <inheritdoc cref="System.Math.Cosh(decimal)"/>
+    /// <inheritdoc cref="System.Math.Cosh(double)"/>
     public static decimal Cosh(this decimal value) => System.Math.Cosh(value);
     */
     /// <summary>
@@ -602,10 +602,31 @@ public static class DecimalExtensions
     /// <returns></returns>
     public static (decimal Sin, decimal Cos) SinCos(this decimal x) =>
         (x.Sin(), x.Cos());
-    /*
-    /// <inheritdoc cref="System.Math.Sinh(decimal)"/>
-    public static decimal Sinh(this decimal value) => System.Math.Sinh(value);
-    */
+
+    /// <summary>
+    /// Returns the hyperbolic sine of the angle.
+    /// </summary>
+    /// <param name="value">The angle to take the hyperbolic sine of.</param>
+    /// <returns>The hyperbolic sine of the angle.</returns>
+    public static decimal Sinh(this decimal value)
+    {
+        if (value == 0M) return 0M;
+
+        var estimate = value;
+        var prevEstimate = 0M;
+        var valueSqr = value.Sqr();
+        value *= valueSqr / 6M;
+        var factor = 5M;
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += value;
+            value *= valueSqr / ((factor - 1M) * factor);
+            factor += 2M;
+        }
+        return estimate;
+    }
+
     /// <summary>
     /// Returns the square of a number.
     /// </summary>
@@ -653,7 +674,7 @@ public static class DecimalExtensions
         return sinCos.Sin / sinCos.Cos;
     }
     /*
-    /// <inheritdoc cref="System.Math.Tanh(decimal)"/>
+    /// <inheritdoc cref="System.Math.Tanh(double)"/>
     public static decimal Tanh(this decimal value) => System.Math.Tanh(value);
     */
     /// <inheritdoc cref="System.Math.Truncate(decimal)"/>

@@ -276,6 +276,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Sinh_Should_Return_Sinh(double value)
+    {
+        value.Sinh().ShouldBe(System.Math.Sinh(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Sqr_Should_Return_Sqr(double value)
     {
         value.Sqr().ShouldBe(value * value);
