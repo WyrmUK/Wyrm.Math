@@ -253,7 +253,11 @@ public static class DecimalExtensions
         return estimate;
     }
 
-    /// <inheritdoc cref="System.Math.Cosh(double)"/>
+    /// <summary>
+    /// Returns the hyperbolic cosine of the angle.
+    /// </summary>
+    /// <param name="value">The angle to take the hyperbolic cosine of.</param>
+    /// <returns>The hyperbolic cosine of the angle.</returns>
     public static decimal Cosh(this decimal value)
     {
         if (value == 0M) return 1M;
