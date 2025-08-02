@@ -252,10 +252,27 @@ public static class DecimalExtensions
         }
         return estimate;
     }
-    /*
+
     /// <inheritdoc cref="System.Math.Cosh(double)"/>
-    public static decimal Cosh(this decimal value) => System.Math.Cosh(value);
-    */
+    public static decimal Cosh(this decimal value)
+    {
+        if (value == 0M) return 1M;
+
+        var estimate = 1M;
+        var prevEstimate = 0M;
+        var valueSqr = value = value.Sqr();
+        value /= 2M;
+        var factor = 4M;
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += value;
+            value *= valueSqr / ((factor - 1M) * factor);
+            factor += 2M;
+        }
+        return estimate;
+    }
+
     /// <summary>
     /// Returns e raised to the number.
     /// Throws an <see cref="OverflowException"/> if the result is too big.

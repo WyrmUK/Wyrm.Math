@@ -49,10 +49,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Cos(double)"/>
     public static double Cos(this double a) => System.Math.Cos(a);
-    /*
+
     /// <inheritdoc cref="System.Math.Cosh(double)"/>
     public static double Cosh(this double value) => System.Math.Cosh(value);
-    */
+
     /// <inheritdoc cref="System.Math.Exp(double)"/>
     public static double Exp(this double d) => System.Math.Exp(d);
 

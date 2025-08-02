@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using Wyrm.Math.UnitTests.TestHelpers;
 
 namespace Wyrm.Math.UnitTests;
 
@@ -89,6 +90,13 @@ public class DoubleExtensionsTests
     public void Cos_Should_Return_Cos(double value)
     {
         value.Cos().ShouldBe(System.Math.Cos(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
+    public void Cosh_Should_Return_Cosh(double value)
+    {
+        value.Cosh().ShouldBe(System.Math.Cosh(value));
     }
 
     [Theory]
