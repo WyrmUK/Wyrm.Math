@@ -694,10 +694,17 @@ public static class DecimalExtensions
 
         return sinCos.Sin / sinCos.Cos;
     }
-    /*
-    /// <inheritdoc cref="System.Math.Tanh(double)"/>
-    public static decimal Tanh(this decimal value) => System.Math.Tanh(value);
-    */
+
+    /// <summary>
+    /// Returns the hyperbolic tangent of the angle.
+    /// </summary>
+    /// <param name="value">The angle to get the hyperbolic tangent of.</param>
+    /// <returns>The hyperbolic tangent of the angle.</returns>
+    public static decimal Tanh(this decimal value)
+    {
+        return value.Sinh() / value.Cosh();
+    }
+
     /// <inheritdoc cref="System.Math.Truncate(decimal)"/>
     public static decimal Truncate(this decimal d) => System.Math.Truncate(d);
 }

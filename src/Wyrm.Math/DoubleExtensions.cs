@@ -140,10 +140,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Tan(double)"/>
     public static double Tan(this double a) => System.Math.Tan(a);
-    /*
+
     /// <inheritdoc cref="System.Math.Tanh(double)"/>
     public static double Tanh(this double value) => System.Math.Tanh(value);
-    */
+
     /// <inheritdoc cref="System.Math.Truncate(double)"/>
     public static double Truncate(this double d) => System.Math.Truncate(d);
 }
