@@ -28,6 +28,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Asinh_Should_Return_Asinh(double value)
+    {
+        value.Asinh().ShouldBe(System.Math.Asinh(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Atan_Should_Return_Atan(double value)
     {
         value.Atan().ShouldBe(System.Math.Atan(value));

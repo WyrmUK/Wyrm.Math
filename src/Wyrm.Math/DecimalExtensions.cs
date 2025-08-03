@@ -47,7 +47,7 @@ public static class DecimalExtensions
         var estimate = d;
         var prevEstimate = 0M;
         var dSqr = d.Sqr();
-        d = d * dSqr / 2;
+        d = d * dSqr / 2M;
         var factor = 3M;
         while (estimate != prevEstimate)
         {
@@ -58,10 +58,35 @@ public static class DecimalExtensions
         }
         return estimate;
     }
-    /*
-    /// <inheritdoc cref="System.Math.Asinh(double)"/>
-    public static decimal Asinh(this decimal d) => System.Math.Asinh(d);
-    */
+
+    /// <summary>
+    /// Returns the angle whose hyperbolic sine is the number.
+    /// </summary>
+    /// <param name="d">The number to get the Asinh of.</param>
+    /// <returns>An angle, Θ, in radians.</returns>
+    public static decimal Asinh(this decimal d)
+    {
+        if (d == 0M) return 0M;
+
+        // asinh x = acosh(8x^4 + 8x^2 + 1) / 4 (x >= 0)
+        // asinh x = +/- acosh(2x^2 + 1) / 2
+        if (d.Abs() >= 1M) return (d + (d.Sqr() + 1).Sqrt()).Log();
+
+        var estimate = d;
+        var prevEstimate = 0M;
+        var dSqr = -d.Sqr();
+        d = d * dSqr / 2M;
+        var factor = 3M;
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += d / factor;
+            d *= dSqr * factor / (factor + 1M);
+            factor += 2M;
+        }
+        return estimate;
+    }
+
     /// <inheritdoc cref="System.Math.Atan(double)"/>
     /// <summary>
     /// Returns the angle whose tangent is the number.
