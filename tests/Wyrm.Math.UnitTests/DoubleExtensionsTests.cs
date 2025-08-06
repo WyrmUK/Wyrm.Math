@@ -21,6 +21,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Acosh_Should_Return_Acosh(double value)
+    {
+        value.Acosh().ShouldBe(System.Math.Acosh(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Asin_Should_Return_Asin(double value)
     {
         value.Asin().ShouldBe(System.Math.Asin(value));

@@ -26,10 +26,35 @@ public static class DecimalExtensions
 
         return Decimal.HalfPi - d.Asin();
     }
-    /*
-    /// <inheritdoc cref="System.Math.Acosh(double)"/>
-    public static decimal Acosh(this decimal d) => System.Math.Acosh(d);
-    */
+
+    /// <summary>
+    /// Returns the angle whose hyperbolic cosine is the number.
+    /// </summary>
+    /// <param name="d">The number to get the Acosh of.</param>
+    /// <returns>An angle, Θ, in radians.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if d < 1.</exception>
+    public static decimal Acosh(this decimal d)
+    {
+        if (d < 1M) throw new InvalidOperationException("Result would be complex.");
+        if (d == 1M) return 0M;
+
+        if (d < 100M) return (d + (d.Sqr() - 1).Sqrt()).Log();
+
+        var estimate = 0M;
+        var prevEstimate = 1M;
+        var dSqr = 1M / d.Sqr();
+        var d2 = dSqr / 2M;
+        var factor = 2M;
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += d2 / factor;
+            factor += 2M;
+            d2 *= dSqr * (factor - 1M) / factor;
+        }
+        return (2M * d).Log() - estimate;
+    }
+
     /// <summary>
     /// Returns the angle whose sine is the number.
     /// </summary>
@@ -68,9 +93,13 @@ public static class DecimalExtensions
     {
         if (d == 0M) return 0M;
 
-        // asinh x = acosh(8x^4 + 8x^2 + 1) / 4 (x >= 0)
-        // asinh x = +/- acosh(2x^2 + 1) / 2
-        if (d.Abs() >= 1M) return (d + (d.Sqr() + 1).Sqrt()).Log();
+        var dAbs = d.Abs();
+        if (dAbs >= 1M)
+        {
+            var dSqrd = d.Sqr();
+            if (dAbs < 9975790M) return (8M * dSqrd * dSqrd + 8M * dSqrd + 1M).Acosh() / (d < 0M ? -4M : 4M);
+            return (d + (dSqrd + 1).Sqrt()).Log();
+        }
 
         var estimate = d;
         var prevEstimate = 0M;

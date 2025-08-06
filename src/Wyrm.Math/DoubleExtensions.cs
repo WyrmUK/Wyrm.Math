@@ -10,10 +10,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Acos(double)"/>
     public static double Acos(this double d) => System.Math.Acos(d);
-    /*
+
     /// <inheritdoc cref="System.Math.Acosh(double)"/>
     public static double Acosh(this double d) => System.Math.Acosh(d);
-    */
+
     /// <inheritdoc cref="System.Math.Asin(double)"/>
     public static double Asin(this double d) => System.Math.Asin(d);
 
