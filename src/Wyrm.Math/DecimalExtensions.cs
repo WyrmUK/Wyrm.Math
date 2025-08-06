@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace Wyrm.Math;
+﻿namespace Wyrm.Math;
 
 /// <summary>
 /// Extension methods for <see cref="decimal"/>s.
@@ -116,7 +114,6 @@ public static class DecimalExtensions
         return estimate;
     }
 
-    /// <inheritdoc cref="System.Math.Atan(double)"/>
     /// <summary>
     /// Returns the angle whose tangent is the number.
     /// </summary>
@@ -143,11 +140,21 @@ public static class DecimalExtensions
         }
         return estimate;
     }
-    /*
-    /// <inheritdoc cref="System.Math.Atanh(double)"/>
-    public static decimal Atanh(this decimal d) => System.Math.Atanh(d);
-    */
-    /// <inheritdoc cref="System.Math.Atan2(double, double)"/>
+
+    /// <summary>
+    /// Returns the angle whose hyperbolic tangent is the number.
+    /// </summary>
+    /// <param name="d">The number to get the Atanh of.</param>
+    /// <returns>An angle, Θ, in radians.</returns>
+    /// <exception cref="InvalidOperationException">Thrown if 1 &lt;= d &lt;= -1.</exception>
+    public static decimal Atanh(this decimal d)
+    {
+        var dAbs = d.Abs();
+        if (dAbs >= 1M) throw new InvalidOperationException("Result would be infinite.");
+
+        return ((1M + dAbs) / (1M - dAbs)).Log() / (d < 0 ? -2M : 2M);
+    }
+
     /// <summary>
     /// Returns the angle whose tangent is the quotient of two specified numbers.
     /// </summary>
@@ -173,7 +180,6 @@ public static class DecimalExtensions
         return Atan(y / x);
     }
 
-    /// <inheritdoc cref="System.Math.BitDecrement(double)"/>
     /// <summary>
     /// Returns the largest value that compares less than a number.
     /// </summary>
@@ -194,7 +200,6 @@ public static class DecimalExtensions
         return xd;
     }
 
-    /// <inheritdoc cref="System.Math.BitIncrement(double)"/>
     /// <summary>
     /// Returns the largest value that compares greater than a number.
     /// </summary>
@@ -575,7 +580,6 @@ public static class DecimalExtensions
     /// <exception cref="OverflowException">If d is zero.</exception>
     public static decimal ReciprocalEstimate(this decimal d) => (decimal)((double)d).ReciprocalEstimate();
 
-    /// <inheritdoc cref="System.Math.ReciprocalSqrtEstimate(double)"/>
     /// <summary>
     /// Returns an estimate of the reciprocal square root of a number.
     /// </summary>
@@ -670,11 +674,11 @@ public static class DecimalExtensions
         return estimate;
     }
 
-    /// <inheritdoc cref="System.Math.SinCos(double)"/>
     /// <summary>
+    /// Returns the sine and cosine of the angle.
     /// </summary>
-    /// <param name="x"></param>
-    /// <returns></returns>
+    /// <param name="x">The angle to return the sine and cosine of.</param>
+    /// <returns>The sine and cosine of the angle.</returns>
     public static (decimal Sin, decimal Cos) SinCos(this decimal x) =>
         (x.Sin(), x.Cos());
 

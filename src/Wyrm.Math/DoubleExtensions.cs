@@ -22,10 +22,10 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Atan(double)"/>
     public static double Atan(this double d) => System.Math.Atan(d);
-    /*
+
     /// <inheritdoc cref="System.Math.Atanh(double)"/>
     public static double Atanh(this double d) => System.Math.Atanh(d);
-    */
+
     /// <inheritdoc cref="System.Math.Atan2(double, double)"/>
     public static double Atan2(this double y, double x) => System.Math.Atan2(y, x);
 

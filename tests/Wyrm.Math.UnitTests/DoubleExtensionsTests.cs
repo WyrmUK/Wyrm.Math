@@ -57,6 +57,13 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void Atanh_Should_Return_Atanh(double value)
+    {
+        value.Atanh().ShouldBe(System.Math.Atanh(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void BitDecrement_Should_Return_BitDecrement(double value)
     {
         value.BitDecrement().ShouldBe(System.Math.BitDecrement(value));
