@@ -49,17 +49,17 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
-    public void Atan2_Should_Return_Atan2(double value)
+    public void Atanh_Should_Return_Atanh(double value)
     {
-        value.Atan2(0.5).ShouldBe(System.Math.Atan2(value, 0.5));
-        value.Atan2(-0.5).ShouldBe(System.Math.Atan2(value, -0.5));
+        value.Atanh().ShouldBe(System.Math.Atanh(value));
     }
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
-    public void Atanh_Should_Return_Atanh(double value)
+    public void Atan2_Should_Return_Atan2(double value)
     {
-        value.Atanh().ShouldBe(System.Math.Atanh(value));
+        value.Atan2(0.5).ShouldBe(System.Math.Atan2(value, 0.5));
+        value.Atan2(-0.5).ShouldBe(System.Math.Atan2(value, -0.5));
     }
 
     [Theory]

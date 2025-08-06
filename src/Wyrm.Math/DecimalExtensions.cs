@@ -90,12 +90,12 @@ public static class DecimalExtensions
     public static decimal Asinh(this decimal d)
     {
         if (d == 0M) return 0M;
+        if (d <= -1M) return -Asinh(-d);
 
-        var dAbs = d.Abs();
-        if (dAbs >= 1M)
+        if (d >= 1M)
         {
             var dSqrd = d.Sqr();
-            if (dAbs < 9975790M) return (8M * dSqrd * dSqrd + 8M * dSqrd + 1M).Acosh() / (d < 0M ? -4M : 4M);
+            if (d < 9975790M) return (8M * dSqrd * dSqrd + 8M * dSqrd + 1M).Acosh() / 4M;
             return (d + (dSqrd + 1).Sqrt()).Log();
         }
 
@@ -124,6 +124,7 @@ public static class DecimalExtensions
         if (d < 0M) return -Atan(-d);
 
         if (d > Decimal.MaxSqrVal) return Decimal.HalfPi;
+        if (d > 10M) return Acos(1M / Sqrt(1M + Sqr(d)));
         if (d > 0.99M) return Asin(d / Sqrt(1M + Sqr(d)));
 
         var estimate = d;
@@ -149,10 +150,10 @@ public static class DecimalExtensions
     /// <exception cref="InvalidOperationException">Thrown if 1 &lt;= d &lt;= -1.</exception>
     public static decimal Atanh(this decimal d)
     {
-        var dAbs = d.Abs();
-        if (dAbs >= 1M) throw new InvalidOperationException("Result would be infinite.");
+        if (d < 0M) return -Atanh(-d);
+        if (d >= 1M) throw new InvalidOperationException("Result would be infinite.");
 
-        return ((1M + dAbs) / (1M - dAbs)).Log() / (d < 0 ? -2M : 2M);
+        return ((1M + d) / (1M - d)).Log() / (d < 0 ? -2M : 2M);
     }
 
     /// <summary>
