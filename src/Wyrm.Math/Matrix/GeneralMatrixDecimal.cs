@@ -120,26 +120,26 @@ public readonly struct GeneralMatrixDecimal
     /// </summary>
     /// <returns>The Trace.</returns>
     /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
-    public decimal Trace() => Matrix.Trace((v1, v2) => v1 + v2);
+    public decimal Trace() => Matrix.Trace(Add);
 
     /// <summary>
     /// Returns the Determinant of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The Determinant as a <see cref="decimal"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square.</exception>
-    public decimal Determinant() => Matrix.Determinant((v1, v2) => v1 * v2, v => -v);
+    public decimal Determinant() => Matrix.Determinant(Mul, Neg);
 
     /// <summary>
     /// Returns the rank of a matrix.
     /// </summary>
     /// <returns>The rank.</returns>
-    public int Rank() => Matrix.Rank(v => v != 0M);
+    public int Rank() => Matrix.Rank(Nez);
 
     /// <summary>
     /// Returns the nullity of a matrix.
     /// </summary>
     /// <returns>The nullity.</returns>
-    public int Nullity() => Matrix.Nullity(v => v != 0M);
+    public int Nullity() => Matrix.Nullity(Nez);
 
     /// <summary>
     /// Returns the inverse of a square matrix (same number of columns as rows).
@@ -155,7 +155,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the sum of the two operands.</returns>
     public static GeneralMatrixDecimal operator +(GeneralMatrixDecimal m, decimal scalar) =>
-        new(m.Matrix.PerformOperation(v => v + scalar));
+        new(m.Matrix.PerformOperation(v => Add(v, scalar)));
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDecimal"/>.
@@ -164,7 +164,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="m">Right hand <see cref="GeneralMatrixDecimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the sum of the two operands.</returns>
     public static GeneralMatrixDecimal operator +(decimal scalar, GeneralMatrixDecimal m) =>
-        new(m.Matrix.PerformOperation(v => v + scalar));
+        new(m.Matrix.PerformOperation(v => Add(v, scalar)));
 
     /// <summary>
     /// Adds two <see cref="GeneralMatrixDecimal"/>s together.
@@ -174,7 +174,7 @@ public readonly struct GeneralMatrixDecimal
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the sum of the two operands.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static GeneralMatrixDecimal operator +(GeneralMatrixDecimal m1, GeneralMatrixDecimal m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, (v1, v2) => v1 + v2));
+        new(m1.Matrix.PerformOperation(m2.Matrix, Add));
 
     /// <summary>
     /// Generates a new <see cref="GeneralMatrixDecimal"/> from an existing one.
@@ -191,7 +191,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand minus the right hand value.</returns>
     public static GeneralMatrixDecimal operator -(GeneralMatrixDecimal m, decimal scalar) =>
-        new(m.Matrix.PerformOperation(v => v - scalar));
+        new(m.Matrix.PerformOperation(v => Sub(v, scalar)));
 
     /// <summary>
     /// Subtracts each value of a <see cref="GeneralMatrixDecimal"/> from a scalar.
@@ -200,7 +200,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="m">Right hand <see cref="GeneralMatrixDecimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand minus the right hand value.</returns>
     public static GeneralMatrixDecimal operator -(decimal scalar, GeneralMatrixDecimal m) =>
-        new(m.Matrix.PerformOperation(v => scalar - v));
+        new(m.Matrix.PerformOperation(v => Sub(scalar, v)));
 
     /// <summary>
     /// Subtracts one <see cref="GeneralMatrixDecimal"/> from another.
@@ -210,7 +210,7 @@ public readonly struct GeneralMatrixDecimal
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the left hand operand minus the right hand operand.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static GeneralMatrixDecimal operator -(GeneralMatrixDecimal m1, GeneralMatrixDecimal m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, (v1, v2) => v1 - v2));
+        new(m1.Matrix.PerformOperation(m2.Matrix, Sub));
 
     /// <summary>
     /// Negates all values in a <see cref="GeneralMatrixDecimal"/>.
@@ -218,7 +218,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="m">The <see cref="GeneralMatrixDecimal"/> to negate.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> which is the negated operand.</returns>
     public static GeneralMatrixDecimal operator -(GeneralMatrixDecimal m) =>
-        new(m.Matrix.PerformOperation(v => -v));
+        new(m.Matrix.PerformOperation(Neg));
 
     /// <summary>
     /// Multiplies each value of a <see cref="GeneralMatrixDecimal"/> with a scalar.
@@ -227,7 +227,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static GeneralMatrixDecimal operator *(GeneralMatrixDecimal m, decimal scalar) =>
-        new(m.Matrix.PerformOperation(v => v * scalar));
+        new(m.Matrix.PerformOperation(v => Mul(v, scalar)));
 
     /// <summary>
     /// Multiplies a scalar with each value of a <see cref="GeneralMatrixDecimal"/>.
@@ -236,7 +236,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="m2">Right hand <see cref="GeneralMatrixDecimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static GeneralMatrixDecimal operator *(decimal m1, GeneralMatrixDecimal m2) =>
-        new(m2.Matrix.PerformOperation(v => m1 * v));
+        new(m2.Matrix.PerformOperation(v => Mul(m1, v)));
 
     /// <summary>
     /// Multiplies each value of a <see cref="GeneralMatrixDecimal"/> with another <see cref="GeneralMatrixDecimal"/>.
@@ -246,7 +246,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="m2">Right hand <see cref="GeneralMatrixDecimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static GeneralMatrixDecimal operator *(GeneralMatrixDecimal m1, GeneralMatrixDecimal m2) =>
-        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, (v1, v2) => v1 * v2, (v1, v2) => v1 + v2));
+        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, Mul, Add));
 
     /// <summary>
     /// Divides a each value of a <see cref="GeneralMatrixDecimal"/> with a scalar.
@@ -255,7 +255,7 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="scalar">Right hand <see cref="decimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand divided by the right hand value.</returns>
     public static GeneralMatrixDecimal operator /(GeneralMatrixDecimal m, decimal scalar) =>
-        new(m.Matrix.PerformOperation(v => v / scalar));
+        new(m.Matrix.PerformOperation(v => Div(v, scalar)));
 
     /// <summary>
     /// Divides a scalar with each value of a <see cref="GeneralMatrixDecimal"/>.
@@ -264,5 +264,12 @@ public readonly struct GeneralMatrixDecimal
     /// <param name="m2">Right hand <see cref="GeneralMatrixDecimal"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand divided by the right hand value.</returns>
     public static GeneralMatrixDecimal operator /(decimal m1, GeneralMatrixDecimal m2) =>
-        new(m2.Matrix.PerformOperation(v => m1 / v));
+        new(m2.Matrix.PerformOperation(v => Div(m1, v)));
+
+    private static bool Nez(decimal v) => v != 0M;
+    private static decimal Neg(decimal v) => -v;
+    private static decimal Add(decimal v1, decimal v2) => v1 + v2;
+    private static decimal Sub(decimal v1, decimal v2) => v1 - v2;
+    private static decimal Mul(decimal v1, decimal v2) => v1 * v2;
+    private static decimal Div(decimal v1, decimal v2) => v1 / v2;
 }
