@@ -282,6 +282,14 @@ public class GeneralComplexNumberDecimalTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexSinTheoryData))]
+    public void Sin_Should_Get_Sin(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Sin();
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const decimal TestValue0_0 = 0.0M;
@@ -453,6 +461,13 @@ public class GeneralComplexNumberDecimalTests
     {
         { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue4, TestValue5), new GeneralComplexNumberDecimal(-0.7530458367485589629719495710M, -0.9864287886477453438344641986M) },
         { new GeneralComplexNumberDecimal(TestValue2, TestValue3), new GeneralComplexNumberDecimal(TestValue1, TestValue1), new GeneralComplexNumberDecimal(-0.8636068988831278165707669549M, 1.0368893969147761870488673113M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexSinTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(0.8912073600614353399518025777M, 0.0M) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(0.0M, 4.4571051705358935215688163705M) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(4.0709535228000319552577517667M, 2.0217256181409679681515773407M) }
     };
 
     #endregion

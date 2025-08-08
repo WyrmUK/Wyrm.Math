@@ -284,6 +284,14 @@ public class GeneralComplexNumberDoubleTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexSinTheoryData))]
+    public void Sin_Should_Get_Sin(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Sin();
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const double TestValue0_0 = 0.0;
@@ -458,6 +466,13 @@ public class GeneralComplexNumberDoubleTests
     {
         { new GeneralComplexNumberDouble(TestValue2, TestValue3), new GeneralComplexNumberDouble(TestValue4, TestValue5), new GeneralComplexNumberDouble(-0.7530458367485594, -0.9864287886477446) },
         { new GeneralComplexNumberDouble(TestValue2, TestValue3), new GeneralComplexNumberDouble(TestValue1, TestValue1), new GeneralComplexNumberDouble(-0.8636068988831277, 1.0368893969147763) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexSinTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(0.8912073600614354, 0.0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(0.0, 4.457105170535894) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(4.070953522800033, 2.0217256181409677) }
     };
 
     #endregion

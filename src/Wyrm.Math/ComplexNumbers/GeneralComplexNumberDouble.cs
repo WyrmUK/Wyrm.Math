@@ -326,4 +326,20 @@ public readonly struct GeneralComplexNumberDouble
         var imaginary = angle.Sin();
         return new(multiplier * real, multiplier * imaginary);
     }
+
+    /// <summary>
+    /// Gets the sine of this complex angle.
+    /// </summary>
+    /// <returns>The sine of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Sin()
+    {
+        return new GeneralComplexNumberDouble(
+            Real.Sin() * Imaginary.Cosh(),
+            Real.Cos() * Imaginary.Sinh());
+    }
+
+    // TODO: Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2, Cos, Cosh, Sinh, Tan, Tanh
+    // TODO: Cbrt, CopySign, ScaleB
+    // TODO: Exp, Log, Log (base), Log2, Log10,
+    // TODO: Round, Round (digits), Round (algorithm), Round (digits, algorithm)
 }
