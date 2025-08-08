@@ -321,11 +321,11 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalScaleBValues))]
-    public void ScaleB_Should_Return_ScaleB(decimal value, int power, decimal? expected)
+    public void ScaleB_Should_Return_ScaleB(decimal value, int power, decimal? expected, decimal tolerance)
     {
         if (expected.HasValue)
         {
-            value.ScaleB(power).ShouldBe(expected.Value);
+            value.ScaleB(power).ShouldBeWithinTolerance(expected.Value, tolerance);
         }
         else
         {
@@ -342,9 +342,9 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalSinValues))]
-    public void Sin_Should_Return_Sin(decimal value, decimal expected)
+    public void Sin_Should_Return_Sin(decimal value, decimal expected, decimal tolerance)
     {
-        value.Sin().ShouldBe(expected);
+        value.Sin().ShouldBeWithinTolerance(expected, tolerance);
     }
 
     [Theory]
@@ -370,11 +370,11 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalSqrtValues))]
-    public void Sqrt_Should_Return_Sqrt(decimal value, decimal? expected)
+    public void Sqrt_Should_Return_Sqrt(decimal value, decimal? expected, decimal tolerance)
     {
         if (expected.HasValue)
         {
-            value.Sqrt().ShouldBe(expected.Value);
+            value.Sqrt().ShouldBeWithinTolerance(expected.Value, tolerance);
         }
         else
         {
@@ -384,11 +384,11 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalTanValues))]
-    public void Tan_Should_Return_Tan(decimal value, decimal? expected)
+    public void Tan_Should_Return_Tan(decimal value, decimal? expected, decimal tolerance)
     {
         if (expected.HasValue)
         {
-            value.Tan().ShouldBe(expected.Value);
+            value.Tan().ShouldBeWithinTolerance(expected.Value, tolerance);
         }
         else
         {
@@ -603,7 +603,9 @@ public class DecimalExtensionsTests
         { -Decimal.HalfPi, 0M, 0.0000000000000000000000000000M },
         { -Decimal.HalfPi + 0.0000000000000000000000000001M, 0M, 0.0000000000000000000000000000M },
         { -Decimal.Pi / 4M, 0.70710678118654752440084436210484903928483593768847403658833986899536623923M, 0.0000000000000000000000000001M },
+        { -0.7M, 0.7648421872844884262558599901918649092682105503737033560729324582520M, 0.0000000000000000000000000001M },
         { 0M, 1M, 0.0000000000000000000000000000M },
+        { 0.6M, 0.8253356149096782972409524989553760388780910391884703813697497736715M, 0.0000000000000000000000000001M },
         { Decimal.Pi / 4M, 0.70710678118654752440084436210484903928483593768847403658833986899536623923M, 0.0000000000000000000000000001M },
         { Decimal.HalfPi - 0.0000000000000000000000000001M, 0M, 0.0000000000000000000000000000M },
         { Decimal.HalfPi, 0M, 0.0000000000000000000000000000M },
@@ -763,35 +765,37 @@ public class DecimalExtensionsTests
         { 5.625M, -3M, 0.00561865569272976680384087791495198902606310013717421124828532235939643347M, 0.0000000000000000000000000000M }
     };
 
-    public static readonly TheoryData<decimal, int, decimal?> DecimalScaleBValues = new()
+    public static readonly TheoryData<decimal, int, decimal?, decimal> DecimalScaleBValues = new()
     {
-        { 2M, 97, null },
-        { 2M, -94, null },
-        { 1.1M, 5, 35.2M },
-        { 1.1M, -5, 0.034375M },
-        { 2.2M, 66, 162331347848644054220.80M },
-        { 2.2M, -66, 0.0000000000000000000298155598M }
+        { 2M, 97, null, 0.0000000000000000000000000000M },
+        { 2M, -94, null, 0.0000000000000000000000000000M },
+        { 1.1M, 5, 35.2M, 0.0000000000000000000000000000M },
+        { 1.1M, -5, 0.034375M, 0.0000000000000000000000000000M },
+        { 2.2M, 66, 162331347848644054220.80M, 0.0000000000000000000000000000M },
+        { 2.2M, -66, 0.0000000000000000000298155597M, 0.0000000000000000000000000001M }
     };
 
-    public static readonly TheoryData<decimal, decimal> DecimalSinValues = new()
+    public static readonly TheoryData<decimal, decimal, decimal> DecimalSinValues = new()
     {
-        { -Decimal.Pi * 9M / 4M, -0.7071067811865475244008443622M },
-        { -Decimal.TwoPi, 0M },
-        { -Decimal.Pi * 5M / 4M, 0.7071067811865475244008443620M },
-        { -Decimal.Pi, 0M },
-        { -Decimal.Pi * 3M / 4M, -0.7071067811865475244008443621M },
-        { -Decimal.HalfPi, -1M },
-        { -Decimal.Pi / 4M, -0.7071067811865475244008443621M },
-        { -0.0000000000000000000000000002M, -0.0000000000000000000000000002M },
-        { 0M, 0M },
-        { 0.0000000000000000000000000001M, 0.0000000000000000000000000001M },
-        { Decimal.Pi / 4M, 0.7071067811865475244008443621M },
-        { Decimal.HalfPi, 1M },
-        { Decimal.Pi * 3M / 4M, 0.7071067811865475244008443621M },
-        { Decimal.Pi, 0M },
-        { Decimal.Pi * 5M / 4M, -0.7071067811865475244008443620M },
-        { Decimal.TwoPi, 0M },
-        { Decimal.Pi * 9M / 4M, 0.7071067811865475244008443622M }
+        { -Decimal.Pi * 9M / 4M, -0.7071067811865475244008443621048490392848359376884740365883398689953662392M, 0.0000000000000000000000000001M },
+        { -Decimal.TwoPi, 0M, 0.0000000000000000000000000000M },
+        { -Decimal.Pi * 5M / 4M, 0.70710678118654752440084436210484903928483593768847403658833986899536623923M, 0.0000000000000000000000000001M },
+        { -Decimal.Pi, 0M, 0.0000000000000000000000000000M },
+        { -Decimal.Pi * 3M / 4M, -0.7071067811865475244008443621048490392848359376884740365883398689953662392M, 0.0000000000000000000000000000M },
+        { -Decimal.HalfPi, -1M, 0.0000000000000000000000000000M },
+        { -Decimal.Pi / 4M, -0.7071067811865475244008443621048490392848359376884740365883398689953662392M, 0.0000000000000000000000000000M },
+        { -0.7M, -0.644217687237691053672614351398720183065813844573689644743963088093M, 0.0000000000000000000000000002M },
+        { -0.0000000000000000000000000002M, -0.0000000000000000000000000002M, 0.0000000000000000000000000000M },
+        { 0M, 0M, 0.0000000000000000000000000000M },
+        { 0.0000000000000000000000000001M, 0.0000000000000000000000000001M, 0.0000000000000000000000000000M },
+        { 0.6M, 0.5646424733950353572009454456586579071098880849941517710242658942673M, 0.0000000000000000000000000000M },
+        { Decimal.Pi / 4M, 0.70710678118654752440084436210484903928483593768847403658833986899536623923M, 0.0000000000000000000000000000M },
+        { Decimal.HalfPi, 1M, 0.0000000000000000000000000000M },
+        { Decimal.Pi * 3M / 4M, 0.70710678118654752440084436210484903928483593768847403658833986899536623923M, 0.0000000000000000000000000000M },
+        { Decimal.Pi, 0M, 0.0000000000000000000000000000M },
+        { Decimal.Pi * 5M / 4M, -0.7071067811865475244008443621048490392848359376884740365883398689953662392M, 0.0000000000000000000000000001M },
+        { Decimal.TwoPi, 0M, 0.0000000000000000000000000000M },
+        { Decimal.Pi * 9M / 4M, 0.70710678118654752440084436210484903928483593768847403658833986899536623923M, 0.0000000000000000000000000001M }
     };
 
     public static readonly TheoryData<decimal, (decimal Sin, decimal Cos)> DecimalSinCosValues = new()
@@ -834,36 +838,41 @@ public class DecimalExtensionsTests
         { Decimal.Pi * 9M / 4M, 587.241156980398545496832577081479546636213453785485146959009057310851290623M, 0.0000000000000000000000001400M }
     };
 
-    public static readonly TheoryData<decimal, decimal?> DecimalSqrtValues = new()
+    public static readonly TheoryData<decimal, decimal?, decimal> DecimalSqrtValues = new()
     {
-        { -1.1M, null },
-        { 4M, 2M },
-        { 1.1M, 1.0488088481701515469914535137M },
-        { 2.2M, 1.4832396974191325897422794882M },
-        { 0.1M, 0.3162277660168379331998893544M },
-        { 5.625M, 2.3717082451262844989991701583M },
-        { decimal.MaxValue, 281474976710656M }
+        { -1.1M, null, 0.0000000000000000000000000000M  },
+        { 4M, 2M, 0.0000000000000000000000000000M  },
+        { 1.1M, 1.0488088481701515469914535136799375984752718576815039848757557635800M, 0.0000000000000000000000000000M  },
+        { 2.2M, 1.4832396974191325897422794881601426121959808638195003197465246528687M, 0.0000000000000000000000000000M  },
+        { 0.1M, 0.3162277660168379331998893544432718533719555139325216826857504852792M, 0.0000000000000000000000000000M  },
+        { 5.625M, 2.3717082451262844989991701583245389002896663544939126201431286395944M, 0.0000000000000000000000000000M  },
+        { 15M, 3.87298334620741688517926539978239961083292170529159082658757376611348309193M, 0.0000000000000000000000000000M  },
+        { 123M, 11.0905365064094171620516001026099329184633767424540200228773128390850016331M, 0.0000000000000000000000000010M  },
+        { 1234M, 35.1283361405005916058703116253563067645404854787765405690202683926394175654M, 0.0000000000000000000000000010M  },
+        { decimal.MaxValue, 281474976710656M, 0.0000000000000000000000000000M  }
     };
 
-    public static readonly TheoryData<decimal, decimal?> DecimalTanValues = new()
+    public static readonly TheoryData<decimal, decimal?, decimal> DecimalTanValues = new()
     {
-        { -Decimal.Pi * 9M / 4M, -1M },
-        { -Decimal.TwoPi, 0M },
-        { -Decimal.Pi * 5M / 4M, -0.9999999999999999999999999994M },
-        { -Decimal.Pi, 0M },
-        { -Decimal.Pi * 3M / 4M, 0.9999999999999999999999999999M },
-        { -Decimal.HalfPi, null },
-        { -Decimal.Pi / 4M, -0.9999999999999999999999999999M },
-        { -Decimal.Pi / 5M, -0.7265425280053608858954667574M },
-        { 0M, 0M },
-        { Decimal.Pi / 5M, 0.7265425280053608858954667574M },
-        { Decimal.Pi / 4M, 0.9999999999999999999999999999M },
-        { Decimal.HalfPi, null },
-        { Decimal.Pi * 3M / 4M, -0.9999999999999999999999999999M },
-        { Decimal.Pi, 0M },
-        { Decimal.Pi * 5M / 4M, 0.9999999999999999999999999994M },
-        { Decimal.TwoPi, 0M },
-        { Decimal.Pi * 9M / 4M, 1M }
+        { -Decimal.Pi * 9M / 4M, -1M, 0.0000000000000000000000000000M },
+        { -Decimal.TwoPi, 0M, 0.0000000000000000000000000000M },
+        { -Decimal.Pi * 5M / 4M, -1M, 0.0000000000000000000000000006M },
+        { -Decimal.Pi, 0M, 0.0000000000000000000000000000M },
+        { -Decimal.Pi * 3M / 4M, 1M, 0.0000000000000000000000000001M },
+        { -Decimal.HalfPi, null, 0.0000000000000000000000000000M },
+        { -Decimal.Pi / 4M, -1M, 0.0000000000000000000000000001M },
+        { -0.7M, -0.842288380463079448128135002212937717187221250804198998796922513668M, 0.0000000000000000000000000004M },
+        { -Decimal.Pi / 5M, -0.7265425280053608858954667574806187496160923929652084627500663273457493918M, 0.0000000000000000000000000001M },
+        { 0M, 0M, 0.0000000000000000000000000000M },
+        { 0.6M, 0.6841368083416923170709254174633357452426540807567820460373840165174M, 0.0000000000000000000000000001M },
+        { Decimal.Pi / 5M, 0.72654252800536088589546675748061874961609239296520846275006632734574939184M, 0.0000000000000000000000000001M },
+        { Decimal.Pi / 4M, 1M, 0.0000000000000000000000000001M },
+        { Decimal.HalfPi, null, 0.0000000000000000000000000000M },
+        { Decimal.Pi * 3M / 4M, -1M, 0.0000000000000000000000000001M },
+        { Decimal.Pi, 0M, 0.0000000000000000000000000000M },
+        { Decimal.Pi * 5M / 4M, 1M, 0.0000000000000000000000000006M },
+        { Decimal.TwoPi, 0M, 0.0000000000000000000000000000M },
+        { Decimal.Pi * 9M / 4M, 1M, 0.0000000000000000000000000000M }
     };
 
     public static readonly TheoryData<decimal, decimal, decimal> DecimalTanhValues = new()

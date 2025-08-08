@@ -6,9 +6,19 @@ Provides double and decimal extensions.
 ### Decimal
 Decimal constants E, Pi, and Tau.
 ### Double extensions
-Applies all the System.Math methods as extension methods.
+Applies all the System.Math methods as extension methods and adds Sqr.
 ### Decimal extensions
 Replicates the System.Math methods for decimals as extension methods.
+Abs, Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2,
+BitDecrement, BitIncrement,
+Cbrt, Ceiling, CopySign, Clamp, Cos, Cosh,
+Exp, Floor, FusedMultiplyAdd, IEEERemainder, ILogB,
+Log, Log (to base), Log2, Log10,
+Max, MaxMagnitude, Min, MinMagnitude, Pow,
+ReciprocalEstimate, ReciprocalSqrtEstimate,
+Round, Round (to digits), Round (with algorithm), Round (to digits with algorithm),
+ScaleB, Sign, Sin, SinCos, Sinh, Sqr, Sqrt,
+Tan, Tanh, Truncate.
 
 ## Wyrm.Math.ComplexNumbers
 Provides complex number arithmetic.
