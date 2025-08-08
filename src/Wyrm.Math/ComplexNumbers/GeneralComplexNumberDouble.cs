@@ -328,7 +328,7 @@ public readonly struct GeneralComplexNumberDouble
     }
 
     /// <summary>
-    /// Gets the sine of this complex angle.
+    /// Gets the sine of this complex angle (radians).
     /// </summary>
     /// <returns>The sine of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
     public GeneralComplexNumberDouble Sin()
@@ -339,7 +339,7 @@ public readonly struct GeneralComplexNumberDouble
     }
 
     /// <summary>
-    /// Gets the cosine of this complex angle.
+    /// Gets the cosine of this complex angle (radians).
     /// </summary>
     /// <returns>The cosine of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
     public GeneralComplexNumberDouble Cos()
@@ -350,7 +350,7 @@ public readonly struct GeneralComplexNumberDouble
     }
 
     /// <summary>
-    /// Gets the tangent of this complex angle.
+    /// Gets the tangent of this complex angle (radians).
     /// </summary>
     /// <returns>The tangent of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
     public GeneralComplexNumberDouble Tan()

@@ -328,7 +328,7 @@ public readonly struct GeneralComplexNumberDecimal
     }
 
     /// <summary>
-    /// Gets the sine of this complex angle.
+    /// Gets the sine of this complex angle (radians).
     /// </summary>
     /// <returns>The sine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
     public GeneralComplexNumberDecimal Sin()
@@ -339,7 +339,7 @@ public readonly struct GeneralComplexNumberDecimal
     }
 
     /// <summary>
-    /// Gets the cosine of this complex angle.
+    /// Gets the cosine of this complex angle (radians).
     /// </summary>
     /// <returns>The cosine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
     public GeneralComplexNumberDecimal Cos()
@@ -350,7 +350,7 @@ public readonly struct GeneralComplexNumberDecimal
     }
 
     /// <summary>
-    /// Gets the tangent of this complex angle.
+    /// Gets the tangent of this complex angle (radians).
     /// </summary>
     /// <returns>The tangent of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
     public GeneralComplexNumberDecimal Tan()
@@ -358,7 +358,7 @@ public readonly struct GeneralComplexNumberDecimal
         return Sin() / Cos();
     }
 
-    // TODO: Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2, Cosh, Sinh, Tan, Tanh
+    // TODO: Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2, Cosh, Sinh, Tanh
     // TODO: Cbrt, CopySign, ScaleB
     // TODO: Exp, Log, Log (base), Log2, Log10,
     // TODO: Round, Round (digits), Round (algorithm), Round (digits, algorithm)

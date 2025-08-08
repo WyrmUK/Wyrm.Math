@@ -99,6 +99,18 @@ Z^n = Z.Pow(n)
 Z^z = Z.Pow(z)
 
 Raises a complex number by a power either real or complex.
+#### Sine
+Za = Z.Sin()
+
+Returns the sine of a complex number (radians).
+#### Cosine
+Za = Z.Cos()
+
+Returns the cosine of a complex number (radians).
+#### Tangent
+Za = Z.Tan()
+
+Returns the tangent of a complex number (radians).
 
 ## Wyrm.Math.Matrix
 Provides matrix arithmetic.
