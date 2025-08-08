@@ -436,7 +436,7 @@ public class GeneralMatrixDecimalTests
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), TestValue20_2, new GeneralMatrixDecimal([[TestValue1_1 - TestValue20_2, TestValue2_2 - TestValue20_2, TestValue3_3 - TestValue20_2], [TestValue4_4 - TestValue20_2, TestValue5_5 - TestValue20_2, TestValue6_6 - TestValue20_2]]) }
         };
 
-    public static readonly TheoryData<Decimal, GeneralMatrixDecimal, GeneralMatrixDecimal> TestSubtractionScalarTheoryData =
+    public static readonly TheoryData<decimal, GeneralMatrixDecimal, GeneralMatrixDecimal> TestSubtractionScalarTheoryData =
         new()
         {
             { TestValue20_2, new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDecimal([[TestValue20_2 - TestValue1_1, TestValue20_2 - TestValue2_2, TestValue20_2 - TestValue3_3], [TestValue20_2 - TestValue4_4, TestValue20_2 - TestValue5_5, TestValue20_2 - TestValue6_6]]) }

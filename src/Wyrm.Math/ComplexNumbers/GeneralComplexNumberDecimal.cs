@@ -132,14 +132,14 @@ public readonly struct GeneralComplexNumberDecimal
     /// </summary>
     /// <returns>The absolute value.</returns>
     public decimal Abs() =>
-        (decimal)System.Math.Sqrt((double)((decimal)System.Math.Pow((double)Real, 2.0) + (decimal)System.Math.Pow((double)Imaginary, 2.0)));
+        (Real.Sqr() + Imaginary.Sqr()).Sqrt();
 
     /// <summary>
     /// Returns the argument value.
     /// </summary>
     /// <returns>The argument value.</returns>
     public decimal Argument() =>
-        (decimal)System.Math.Atan2((double)Imaginary, (double)Real);
+        Imaginary.Atan2(Real);
 
     /// <summary>
     /// Returns the inverse value.
@@ -147,7 +147,7 @@ public readonly struct GeneralComplexNumberDecimal
     /// <returns>The inverse value.</returns>
     public GeneralComplexNumberDecimal Inverse()
     {
-        var divisor = (decimal)System.Math.Pow((double)Real, 2.0) + (decimal)System.Math.Pow((double)Imaginary, 2.0);
+        var divisor = Real.Sqr() + Imaginary.Sqr();
         var real = Real / divisor;
         var imaginary = -(Imaginary / divisor);
         return new(real, imaginary);
@@ -278,16 +278,36 @@ public readonly struct GeneralComplexNumberDecimal
         new(c1 * c2.Inverse());
 
     /// <summary>
+    /// Squares a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <returns>The square as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Sqr() =>
+        this * this;
+
+    /// <summary>
+    /// Squares a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <returns>The square as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Sqrt()
+    {
+        var multiplier = Abs().Sqrt();
+        var angle = 0.5M * Argument();
+        var real = angle.Cos();
+        var imaginary = angle.Sin();
+        return new(multiplier * real, multiplier * imaginary);
+    }
+
+    /// <summary>
     /// Raises a <see cref="GeneralComplexNumberDecimal"/> by a power.
     /// </summary>
     /// <param name="power">The power to raise by.</param>
     /// <returns>The power as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
     public GeneralComplexNumberDecimal Pow(decimal power)
     {
-        var multiplier = (decimal)System.Math.Pow((double)Abs(), (double)power);
-        var angle = (double)(power * Argument());
-        var real = (decimal)System.Math.Cos(angle);
-        var imaginary = (decimal)System.Math.Sin(angle);
+        var multiplier = Abs().Pow(power);
+        var angle = power * Argument();
+        var real = angle.Cos();
+        var imaginary = angle.Sin();
         return new(multiplier * real, multiplier * imaginary);
     }
 
@@ -298,12 +318,12 @@ public readonly struct GeneralComplexNumberDecimal
     /// <returns>The power as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
     public GeneralComplexNumberDecimal Pow(GeneralComplexNumberDecimal power)
     {
-        var factor = (decimal)System.Math.Pow((double)Real, 2.0) + (decimal)System.Math.Pow((double)Imaginary, 2.0);
-        var atan = (decimal)System.Math.Atan((double)Imaginary / (double)Real);
-        var multiplier = (decimal)System.Math.Pow(System.Math.Sqrt((double)factor), (double)power.Real) * (decimal)System.Math.Pow(System.Math.E, (double)(-power.Imaginary * atan));
-        var angle = power.Imaginary * (decimal)System.Math.Log((double)factor) / 2M + power.Real * atan;
-        var real = (decimal)System.Math.Cos((double)angle);
-        var imaginary = (decimal)System.Math.Sin((double)angle);
+        var factor = Real.Sqr() + Imaginary.Sqr();
+        var atan = (Imaginary / Real).Atan();
+        var multiplier = factor.Sqrt().Pow(power.Real) * (-power.Imaginary * atan).Exp();
+        var angle = power.Imaginary * factor.Log() / 2M + power.Real * atan;
+        var real = angle.Cos();
+        var imaginary = angle.Sin();
         return new(multiplier * real, multiplier * imaginary);
     }
 }

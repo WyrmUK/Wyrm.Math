@@ -83,7 +83,7 @@ internal readonly struct GeneralMatrix<T> where T : struct
         return builder.ToString();
     }
 
-    private static readonly char[] DecimalPointSplit = new[] { '.' };
+    private static readonly char[] DecimalPointSplit = ['.'];
 
     private List<string[]> StringValues(out List<int> leftWidths, out List<int> rightWidths)
     {

@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using Wyrm.Math.ComplexNumbers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Wyrm.Math.UnitTests.ComplexNumbers;
 
@@ -252,6 +253,22 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestSqrTheoryData))]
+    public void Sqr_Should_Raise_To_Power2(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Sqr();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestSqrtTheoryData))]
+    public void Sqrt_Should_Raise_To_PowerHalf(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Sqrt();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestPowerTheoryData))]
     public void Pow_Should_Raise_To_Power(GeneralComplexNumberDouble c, double power, GeneralComplexNumberDouble expected)
     {
@@ -280,6 +297,7 @@ public class GeneralComplexNumberDoubleTests
     public const double TestValue8 = 2 * TestValue4;
     public const double TestValue9 = TestValue1 + TestValue8;
     public const double TestValue10 = 2 * TestValue5;
+    public const double TestValue12 = 2 * TestValue6;
     public const double TestValue46 = 4 * TestValue10 + TestValue6;
     public const double TestValue1_1 = 1.1;
     public const double TestValue2_2 = 2.2;
@@ -412,17 +430,33 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(-TestValue2, -TestValue4), new GeneralComplexNumberDouble(TestValue1, TestValue2), new GeneralComplexNumberDouble(-TestValue2, TestValue0_0) }
     };
 
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestSqrTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(-TestValue1, TestValue0_0), new GeneralComplexNumberDouble(TestValue1, TestValue0_0) },
+        { new GeneralComplexNumberDouble(-TestValue1, TestValue1), new GeneralComplexNumberDouble(TestValue0_0, -TestValue2) },
+        { new GeneralComplexNumberDouble(TestValue2, TestValue3), new GeneralComplexNumberDouble(-TestValue5, TestValue12) },
+        { new GeneralComplexNumberDouble(-TestValue2, -TestValue3), new GeneralComplexNumberDouble(-TestValue5, TestValue12 ) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestSqrtTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(-TestValue1, TestValue0_0), new GeneralComplexNumberDouble(6.123233995736766E-17, TestValue1) },
+        { new GeneralComplexNumberDouble(-TestValue1, TestValue1), new GeneralComplexNumberDouble(0.4550898605622274, 1.0986841134678098) },
+        { new GeneralComplexNumberDouble(TestValue2, TestValue3), new GeneralComplexNumberDouble(1.6741492280355401, 0.895977476129838) },
+        { new GeneralComplexNumberDouble(-TestValue2, -TestValue3), new GeneralComplexNumberDouble(0.8959774761298382, -1.67414922803554 ) }
+    };
+
     public static readonly TheoryData<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble> TestPowerTheoryData = new()
     {
         { new GeneralComplexNumberDouble(-TestValue1, TestValue0_0), 1/TestValue2, new GeneralComplexNumberDouble(6.123233995736766E-17, TestValue1) },
-        { new GeneralComplexNumberDouble(-TestValue1, TestValue1), 1/TestValue2, new GeneralComplexNumberDouble(0.4550898605622274, 1.0986841134678098 ) },
+        { new GeneralComplexNumberDouble(-TestValue1, TestValue1), 1/TestValue2, new GeneralComplexNumberDouble(0.4550898605622274, 1.0986841134678098) },
         { new GeneralComplexNumberDouble(TestValue2, TestValue3), TestValue3, new GeneralComplexNumberDouble(Error1 -TestValue46, Error7 + TestValue9) },
         { new GeneralComplexNumberDouble(TestValue2, TestValue3), 1/TestValue5, new GeneralComplexNumberDouble(1.2675064916851109046661051638234937044436136265775244534793767519, 0.25239838721931698566646353755954970269087802267183946002182012880 ) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexPowerTheoryData = new()
     {
-        { new GeneralComplexNumberDouble(TestValue2, TestValue3), new GeneralComplexNumberDouble(TestValue4, TestValue5), new GeneralComplexNumberDouble(-0.7530458367485597, -0.986428788647745) },
+        { new GeneralComplexNumberDouble(TestValue2, TestValue3), new GeneralComplexNumberDouble(TestValue4, TestValue5), new GeneralComplexNumberDouble(-0.7530458367485594, -0.9864287886477446) },
         { new GeneralComplexNumberDouble(TestValue2, TestValue3), new GeneralComplexNumberDouble(TestValue1, TestValue1), new GeneralComplexNumberDouble(-0.8636068988831277, 1.0368893969147763) }
     };
 

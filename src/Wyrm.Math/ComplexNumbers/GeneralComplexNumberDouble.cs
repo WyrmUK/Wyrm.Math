@@ -132,14 +132,14 @@ public readonly struct GeneralComplexNumberDouble
     /// </summary>
     /// <returns>The absolute value.</returns>
     public double Abs() =>
-        System.Math.Sqrt(System.Math.Pow(Real, 2.0) + System.Math.Pow(Imaginary, 2.0));
+        (Real.Sqr() + Imaginary.Sqr()).Sqrt();
 
     /// <summary>
     /// Returns the argument value.
     /// </summary>
     /// <returns>The argument value.</returns>
     public double Argument() =>
-        System.Math.Atan2(Imaginary, Real);
+        Imaginary.Atan2(Real);
 
     /// <summary>
     /// Returns the inverse value.
@@ -147,7 +147,7 @@ public readonly struct GeneralComplexNumberDouble
     /// <returns>The inverse value.</returns>
     public GeneralComplexNumberDouble Inverse()
     {
-        var divisor = System.Math.Pow(Real, 2.0) + System.Math.Pow(Imaginary, 2.0);
+        var divisor = Real.Sqr() + Imaginary.Sqr();
         var real = Real / divisor;
         var imaginary = -(Imaginary / divisor);
         return new(real, imaginary);
@@ -278,16 +278,36 @@ public readonly struct GeneralComplexNumberDouble
         new(c1 * c2.Inverse());
 
     /// <summary>
+    /// Squares a <see cref="GeneralComplexNumberDouble"/>.
+    /// </summary>
+    /// <returns>The square as a <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Sqr() =>
+        this * this;
+
+    /// <summary>
+    /// Squares a <see cref="GeneralComplexNumberDouble"/>.
+    /// </summary>
+    /// <returns>The square as a <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Sqrt()
+    {
+        var multiplier = Abs().Sqrt();
+        var angle = 0.5 * Argument();
+        var real = angle.Cos();
+        var imaginary = angle.Sin();
+        return new(multiplier * real, multiplier * imaginary);
+    }
+
+    /// <summary>
     /// Raises a <see cref="GeneralComplexNumberDouble"/> by a power.
     /// </summary>
     /// <param name="power">The power to raise by.</param>
     /// <returns>The power as a <see cref="GeneralComplexNumberDouble"/>.</returns>
     public GeneralComplexNumberDouble Pow(double power)
     {
-        var multiplier = System.Math.Pow(Abs(), power);
+        var multiplier = Abs().Pow(power);
         var angle = power * Argument();
-        var real = System.Math.Cos(angle);
-        var imaginary = System.Math.Sin(angle);
+        var real = angle.Cos();
+        var imaginary = angle.Sin();
         return new(multiplier * real, multiplier * imaginary);
     }
 
@@ -298,12 +318,12 @@ public readonly struct GeneralComplexNumberDouble
     /// <returns>The power as a <see cref="GeneralComplexNumberDouble"/>.</returns>
     public GeneralComplexNumberDouble Pow(GeneralComplexNumberDouble power)
     {
-        var factor = System.Math.Pow(Real, 2.0) + System.Math.Pow(Imaginary, 2.0);
-        var atan = System.Math.Atan(Imaginary / Real);
-        var multiplier = System.Math.Pow(System.Math.Sqrt(factor), power.Real) * System.Math.Pow(System.Math.E, -power.Imaginary * atan );
-        var angle = power.Imaginary * System.Math.Log(factor) / 2.0 + power.Real * atan;
-        var real = System.Math.Cos(angle);
-        var imaginary = System.Math.Sin(angle);
+        var factor = Real.Sqr() + Imaginary.Sqr();
+        var atan = (Imaginary / Real).Atan();
+        var multiplier = factor.Sqrt().Pow(power.Real) * (-power.Imaginary * atan).Exp();
+        var angle = power.Imaginary * factor.Log() / 2.0 + power.Real * atan;
+        var real = angle.Cos();
+        var imaginary = angle.Sin();
         return new(multiplier * real, multiplier * imaginary);
     }
 }
