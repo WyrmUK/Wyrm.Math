@@ -194,9 +194,9 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalLogBaseValues))]
-    public void LogBase_Should_Return_LogBase(decimal value, decimal newBase, decimal expected)
+    public void LogBase_Should_Return_LogBase(decimal value, decimal newBase, decimal expected, decimal tolerance)
     {
-        value.Log(newBase).ShouldBe(expected);
+        value.Log(newBase).ShouldBeWithinTolerance(expected, tolerance);
     }
 
     [Theory]
@@ -708,14 +708,14 @@ public class DecimalExtensionsTests
         { 33.115451958692313750653249350M, 3.4999999999999999999999999999882648048120713560734203117343180927565M, 0.0000000000000000000000000005M }
     };
 
-    public static readonly TheoryData<decimal, decimal, decimal> DecimalLogBaseValues = new()
+    public static readonly TheoryData<decimal, decimal, decimal, decimal> DecimalLogBaseValues = new()
     {
-        { 0.01562M, 2M, -6.0004617362948324217454873067M },
-        { 0.015625M, 2M, -5.9999999999999999999999999986M },
-        { 0.01562M, 10M, -1.8063189704587184779432316986M },
-        { 0.015625M, 10M, -1.8061799739838871712824333682M },
-        { 0.01562M, 15M, -1.5358663339689012456107434063M },
-        { 0.015625M, 15M, -1.5357481488588929363260660733M },
+        { 0.01562M, 2M, -6.000461736294832421745487309095132270225080283947662186133579595871M, 0.0000000000000000000000000024M },
+        { 0.015625M, 2M, -6M, 0.0000000000000000000000000014M },
+        { 0.01562M, 10M, -1.806318970458718477943231698997053596254688026471046387816383649061M, 0.0000000000000000000000000004M },
+        { 0.015625M, 10M, -1.806179973983887171282433368346958160609139288772651247862564766762M, 0.0000000000000000000000000001M },
+        { 0.01562M, 15M, -1.535866333968901245610743406385785212350772221132759214241401665336M, 0.0000000000000000000000000001M },
+        { 0.015625M, 15M, -1.535748148858892936326066073188813622429651278553406853611092585577M, 0.0000000000000000000000000001M },
     };
 
     public static readonly TheoryData<decimal, decimal> DecimalLog2Values = new()
