@@ -298,6 +298,14 @@ public class GeneralComplexNumberDecimalTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexTanTheoryData))]
+    public void Tan_Should_Get_Tan(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Tan();
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const decimal TestValue0_0 = 0.0M;
@@ -483,6 +491,13 @@ public class GeneralComplexNumberDecimalTests
         { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(0.4535961214255773877713700517M, 0.0M) },
         { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(4.5679083288982274049029607963M, 0.0M) },
         { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(2.0719855010158266488314712904M, -3.9722049325494672219512575164M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexTanTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(1.9647596572486519509309227817M, 0.0M) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(0.0M, 0.9757431300314515204143066679M) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(0.0201403720704808721675947027M, 1.0143542521857925809578028328M) }
     };
 
     #endregion

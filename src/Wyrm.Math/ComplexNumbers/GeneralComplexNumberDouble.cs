@@ -349,7 +349,16 @@ public readonly struct GeneralComplexNumberDouble
             -Real.Sin() * Imaginary.Sinh());
     }
 
-    // TODO: Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2, Cosh, Sinh, Tan, Tanh
+    /// <summary>
+    /// Gets the tangent of this complex angle.
+    /// </summary>
+    /// <returns>The tangent of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Tan()
+    {
+        return Sin() / Cos();
+    }
+
+    // TODO: Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2, Cosh, Sinh, Tanh
     // TODO: Cbrt, CopySign, ScaleB
     // TODO: Exp, Log, Log (base), Log2, Log10,
     // TODO: Round, Round (digits), Round (algorithm), Round (digits, algorithm)

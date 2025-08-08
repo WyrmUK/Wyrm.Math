@@ -300,6 +300,14 @@ public class GeneralComplexNumberDoubleTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexTanTheoryData))]
+    public void Tan_Should_Get_Tan(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Tan();
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const double TestValue0_0 = 0.0;
@@ -488,6 +496,13 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(0.4535961214255773, -0.0) },
         { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(4.567908328898228, -0.0) },
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(2.0719855010158263, -3.972204932549468) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexTanTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(1.9647596572486525, 0.0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(0.0, 0.9757431300314515) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(0.020140372070480916, 1.0143542521857927) }
     };
 
     #endregion

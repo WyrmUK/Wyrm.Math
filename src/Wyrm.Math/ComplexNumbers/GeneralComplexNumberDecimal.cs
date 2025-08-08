@@ -349,6 +349,15 @@ public readonly struct GeneralComplexNumberDecimal
             -Real.Sin() * Imaginary.Sinh());
     }
 
+    /// <summary>
+    /// Gets the tangent of this complex angle.
+    /// </summary>
+    /// <returns>The tangent of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Tan()
+    {
+        return Sin() / Cos();
+    }
+
     // TODO: Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2, Cosh, Sinh, Tan, Tanh
     // TODO: Cbrt, CopySign, ScaleB
     // TODO: Exp, Log, Log (base), Log2, Log10,
