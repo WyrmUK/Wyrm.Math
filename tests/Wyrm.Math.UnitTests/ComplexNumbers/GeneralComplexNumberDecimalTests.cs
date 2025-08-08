@@ -290,6 +290,14 @@ public class GeneralComplexNumberDecimalTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexCosTheoryData))]
+    public void Cos_Should_Get_Cos(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Cos();
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const decimal TestValue0_0 = 0.0M;
@@ -468,6 +476,13 @@ public class GeneralComplexNumberDecimalTests
         { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(0.8912073600614353399518025777M, 0.0M) },
         { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(0.0M, 4.4571051705358935215688163705M) },
         { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(4.0709535228000319552577517667M, 2.0217256181409679681515773407M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexCosTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(0.4535961214255773877713700517M, 0.0M) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(4.5679083288982274049029607963M, 0.0M) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(2.0719855010158266488314712904M, -3.9722049325494672219512575164M) }
     };
 
     #endregion
