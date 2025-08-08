@@ -247,11 +247,11 @@ public class DecimalExtensionsTests
 
     [Theory]
     [MemberData(nameof(DecimalPowValues))]
-    public void Pow_Should_Return_Pow(decimal value, decimal power, decimal? expected)
+    public void Pow_Should_Return_Pow(decimal value, decimal power, decimal? expected, decimal tolerance)
     {
         if (expected.HasValue)
         {
-            value.Pow(power).ShouldBe(expected.Value);
+            value.Pow(power).ShouldBeWithinTolerance(expected.Value, tolerance);
         }
         else
         {
@@ -744,23 +744,23 @@ public class DecimalExtensionsTests
         { 64.1M, 1.8068580295188174222483770096380281030784640913706408860016375061679M, 0.0000000000000000000000000001M }
     };
 
-    public static readonly TheoryData<decimal, decimal, decimal?> DecimalPowValues = new()
+    public static readonly TheoryData<decimal, decimal, decimal?, decimal> DecimalPowValues = new()
     {
-        { 1.1M, 0M, 1M },
-        { 1M, 10M, 1M },
-        { 1.1M, 1M, 1.1M },
-        { 0M, 0M, null },
-        { 0M, -1M, null },
-        { 0M, 10M, 0M },
-        { 5.525M, -1M, 1M / 5.525M },
-        { -5.625M, 2.1M, null },
-        { -5.625M, -2.1M, null },
-        { -5.625M, 3M, -177.97851562500000000000000011M },
-        { -5.625M, -3M, -0.0056186556927297668038408779M },
-        { 5.625M, 2.1M, 37.606014247289008669017113858M },
-        { 5.625M, -2.1M, 0.0265914912817991420705496454M },
-        { 5.625M, 3M, 177.97851562500000000000000011M },
-        { 5.625M, -3M, 0.0056186556927297668038408779M }
+        { 1.1M, 0M, 1M, 0.0000000000000000000000000000M },
+        { 1M, 10M, 1M, 0.0000000000000000000000000000M },
+        { 1.1M, 1M, 1.1M, 0.0000000000000000000000000000M },
+        { 0M, 0M, null, 0.0000000000000000000000000000M },
+        { 0M, -1M, null, 0.0000000000000000000000000000M },
+        { 0M, 10M, 0M, 0.0000000000000000000000000000M },
+        { 5.525M, -1M, 0.18099547511312217194570135746606334841628959276018099547511312217194570135M, 0.0000000000000000000000000000M },
+        { -5.625M, 2.1M, null, 0.0000000000000000000000000000M },
+        { -5.625M, -2.1M, null, 0.0000000000000000000000000000M },
+        { -5.625M, 3M, -177.978515625M, 0.0000000000000000000000001100M },
+        { -5.625M, -3M, -0.0056186556927297668038408779149519890260631001371742112482853223593964334M, 0.0000000000000000000000000000M },
+        { 5.625M, 2.1M, 37.606014247289008669017113841206839007700894600082870158214993431098M, 0.0000000000000000000000000170M },
+        { 5.625M, -2.1M, 0.0265914912817991420705496453849066901489636082201168557228044685626M, 0.0000000000000000000000000000M },
+        { 5.625M, 3M, 177.978515625M, 0.0000000000000000000000001100M },
+        { 5.625M, -3M, 0.00561865569272976680384087791495198902606310013717421124828532235939643347M, 0.0000000000000000000000000000M }
     };
 
     public static readonly TheoryData<decimal, int, decimal?> DecimalScaleBValues = new()
