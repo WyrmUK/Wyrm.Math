@@ -357,9 +357,45 @@ public readonly struct GeneralComplexNumberDouble
     {
         return Sin() / Cos();
     }
+    /*
+    /// <summary>
+    /// Gets the angle that this complex number is the sine of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDouble Asin()
+    {
+        // TODO
+    }
 
-    // TODO: Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2, Cosh, Sinh, Tanh
+    /// <summary>
+    /// Gets the angle that this complex number is the cosine of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDouble Acos()
+    {
+        // TODO
+    }
+
+    /// <summary>
+    /// Gets the angle that this complex number is the tangent of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDouble Atan()
+    {
+        // TODO
+    }
+    */
+    // TODO: Acosh, Asinh, Atanh, Atan2, Cosh, Sinh, Tanh
     // TODO: Cbrt, CopySign, ScaleB
-    // TODO: Exp, Log, Log (base), Log2, Log10,
+
+    /// <summary>
+    /// Gets the principal natural logarithm of this complex number.
+    /// </summary>
+    /// <returns>The principal natural logarithm.</returns>
+    public GeneralComplexNumberDouble Log()
+    {
+        return new GeneralComplexNumberDouble(Abs().Log(), Argument());
+    }
+    // TODO: Exp, Log (base), Log2, Log10,
     // TODO: Round, Round (digits), Round (algorithm), Round (digits, algorithm)
 }
