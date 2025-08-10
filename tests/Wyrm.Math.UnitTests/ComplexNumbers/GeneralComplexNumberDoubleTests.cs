@@ -333,6 +333,30 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexSinhTheoryData))]
+    public void Sinh_Should_Get_Sinh(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Sinh();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexCoshTheoryData))]
+    public void Cosh_Should_Get_Cosh(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Cosh();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexTanhTheoryData))]
+    public void Tanh_Should_Get_Tanh(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Tanh();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexLogTheoryData))]
     public void Log_Should_Get_Log(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
     {
@@ -518,53 +542,92 @@ public class GeneralComplexNumberDoubleTests
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexSinTheoryData = new()
     {
-        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(0.8912073600614354, 0.0) },
-        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(0.0, 4.457105170535894) },
-        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(4.070953522800033, 2.0217256181409677) }
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(0.8912073600614354, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(TestValue0_0, 4.457105170535894) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(4.070953522800033, 2.0217256181409677) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(TestValue0_0, -4.457105170535894) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(4.070953522800033, -2.0217256181409677) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-4.070953522800033, -2.0217256181409677) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexCosTheoryData = new()
     {
-        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(0.4535961214255773, -0.0) },
-        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(4.567908328898228, -0.0) },
-        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(2.0719855010158263, -3.972204932549468) }
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(0.4535961214255773, -TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(4.567908328898228, -TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(2.0719855010158263, -3.972204932549468) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(4.567908328898228, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(2.0719855010158263, 3.972204932549468) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(2.0719855010158263, -3.972204932549468) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexTanTheoryData = new()
     {
-        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(1.9647596572486525, 0.0) },
-        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(0.0, 0.9757431300314515) },
-        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(0.020140372070480916, 1.0143542521857927) }
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(1.9647596572486525, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(TestValue0_0, 0.9757431300314515) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(0.020140372070480916, 1.0143542521857927) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(TestValue0_0, -0.9757431300314515) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(0.020140372070480916, -1.0143542521857927) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-0.020140372070480916, -1.0143542521857927) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexAsinTheoryData = new()
     {
-        { new GeneralComplexNumberDouble(0.8912073600614353, 0.0), new GeneralComplexNumberDouble(1.0999999999999999, TestValue0_0) },
-        { new GeneralComplexNumberDouble(0.0, 4.457105170535893), new GeneralComplexNumberDouble(TestValue0_0, 2.200000000000002) },
+        { new GeneralComplexNumberDouble(0.8912073600614353, TestValue0_0), new GeneralComplexNumberDouble(1.0999999999999999, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, 4.457105170535893), new GeneralComplexNumberDouble(TestValue0_0, 2.200000000000002) },
         { new GeneralComplexNumberDouble(4.070953522800032, 2.021725618140968), new GeneralComplexNumberDouble(1.1000000000000014, 2.199999999999999) },
-        { new GeneralComplexNumberDouble(0.0, -4.457105170535893), new GeneralComplexNumberDouble(TestValue0_0, -2.1999999999999997) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -4.457105170535893), new GeneralComplexNumberDouble(TestValue0_0, -2.1999999999999997) },
         { new GeneralComplexNumberDouble(4.070953522800032, -2.021725618140968), new GeneralComplexNumberDouble(1.0999999999999999, -2.1999999999999997) },
         { new GeneralComplexNumberDouble(-4.070953522800032, -2.021725618140968), new GeneralComplexNumberDouble(-1.0999999999999999, -2.1999999999999997) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexAcosTheoryData = new()
     {
-        { new GeneralComplexNumberDouble(0.45359612142557737, 0.0), new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0) },
-        { new GeneralComplexNumberDouble(4.567908328898228, 0.0), new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
+        { new GeneralComplexNumberDouble(0.45359612142557737, TestValue0_0), new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0) },
+        { new GeneralComplexNumberDouble(4.567908328898228, TestValue0_0), new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
         { new GeneralComplexNumberDouble(2.071985501015827, -3.972204932549467), new GeneralComplexNumberDouble(1.0999999999999999, 2.1999999999999997) },
-        { new GeneralComplexNumberDouble(-4.567908328898228, 0.0), new GeneralComplexNumberDouble(3.1415926535897905, -2.200000000000002) },
+        { new GeneralComplexNumberDouble(-4.567908328898228, TestValue0_0), new GeneralComplexNumberDouble(3.1415926535897905, -2.200000000000002) },
         { new GeneralComplexNumberDouble(2.071985501015827, 3.972204932549467), new GeneralComplexNumberDouble(1.0999999999999976, -2.200000000000006) },
         { new GeneralComplexNumberDouble(-2.071985501015827, 3.972204932549467), new GeneralComplexNumberDouble(2.0415926535897952, -2.200000000000006) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexAtanTheoryData = new()
     {
-        { new GeneralComplexNumberDouble(1.9647596572486519509309227818, 0.0), new GeneralComplexNumberDouble(TestValue1_1, 5.551115123125783E-17) },
-        { new GeneralComplexNumberDouble(0.0, 0.9757431300314515204143066680), new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
+        { new GeneralComplexNumberDouble(1.9647596572486519509309227818, TestValue0_0), new GeneralComplexNumberDouble(TestValue1_1, 5.551115123125783E-17) },
+        { new GeneralComplexNumberDouble(TestValue0_0, 0.9757431300314515204143066680), new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
         { new GeneralComplexNumberDouble(0.0201403720704808721675947027, 1.0143542521857925809578028326), new GeneralComplexNumberDouble(1.1000000000000014, 2.199999999999999) },
-        { new GeneralComplexNumberDouble(0.0, -0.9757431300314515204143066680), new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -0.9757431300314515204143066680), new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2) },
         { new GeneralComplexNumberDouble(0.0201403720704808721675947027, -1.0143542521857925809578028326), new GeneralComplexNumberDouble(1.1000000000000014, -2.199999999999999) },
         { new GeneralComplexNumberDouble(-0.0201403720704808721675947027, -1.0143542521857925809578028326), new GeneralComplexNumberDouble(-1.1000000000000014, -2.199999999999999) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexSinhTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(1.335647470124177, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(-TestValue0_0, 0.8084964038195901) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(-0.7860300284273543, 1.3489912504715575) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(-TestValue0_0, -0.8084964038195901) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-0.7860300284273543, -1.3489912504715575) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(0.7860300284273543, -1.3489912504715575) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexCoshTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(1.6685185538222564, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(-0.5885011172553458, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(-0.9819250330856718, 1.0798661763661304) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(-0.5885011172553458, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-0.9819250330856718, -1.0798661763661304) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-0.9819250330856718, 1.0798661763661304) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexTanhTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(0.8004990217606297, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(TestValue0_0, -1.3738230567687948) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(1.0461275040217015, -0.22335059736995666) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(TestValue0_0, 1.3738230567687948) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(1.0461275040217015, 0.22335059736995666) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-1.0461275040217015, 0.22335059736995666) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexLogTheoryData = new()

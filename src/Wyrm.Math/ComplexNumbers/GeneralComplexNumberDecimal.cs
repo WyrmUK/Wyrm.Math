@@ -389,7 +389,39 @@ public readonly struct GeneralComplexNumberDecimal
         return ((1.0M + iz) / (1.0M - iz)).Log() * -I2;
     }
 
-    // TODO: Sinh, Cosh, Tanh, Asinh, Acosh, Atanh
+    /// <summary>
+    /// Gets the hyperbolic sine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic sine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Sinh()
+    {
+        return new GeneralComplexNumberDecimal(
+            Real.Sinh() * Imaginary.Cos(),
+            Real.Cosh() * Imaginary.Sin());
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic cosine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic cosine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Cosh()
+    {
+        return new GeneralComplexNumberDecimal(
+            Real.Cosh() * Imaginary.Cos(),
+            Real.Sinh() * Imaginary.Sin());
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic tangent of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic tangent of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Tanh()
+    {
+        return new GeneralComplexNumberDecimal(Real.Tanh(), Imaginary.Tan()) /
+               new GeneralComplexNumberDecimal(1.0M, Real.Tanh() * Imaginary.Tan());
+    }
+
+    // TODO: Asinh, Acosh, Atanh
     // TODO: Cbrt, CopySign, ScaleB
 
     /// <summary>
