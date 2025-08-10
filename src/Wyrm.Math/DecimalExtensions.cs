@@ -30,7 +30,7 @@ public static class DecimalExtensions
     /// </summary>
     /// <param name="d">The number to get the Acosh of.</param>
     /// <returns>An angle, Θ, in radians.</returns>
-    /// <exception cref="InvalidOperationException">Thrown if d < 1.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if d &lt; 1.</exception>
     public static decimal Acosh(this decimal d)
     {
         if (d < 1M) throw new InvalidOperationException("Result would be complex.");

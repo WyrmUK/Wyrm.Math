@@ -8,6 +8,9 @@ namespace Wyrm.Math.ComplexNumbers;
 /// </summary>
 public readonly struct GeneralComplexNumberDouble
 {
+    private static readonly GeneralComplexNumberDouble I = new GeneralComplexNumberDouble(0.0, 1.0);
+    private static readonly GeneralComplexNumberDouble I2 = new GeneralComplexNumberDouble(0.0, 0.5);
+
     internal GeneralComplexNumber<double> ComplexNumber { get; }
 
     /// <summary>
@@ -357,14 +360,14 @@ public readonly struct GeneralComplexNumberDouble
     {
         return Sin() / Cos();
     }
-    /*
+
     /// <summary>
     /// Gets the angle that this complex number is the sine of.
     /// </summary>
     /// <returns>The angle in radians.</returns>
     public GeneralComplexNumberDouble Asin()
     {
-        // TODO
+        return ((1.0 - Sqr()).Sqrt() + (I * this)).Log() * -I;
     }
 
     /// <summary>
@@ -373,7 +376,7 @@ public readonly struct GeneralComplexNumberDouble
     /// <returns>The angle in radians.</returns>
     public GeneralComplexNumberDouble Acos()
     {
-        // TODO
+        return new GeneralComplexNumberDouble(double.Pi / 2.0, 0.0) - Asin();
     }
 
     /// <summary>
@@ -382,10 +385,13 @@ public readonly struct GeneralComplexNumberDouble
     /// <returns>The angle in radians.</returns>
     public GeneralComplexNumberDouble Atan()
     {
+        var iz = I * this;
+        return ((1.0 + iz) / (1.0 - iz)).Log() * -I2;
         // TODO
     }
-    */
-    // TODO: Acosh, Asinh, Atanh, Atan2, Cosh, Sinh, Tanh
+
+    // TODO: Atan2
+    // TODO: Sinh, Cosh, Tanh, Asinh, Acosh, Atanh
     // TODO: Cbrt, CopySign, ScaleB
 
     /// <summary>

@@ -307,6 +307,30 @@ public class GeneralComplexNumberDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexAsinTheoryData))]
+    public void Asin_Should_Get_Asin(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Asin();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexAcosTheoryData))]
+    public void Acos_Should_Get_Acos(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Acos();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexAtanTheoryData))]
+    public void Atan_Should_Get_Atan(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Atan();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexLogTheoryData))]
     public void Log_Should_Get_Log(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
     {
@@ -508,11 +532,44 @@ public class GeneralComplexNumberDecimalTests
         { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(0.0201403720704808721675947027M, 1.0143542521857925809578028328M) }
     };
 
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexAsinTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(0.8912073600614353399518025779M, 0.0M), new GeneralComplexNumberDecimal(1.0999999999999999999999999994M, TestValue0_0) },
+        { new GeneralComplexNumberDecimal(0.0M, 4.4571051705358935215688163705M), new GeneralComplexNumberDecimal(TestValue0_0, 2.1999999999999999999999999971M) },
+        { new GeneralComplexNumberDecimal(4.0709535228000319552577517676M, 2.0217256181409679681515773411M), new GeneralComplexNumberDecimal(1.0999999999999999999999999990M, 2.1999999999999999999999999855M) },
+        { new GeneralComplexNumberDecimal(0.0M, -4.4571051705358935215688163705M), new GeneralComplexNumberDecimal(TestValue0_0, -2.2000000000000000000000000002M) },
+        { new GeneralComplexNumberDecimal(4.0709535228000319552577517676M, -2.0217256181409679681515773411M), new GeneralComplexNumberDecimal(1.0999999999999999999999999992M, -TestValue2_2) },
+        { new GeneralComplexNumberDecimal(-4.0709535228000319552577517676M, -2.0217256181409679681515773411M), new GeneralComplexNumberDecimal(-1.0999999999999999999999999992M, -TestValue2_2) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexAcosTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(0.4535961214255773877713700518M, 0.0M), new GeneralComplexNumberDecimal(1.0999999999999999999999999994M, TestValue0_0) },
+        { new GeneralComplexNumberDecimal(4.5679083288982274049029607964M, 0.0M), new GeneralComplexNumberDecimal(TestValue0_0, 2.2000000000000000000000000002M) },
+        { new GeneralComplexNumberDecimal(2.0719855010158266488314712908M, -3.9722049325494672219512575172M), new GeneralComplexNumberDecimal(1.0999999999999999999999999996M, 2.2000000000000000000000000002M) },
+        { new GeneralComplexNumberDecimal(-4.5679083288982274049029607964M, 0.0M), new GeneralComplexNumberDecimal(3.1415926535897932384626433832M, -2.2000000000000000000000000018M) },
+        { new GeneralComplexNumberDecimal(2.0719855010158266488314712908M, 3.9722049325494672219512575172M), new GeneralComplexNumberDecimal(1.0999999999999999999999999979M, -2.1999999999999999999999999898M) },
+        { new GeneralComplexNumberDecimal(-2.0719855010158266488314712908M, 3.9722049325494672219512575172M), new GeneralComplexNumberDecimal(2.0415926535897932384626433853M, -2.1999999999999999999999999898M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexAtanTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(1.9647596572486519509309227818M, 0.0M), new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
+        { new GeneralComplexNumberDecimal(0.0M, 0.9757431300314515204143066680M), new GeneralComplexNumberDecimal(TestValue0_0, 2.1999999999999999999999999412M) },
+        { new GeneralComplexNumberDecimal(0.0201403720704808721675947027M, 1.0143542521857925809578028326M), new GeneralComplexNumberDecimal(1.1000000000000000000000000007M, 2.1999999999999999999999999412M) },
+        { new GeneralComplexNumberDecimal(0.0M, -0.9757431300314515204143066680M), new GeneralComplexNumberDecimal(TestValue0_0, -2.1999999999999999999999999699M) },
+        { new GeneralComplexNumberDecimal(0.0201403720704808721675947027M, -1.0143542521857925809578028326M), new GeneralComplexNumberDecimal(1.1000000000000000000000000000M, -2.1999999999999999999999999580M) },
+        { new GeneralComplexNumberDecimal(-0.0201403720704808721675947027M, -1.0143542521857925809578028326M), new GeneralComplexNumberDecimal(-TestValue1_1, -2.1999999999999999999999999580M) }
+    };
+
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexLogTheoryData = new()
     {
         { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(0.0953101798043248600439521231M, 0.0M) },
         { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(0.7884573603642701694611842448M, 1.5707963267948966192313216916M) },
-        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(0.9000291360213750473443317901M, 1.1071487177940905030170654599M) }
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(0.9000291360213750473443317901M, 1.1071487177940905030170654599M) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDecimal(0.7884573603642701694611842448M, -1.5707963267948966192313216916M) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(0.9000291360213750473443317901M, -1.1071487177940905030170654599M) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(0.9000291360213750473443317901M, -2.0344439357957027354455779234M) }
     };
 
     #endregion
