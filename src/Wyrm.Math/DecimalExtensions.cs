@@ -1,4 +1,6 @@
-﻿namespace Wyrm.Math;
+﻿using Wyrm.Math.ComplexNumbers;
+
+namespace Wyrm.Math;
 
 /// <summary>
 /// Extension methods for <see cref="decimal"/>s.
@@ -738,6 +740,14 @@ public static class DecimalExtensions
 
         return estimate;
     }
+
+    /// <summary>
+    /// Returns the square root of a number giving the result as a complex number.
+    /// </summary>
+    /// <param name="d">The number to take the square root of.</param>
+    /// <returns>The square root of d as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public static GeneralComplexNumberDecimal Sqrti(this decimal d) =>
+        new GeneralComplexNumberDecimal(d, 0.0M).Sqrt();
 
     /// <summary>
     /// Returns the tangent of the angle.

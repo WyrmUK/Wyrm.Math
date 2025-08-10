@@ -387,10 +387,8 @@ public readonly struct GeneralComplexNumberDouble
     {
         var iz = I * this;
         return ((1.0 + iz) / (1.0 - iz)).Log() * -I2;
-        // TODO
     }
 
-    // TODO: Atan2
     // TODO: Sinh, Cosh, Tanh, Asinh, Acosh, Atanh
     // TODO: Cbrt, CopySign, ScaleB
 

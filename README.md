@@ -6,7 +6,7 @@ Provides double and decimal extensions.
 ### Decimal
 Decimal constants E, Pi, and Tau.
 ### Double extensions
-Applies all the System.Math methods as extension methods and adds Sqr.
+Applies all the System.Math methods as extension methods and adds Sqr (square).
 ### Decimal extensions
 Replicates the System.Math methods for decimals as extension methods.
 Abs, Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2,
@@ -19,6 +19,10 @@ ReciprocalEstimate, ReciprocalSqrtEstimate,
 Round, Round (to digits), Round (with algorithm), Round (to digits with algorithm),
 ScaleB, Sign, Sin, SinCos, Sinh, Sqr, Sqrt,
 Tan, Tanh, Truncate.
+### Complex Square Root
+Z = N.Sqrti()
+
+Calculates the square root of a number (either decimal or double) and returns the result as a complex number.
 
 ## Wyrm.Math.ComplexNumbers
 Provides complex number arithmetic.

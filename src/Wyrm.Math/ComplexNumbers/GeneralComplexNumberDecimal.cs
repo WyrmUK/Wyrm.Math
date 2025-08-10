@@ -389,7 +389,6 @@ public readonly struct GeneralComplexNumberDecimal
         return ((1.0M + iz) / (1.0M - iz)).Log() * -I2;
     }
 
-    // TODO: Atan2
     // TODO: Sinh, Cosh, Tanh, Asinh, Acosh, Atanh
     // TODO: Cbrt, CopySign, ScaleB
 

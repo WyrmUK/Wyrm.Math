@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.UnitTests.TestHelpers;
 
 namespace Wyrm.Math.UnitTests;
@@ -380,6 +381,15 @@ public class DecimalExtensionsTests
         {
             Should.Throw<InvalidOperationException>(() => value.Sqrt());
         }
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalSqrtiValues))]
+    public void Sqrti_Should_Return_Sqrti(decimal value, GeneralComplexNumberDecimal expected, decimal tolerance)
+    {
+        var result = value.Sqrti();
+        result.Real.ShouldBeWithinTolerance(expected.Real, tolerance);
+        result.Imaginary.ShouldBeWithinTolerance(expected.Imaginary, tolerance);
     }
 
     [Theory]
@@ -850,6 +860,13 @@ public class DecimalExtensionsTests
         { 123M, 11.0905365064094171620516001026099329184633767424540200228773128390850016331M, 0.0000000000000000000000000010M  },
         { 1234M, 35.1283361405005916058703116253563067645404854787765405690202683926394175654M, 0.0000000000000000000000000010M  },
         { decimal.MaxValue, 281474976710656M, 0.0000000000000000000000000000M  }
+    };
+
+    public static readonly TheoryData<decimal, GeneralComplexNumberDecimal, decimal> DecimalSqrtiValues = new()
+    {
+        { -1, new GeneralComplexNumberDecimal(0.0M, 1.0M), 0.0000000000000000000000000000M },
+        { -4, new GeneralComplexNumberDecimal(0.0M, 2.0M), 0.0000000000000000000000000000M },
+        { -123, new GeneralComplexNumberDecimal(0.0M, 11.090536506409417162051600103M), 0.0000000000000000000000000010M }
     };
 
     public static readonly TheoryData<decimal, decimal?, decimal> DecimalTanValues = new()

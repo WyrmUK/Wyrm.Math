@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.UnitTests.TestHelpers;
 
 namespace Wyrm.Math.UnitTests;
@@ -325,6 +326,15 @@ public class DoubleExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DoubleSqrtiValues))]
+    public void Sqrti_Should_Return_Sqrti(double value, GeneralComplexNumberDouble expected)
+    {
+        var result = value.Sqrti();
+        result.Real.ShouldBe(expected.Real);
+        result.Imaginary.ShouldBe(expected.Imaginary);
+    }
+
+    [Theory]
     [MemberData(nameof(DoubleValues))]
     public void Tan_Should_Return_Tan(double value)
     {
@@ -349,6 +359,13 @@ public class DoubleExtensionsTests
 
     public static readonly TheoryData<double> DoubleValues =
     [ 0.0, 1.1, 2.2, 0.1, 0.25, 0.625, 10.0, 100.0, double.E, -1.1, -2.2, -0.1, -0.25, -0.625, -10.0, -100.0, -double.E ];
+
+    public static readonly TheoryData<double, GeneralComplexNumberDouble> DoubleSqrtiValues = new()
+    {
+        { -1, new GeneralComplexNumberDouble(6.123233995736766E-17, 1.0) },
+        { -4, new GeneralComplexNumberDouble(1.2246467991473532E-16, 2.0) },
+        { -123, new GeneralComplexNumberDouble(6.790995016700581E-16, 11.090536506409418) }
+    };
 
     #endregion
 }

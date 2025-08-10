@@ -1,4 +1,6 @@
-﻿namespace Wyrm.Math;
+﻿using Wyrm.Math.ComplexNumbers;
+
+namespace Wyrm.Math;
 
 /// <summary>
 /// Extension methods for <see cref="double"/>s.
@@ -137,6 +139,14 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Sqrt(double)"/>
     public static double Sqrt(this double d) => System.Math.Sqrt(d);
+
+    /// <summary>
+    /// Returns the square root of a number giving the result as a complex number.
+    /// </summary>
+    /// <param name="d">The number to take the square root of.</param>
+    /// <returns>The square root of d as a <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public static GeneralComplexNumberDouble Sqrti(this double d) =>
+        new GeneralComplexNumberDouble(d, 0.0).Sqrt();
 
     /// <inheritdoc cref="System.Math.Tan(double)"/>
     public static double Tan(this double a) => System.Math.Tan(a);
