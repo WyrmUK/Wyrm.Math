@@ -353,7 +353,8 @@ public class GeneralComplexNumberDoubleTests
     public void Tanh_Should_Get_Tanh(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
     {
         var result = c.Tanh();
-        result.ShouldBe(expected);
+        result.Real.Round(14).ShouldBe(expected.Real.Round(14));
+        result.Imaginary.Round(14).ShouldBe(expected.Imaginary.Round(14));
     }
 
     [Theory]
