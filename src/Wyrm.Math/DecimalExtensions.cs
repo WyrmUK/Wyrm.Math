@@ -258,6 +258,16 @@ public static class DecimalExtensions
         return estimate;
     }
 
+    /// <summary>
+    /// Returns the complex cube root of a number.
+    /// </summary>
+    /// <param name="d">The number to get the cube root of.</param>
+    /// <returns>The complex cube root of a number as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public static GeneralComplexNumberDecimal Cbrti(this decimal d)
+    {
+        return new GeneralComplexNumberDecimal(d, 0.0M).Cbrt();
+    }
+
     /// <inheritdoc cref="System.Math.Ceiling(decimal)"/>
     public static decimal Ceiling(this decimal a) => System.Math.Ceiling(a);
 

@@ -379,6 +379,14 @@ public class GeneralComplexNumberDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexCbrtTheoryData))]
+    public void Cbrt_Should_Get_Cbrt(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Cbrt();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexExpTheoryData))]
     public void Exp_Should_Get_Exp(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
     {
@@ -685,6 +693,16 @@ public class GeneralComplexNumberDecimalTests
         { new GeneralComplexNumberDecimal(TestValue0_0, 1.3738230567687951601400367633M), new GeneralComplexNumberDecimal(TestValue0_0, 0.9415926535897932384626433834M) },
         { new GeneralComplexNumberDecimal(1.0461275040217014190478914623M, 0.2233505973699565796798234003M), new GeneralComplexNumberDecimal(1.1000000000000000000000000001M, 0.9415926535897932384626433836M) },
         { new GeneralComplexNumberDecimal(-1.0461275040217014190478914623M, 0.2233505973699565796798234003M), new GeneralComplexNumberDecimal(-1.0999999999999999999999999986M, 0.9415926535897932384626433834M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexCbrtTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(1.0322801154563671592135852249M, 0.0M) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(1.1263452329180597013141657562M, 0.6502957234256934994051155751M) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(1.2589858696615772964532950315M, 0.4869381619756998088861177134M) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDecimal(1.1263452329180597013141657562M, -0.6502957234256934994051155751M) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(1.2589858696615772964532950315M, -0.4869381619756998088861177134M) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(1.0511937531738464642621031890M, -0.8468446651447202192255332969M) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexExpTheoryData = new()

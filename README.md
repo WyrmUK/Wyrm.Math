@@ -19,6 +19,10 @@ ReciprocalEstimate, ReciprocalSqrtEstimate,
 Round, Round (to digits), Round (with algorithm), Round (to digits with algorithm),
 ScaleB, Sign, Sin, SinCos, Sinh, Sqr, Sqrt,
 Tan, Tanh, Truncate.
+#### Complex Cube Root
+Z = N.Cbrti()
+
+Calculates the cube root of a number (either decimal or double) and returns the result as a complex number.
 ### Complex Square Root
 Z = N.Sqrti()
 
@@ -151,6 +155,10 @@ Returns the principal complex angle (radians) that the complex number is a hyper
 Zv = Z.Atanh()
 
 Returns the principal complex angle (radians) that the complex number is a hyperbolic tangent of.
+#### Cube Root
+Zv = Z.Cbrt()
+
+Returns the complex cube root of a complex number.
 #### Exponential
 Zv = Z.Exp()
 

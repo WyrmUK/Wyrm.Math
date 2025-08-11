@@ -1,6 +1,5 @@
 ﻿using Shouldly;
 using Wyrm.Math.ComplexNumbers;
-using Wyrm.Math.UnitTests.TestHelpers;
 
 namespace Wyrm.Math.UnitTests;
 
@@ -82,6 +81,13 @@ public class DoubleExtensionsTests
     public void Cbrt_Should_Return_Cbrt(double value)
     {
         value.Cbrt().ShouldBe(System.Math.Cbrt(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleCbrtiValues))]
+    public void Cbrti_Should_Return_Cbrti(double value, GeneralComplexNumberDouble expected)
+    {
+        value.Cbrti().ShouldBe(expected);
     }
 
     [Theory]
@@ -359,6 +365,13 @@ public class DoubleExtensionsTests
 
     public static readonly TheoryData<double> DoubleValues =
     [ 0.0, 1.1, 2.2, 0.1, 0.25, 0.625, 10.0, 100.0, double.E, -1.1, -2.2, -0.1, -0.25, -0.625, -10.0, -100.0, -double.E ];
+
+    public static readonly TheoryData<double, GeneralComplexNumberDouble> DoubleCbrtiValues = new()
+    {
+        { -1, new GeneralComplexNumberDouble(0.5000000000000001, 0.8660254037844385) },
+        { -8, new GeneralComplexNumberDouble(0.9999999999999999, 1.732050807568877) },
+        { -123, new GeneralComplexNumberDouble(2.4865949166342958, 4.306908733453094) }
+    };
 
     public static readonly TheoryData<double, GeneralComplexNumberDouble> DoubleSqrtiValues = new()
     {

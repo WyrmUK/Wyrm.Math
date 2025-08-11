@@ -40,6 +40,16 @@ public static class DoubleExtensions
     /// <inheritdoc cref="System.Math.Cbrt(double)"/>
     public static double Cbrt(this double d) => System.Math.Cbrt(d);
 
+    /// <summary>
+    /// Returns the complex cube root of a number.
+    /// </summary>
+    /// <param name="d">The number to get the cube root of.</param>
+    /// <returns>The complex cube root of a number as a <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public static GeneralComplexNumberDouble Cbrti(this double d)
+    {
+        return new GeneralComplexNumberDouble(d, 0.0).Cbrt();
+    }
+
     /// <inheritdoc cref="System.Math.Ceiling(double)"/>
     public static double Ceiling(this double a) => System.Math.Ceiling(a);
 

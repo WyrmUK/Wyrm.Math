@@ -382,6 +382,14 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexCbrtTheoryData))]
+    public void Cbrt_Should_Get_Cbrt(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Cbrt();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexExpTheoryData))]
     public void Exp_Should_Get_Exp(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
     {
@@ -691,6 +699,16 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue0_0, 1.3738230567687951), new GeneralComplexNumberDouble(TestValue0_0, 0.9415926535897932) },
         { new GeneralComplexNumberDouble(1.0461275040217014, 0.22335059736995658), new GeneralComplexNumberDouble(TestValue1_1, 0.9415926535897929) },
         { new GeneralComplexNumberDouble(-1.0461275040217014, 0.22335059736995658), new GeneralComplexNumberDouble(-1.0999999999999999, 0.9415926535897929) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexCbrtTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(1.0322801154563672, 0.0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(1.12634523291806, 0.6502957234256933) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(1.2589858696615774, 0.4869381619756997) },
+        { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(1.12634523291806, -0.6502957234256933) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(1.2589858696615774, -0.4869381619756997) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(1.0511937531738462, -0.84684466514472) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexExpTheoryData = new()

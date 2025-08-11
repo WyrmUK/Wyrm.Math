@@ -448,7 +448,16 @@ public readonly struct GeneralComplexNumberDouble
         return ((1.0 + this) / (1.0 - this)).Log() / 2.0;
     }
 
-    // TODO: Cbrt, CopySign, ScaleB
+    /// <summary>
+    /// Returns the complex cube root of this complex number.
+    /// </summary>
+    /// <returns>The complex cube root.</returns>
+    public GeneralComplexNumberDouble Cbrt()
+    {
+        return (Log() / 3.0).Exp();
+    }
+
+    // TODO: CopySign, ScaleB
 
     /// <summary>
     /// Gets the value of e to the power of this complex number.

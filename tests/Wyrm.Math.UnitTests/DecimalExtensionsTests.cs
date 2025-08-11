@@ -93,6 +93,15 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalCbrtiValues))]
+    public void Cbrti_Should_Return_Cbrti(decimal value, GeneralComplexNumberDecimal expected, decimal tolerance)
+    {
+        var result = value.Cbrti();
+        result.Real.ShouldBeWithinTolerance(expected.Real, tolerance);
+        result.Imaginary.ShouldBeWithinTolerance(expected.Imaginary, tolerance);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalValues))]
     public void Ceiling_Should_Return_Ceiling(decimal value)
     {
@@ -600,6 +609,13 @@ public class DecimalExtensionsTests
         { 5.625M, 1.7784466522450314030030773112M },
         { decimal.MinValue, -4294967296.0000000000000000001M },
         { decimal.MaxValue, 4294967296.0000000000000000001M }
+    };
+
+    public static readonly TheoryData<decimal, GeneralComplexNumberDecimal, decimal> DecimalCbrtiValues = new()
+    {
+        { -1, new GeneralComplexNumberDecimal(0.5M, 0.866025403784438646763723170752936183471402626905190314027903489725966508M), 0.0000000000000000000000000001M },
+        { -8, new GeneralComplexNumberDecimal(1.0M, 1.732050807568877293527446341505872366942805253810380628055806979451933016M), 0.0000000000000000000000000004M },
+        { -123, new GeneralComplexNumberDecimal(2.486594916634295207825041691427521139855974588929628346455623858011457705M, 4.306908733453096124863620096821923805915421415610408876276531894533221525M), 0.0000000000000000000000000016M }
     };
 
     public static readonly TheoryData<decimal, decimal, decimal> DecimalCosValues = new()
