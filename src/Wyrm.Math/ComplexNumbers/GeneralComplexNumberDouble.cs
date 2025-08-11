@@ -421,8 +421,36 @@ public readonly struct GeneralComplexNumberDouble
                new GeneralComplexNumberDouble(1.0, Real.Tanh() * Imaginary.Tan());
     }
 
-    // TODO: Asinh, Acosh, Atanh
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic sine of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDouble Asinh()
+    {
+        return (this + (Sqr() + 1.0).Sqrt()).Log();
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic cosine of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDouble Acosh()
+    {
+        return (this + ((this + 1.0).Sqrt() * (this - 1.0).Sqrt())).Log();
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic tangent of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDouble Atanh()
+    {
+        return ((1.0 + this) / (1.0 - this)).Log() / 2.0;
+    }
+
     // TODO: Cbrt, CopySign, ScaleB
+
+    // TODO: Exp
 
     /// <summary>
     /// Gets the principal natural logarithm of this complex number.
@@ -432,6 +460,6 @@ public readonly struct GeneralComplexNumberDouble
     {
         return new GeneralComplexNumberDouble(Abs().Log(), Argument());
     }
-    // TODO: Exp, Log (base), Log2, Log10,
+    // TODO: Log (base), Log2, Log10,
     // TODO: Round, Round (digits), Round (algorithm), Round (digits, algorithm)
 }
