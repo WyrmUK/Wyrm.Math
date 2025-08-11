@@ -382,6 +382,14 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexExpTheoryData))]
+    public void Exp_Should_Get_Exp(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Exp();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexLogTheoryData))]
     public void Log_Should_Get_Log(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
     {
@@ -683,6 +691,16 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue0_0, 1.3738230567687951), new GeneralComplexNumberDouble(TestValue0_0, 0.9415926535897932) },
         { new GeneralComplexNumberDouble(1.0461275040217014, 0.22335059736995658), new GeneralComplexNumberDouble(TestValue1_1, 0.9415926535897929) },
         { new GeneralComplexNumberDouble(-1.0461275040217014, 0.22335059736995658), new GeneralComplexNumberDouble(-1.0999999999999999, 0.9415926535897929) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexExpTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(0.0953101798043249, 0.0), new GeneralComplexNumberDouble(1.1000000000000003, TestValue0_0) },
+        { new GeneralComplexNumberDouble(0.7884573603642702, 1.5707963267948966), new GeneralComplexNumberDouble(1.6694137725215975E-16, 2.1999999999999993) },
+        { new GeneralComplexNumberDouble(0.9000291360213750, 1.1071487177940905), new GeneralComplexNumberDouble(1.1000000000000005, 2.1999999999999997) },
+        { new GeneralComplexNumberDouble(0.7884573603642702, -1.5707963267948966), new GeneralComplexNumberDouble(1.6694137725215975E-16, -2.1999999999999993) },
+        { new GeneralComplexNumberDouble(0.9000291360213750, -1.1071487177940905), new GeneralComplexNumberDouble(1.1000000000000005, -2.1999999999999997) },
+        { new GeneralComplexNumberDouble(0.9000291360213750, -2.0344439357957027), new GeneralComplexNumberDouble(-1.0999999999999999, -TestValue2_2) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexLogTheoryData = new()

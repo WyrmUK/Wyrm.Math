@@ -450,7 +450,34 @@ public readonly struct GeneralComplexNumberDecimal
 
     // TODO: Cbrt, CopySign, ScaleB
 
-    // TODO: Exp
+    /// <summary>
+    /// Gets the value of e to the power of this complex number.
+    /// </summary>
+    /// <returns>The complex value of e to the power of this.</returns>
+    public GeneralComplexNumberDecimal Exp()
+    {
+        var estimate = new GeneralComplexNumberDecimal(1.0M, 0.0M);
+        var prevEstimate = new GeneralComplexNumberDecimal(0.0M, 0.0M);
+        var dVal = this;
+        var factor = 1.0M;
+
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += dVal;
+            factor += 1.0M;
+            try
+            {
+                dVal *= this / factor;
+            }
+            catch (Exception)
+            {
+                break;
+            }
+        }
+
+        return estimate;
+    }
 
     /// <summary>
     /// Gets the principal natural logarithm of this complex number.

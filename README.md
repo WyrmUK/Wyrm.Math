@@ -151,6 +151,10 @@ Returns the principal complex angle (radians) that the complex number is a hyper
 Zv = Z.Atanh()
 
 Returns the principal complex angle (radians) that the complex number is a hyperbolic tangent of.
+#### Exponential
+Zv = Z.Exp()
+
+Returns the value of e to the power of a complex number.
 #### Principal Natural Logarithm
 Zv = Z.Log()
 

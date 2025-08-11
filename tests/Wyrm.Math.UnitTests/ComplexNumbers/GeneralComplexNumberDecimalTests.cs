@@ -379,6 +379,14 @@ public class GeneralComplexNumberDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexExpTheoryData))]
+    public void Exp_Should_Get_Exp(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.Exp();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexLogTheoryData))]
     public void Log_Should_Get_Log(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
     {
@@ -677,6 +685,16 @@ public class GeneralComplexNumberDecimalTests
         { new GeneralComplexNumberDecimal(TestValue0_0, 1.3738230567687951601400367633M), new GeneralComplexNumberDecimal(TestValue0_0, 0.9415926535897932384626433834M) },
         { new GeneralComplexNumberDecimal(1.0461275040217014190478914623M, 0.2233505973699565796798234003M), new GeneralComplexNumberDecimal(1.1000000000000000000000000001M, 0.9415926535897932384626433836M) },
         { new GeneralComplexNumberDecimal(-1.0461275040217014190478914623M, 0.2233505973699565796798234003M), new GeneralComplexNumberDecimal(-1.0999999999999999999999999986M, 0.9415926535897932384626433834M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexExpTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(0.0953101798043248600439521233M, 0.0M), new GeneralComplexNumberDecimal(1.1000000000000000000000000001M, TestValue0_0) },
+        { new GeneralComplexNumberDecimal(0.7884573603642701694611842447M, 1.5707963267948966192313216916M), new GeneralComplexNumberDecimal(-0.0000000000000000000000000002M, 2.2000000000000000000000000004M) },
+        { new GeneralComplexNumberDecimal(0.9000291360213750473443317899M, 1.1071487177940905030170654602M), new GeneralComplexNumberDecimal(TestValue1_1, 2.2000000000000000000000000001M) },
+        { new GeneralComplexNumberDecimal(0.7884573603642701694611842447M, -1.5707963267948966192313216916M), new GeneralComplexNumberDecimal(-0.0000000000000000000000000002M, -2.2000000000000000000000000004M) },
+        { new GeneralComplexNumberDecimal(0.9000291360213750473443317899M, -1.1071487177940905030170654602M), new GeneralComplexNumberDecimal(TestValue1_1, -2.2000000000000000000000000001M) },
+        { new GeneralComplexNumberDecimal(0.9000291360213750473443317899M, -2.0344439357957027354455779231M), new GeneralComplexNumberDecimal(-1.1000000000000000000000000006M, -2.1999999999999999999999999997M) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexLogTheoryData = new()
