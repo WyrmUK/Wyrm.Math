@@ -387,6 +387,14 @@ public class GeneralComplexNumberDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexCopySignTheoryData))]
+    public void CopySign_Should_Get_CopySign(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal s, GeneralComplexNumberDecimal expected)
+    {
+        var result = c.CopySign(s);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexExpTheoryData))]
     public void Exp_Should_Get_Exp(GeneralComplexNumberDecimal c, GeneralComplexNumberDecimal expected)
     {
@@ -703,6 +711,22 @@ public class GeneralComplexNumberDecimalTests
         { new GeneralComplexNumberDecimal(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDecimal(1.1263452329180597013141657562M, -0.6502957234256934994051155751M) },
         { new GeneralComplexNumberDecimal(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(1.2589858696615772964532950315M, -0.4869381619756998088861177134M) },
         { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(1.0511937531738464642621031890M, -0.8468446651447202192255332969M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexCopySignTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(-TestValue9, -TestValue9), new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue0_0) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(-TestValue9, -TestValue9), new GeneralComplexNumberDecimal(-TestValue0_0, -TestValue2_2) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(-TestValue9, -TestValue9), new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue0_0), new GeneralComplexNumberDecimal(-TestValue9, TestValue9), new GeneralComplexNumberDecimal(-TestValue1_1, TestValue0_0) },
+        { new GeneralComplexNumberDecimal(-TestValue0_0, -TestValue2_2), new GeneralComplexNumberDecimal(-TestValue9, TestValue9), new GeneralComplexNumberDecimal(-TestValue0_0, TestValue2_2) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(-TestValue9, TestValue9), new GeneralComplexNumberDecimal(-TestValue1_1, TestValue2_2) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0), new GeneralComplexNumberDecimal(TestValue9, TestValue9), new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
+        { new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2), new GeneralComplexNumberDecimal(TestValue9, TestValue9), new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2) },
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(TestValue9, TestValue9), new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue0_0), new GeneralComplexNumberDecimal(TestValue9, -TestValue9), new GeneralComplexNumberDecimal(TestValue1_1, -TestValue0_0) },
+        { new GeneralComplexNumberDecimal(-TestValue0_0, -TestValue2_2), new GeneralComplexNumberDecimal(TestValue9, -TestValue9), new GeneralComplexNumberDecimal(TestValue0_0, -TestValue2_2) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(TestValue9, -TestValue9), new GeneralComplexNumberDecimal(TestValue1_1, -TestValue2_2) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexExpTheoryData = new()

@@ -457,7 +457,17 @@ public readonly struct GeneralComplexNumberDouble
         return (Log() / 3.0).Exp();
     }
 
-    // TODO: CopySign, ScaleB
+    /// <summary>
+    /// Returns a complex number with the magnitudes of this but the signs of y.
+    /// </summary>
+    /// <param name="y">The complex number to take the signes from.</param>
+    /// <returns>A complex number with the magnitudes of this but the signs of y.</returns>
+    public GeneralComplexNumberDouble CopySign(GeneralComplexNumberDouble y)
+    {
+        return new GeneralComplexNumberDouble(Real.CopySign(y.Real), Imaginary.CopySign(y.Imaginary));
+    }
+
+    // TODO: ScaleB
 
     /// <summary>
     /// Gets the value of e to the power of this complex number.

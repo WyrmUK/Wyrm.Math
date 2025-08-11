@@ -23,6 +23,10 @@ Tan, Tanh, Truncate.
 Z = N.Cbrti()
 
 Calculates the cube root of a number (either decimal or double) and returns the result as a complex number.
+#### Complex Copy Sign
+Zv = Zx.CopySign(Zy)
+
+Returns a complex number with the magnitudes of Zx but the signs of Zy. The real part has the magnitude of Zx.Real but the sign of Zy.Real and the imaginary part has the magnitude of Zx.Imaginary but the sign of Zy.Imaginary.
 ### Complex Square Root
 Z = N.Sqrti()
 

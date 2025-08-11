@@ -390,6 +390,14 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexCopySignTheoryData))]
+    public void CopySign_Should_Get_CopySign(GeneralComplexNumberDouble c, GeneralComplexNumberDouble s, GeneralComplexNumberDouble expected)
+    {
+        var result = c.CopySign(s);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexExpTheoryData))]
     public void Exp_Should_Get_Exp(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
     {
@@ -709,6 +717,22 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(1.12634523291806, -0.6502957234256933) },
         { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(1.2589858696615774, -0.4869381619756997) },
         { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(1.0511937531738462, -0.84684466514472) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexCopySignTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(-TestValue9, -TestValue9), new GeneralComplexNumberDouble(-TestValue1_1, -TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(-TestValue9, -TestValue9), new GeneralComplexNumberDouble(-TestValue0_0, -TestValue2_2) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(-TestValue9, -TestValue9), new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue0_0), new GeneralComplexNumberDouble(-TestValue9, TestValue9), new GeneralComplexNumberDouble(-TestValue1_1, TestValue0_0) },
+        { new GeneralComplexNumberDouble(-TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(-TestValue9, TestValue9), new GeneralComplexNumberDouble(-TestValue0_0, TestValue2_2) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-TestValue9, TestValue9), new GeneralComplexNumberDouble(-TestValue1_1, TestValue2_2) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(TestValue9, TestValue9), new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(TestValue9, TestValue9), new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValue9, TestValue9), new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue0_0), new GeneralComplexNumberDouble(TestValue9, -TestValue9), new GeneralComplexNumberDouble(TestValue1_1, -TestValue0_0) },
+        { new GeneralComplexNumberDouble(-TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(TestValue9, -TestValue9), new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(TestValue9, -TestValue9), new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexExpTheoryData = new()
