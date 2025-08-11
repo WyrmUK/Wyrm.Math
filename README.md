@@ -139,6 +139,18 @@ Returns the hyperbolic cosine of a complex number (radians).
 Zv = Z.Tanh()
 
 Returns the hyperbolic tangent of a complex number (radians).
+#### Principal Hyperbolic Arsine
+Zv = Z.Asinh()
+
+Returns the principal complex angle (radians) that the complex number is a hyperbolic sine of.
+#### Principal Hyperbolic Arcosine
+Zv = Z.Acosh()
+
+Returns the principal complex angle (radians) that the complex number is a hyperbolic cosine of.
+#### Principal Hyperbolic Artangent
+Zv = Z.Atanh()
+
+Returns the principal complex angle (radians) that the complex number is a hyperbolic tangent of.
 #### Principal Natural Logarithm
 Zv = Z.Log()
 
