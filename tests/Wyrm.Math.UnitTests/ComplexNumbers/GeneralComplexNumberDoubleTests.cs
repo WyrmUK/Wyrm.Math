@@ -421,6 +421,22 @@ public class GeneralComplexNumberDoubleTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexLogBaseTheoryData))]
+    public void LogBase_Should_Get_LogBase(GeneralComplexNumberDouble c, double newBase, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Log(newBase);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexLogComplexBaseTheoryData))]
+    public void LogComplexBase_Should_Get_LogComplexBase(GeneralComplexNumberDouble c, GeneralComplexNumberDouble newBase, GeneralComplexNumberDouble expected)
+    {
+        var result = c.Log(newBase);
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const double TestValue0_0 = 0.0;
@@ -773,6 +789,26 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(0.7884573603642703, -1.5707963267948966) },
         { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(0.9000291360213751, -1.1071487177940904) },
         { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(0.9000291360213751, -2.0344439357957027) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble> TestComplexLogBaseTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), TestValue3_3, new GeneralComplexNumberDouble(0.7538421964475788, 0.9273204475418183) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), -TestValue3_3, new GeneralComplexNumberDouble(0.40307684916084074, -0.13330392430369334) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), TestValue3_3, new GeneralComplexNumberDouble(0.7538421964475788, -0.9273204475418183) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), -TestValue3_3, new GeneralComplexNumberDouble(-0.21280509167617612, -0.36736204964706176) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), TestValue3_3, new GeneralComplexNumberDouble(0.7538421964475788, -1.7040000414756198) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), -TestValue3_3, new GeneralComplexNumberDouble(-0.47072183285689106, -0.4653800380514403) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexLogComplexBaseTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValue1, TestValue2), new GeneralComplexNumberDouble(1.0409415604699568, -0.05632823214689614) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(-TestValue1, -TestValue2), new GeneralComplexNumberDouble(-0.3192625929590506, 0.5686791246641218) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(TestValue1, TestValue2), new GeneralComplexNumberDouble(-0.2677062697005212, -1.0075046179613547) },
+        { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-TestValue1, -TestValue2), new GeneralComplexNumberDouble(0.6218909236011443, 0.19640832272132497) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(TestValue1, TestValue2), new GeneralComplexNumberDouble(-0.8157369251408682, -1.405834715745853) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-TestValue1, -TestValue2), new GeneralComplexNumberDouble(1.0160236815970676, 0.04051014531523289) }
     };
 
     #endregion

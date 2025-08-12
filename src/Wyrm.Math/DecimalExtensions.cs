@@ -490,6 +490,16 @@ public static class DecimalExtensions
     }
 
     /// <summary>
+    /// Calculates the natural logarithm of a number giving the result as a complex number.
+    /// </summary>
+    /// <param name="d">The value to take the natural logatirhm of.</param>
+    /// <returns>The natural logatirhm as a complex number.</returns>
+    public static GeneralComplexNumberDecimal Logi(this decimal d)
+    {
+        return new GeneralComplexNumberDecimal(d, 0.0M).Log();
+    }
+
+    /// <summary>
     /// Returns the logrithm of a number in a base.
     /// </summary>
     /// <param name="d">The number to take the logarithm of.</param>

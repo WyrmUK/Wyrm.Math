@@ -535,6 +535,26 @@ public readonly struct GeneralComplexNumberDecimal
     {
         return new GeneralComplexNumberDecimal(Abs().Log(), Argument());
     }
-    // TODO: Log (base), Log2, Log10,
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in a specific base.
+    /// </summary>
+    /// <param name="newBase">The base for the logarithm.</param>
+    /// <returns>The principal logarithm in the base.</returns>
+    public GeneralComplexNumberDecimal Log(decimal newBase)
+    {
+        return Log() / newBase.Logi();
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in a specific base.
+    /// </summary>
+    /// <param name="newBase">The base for the logarithm.</param>
+    /// <returns>The principal logarithm in the base.</returns>
+    public GeneralComplexNumberDecimal Log(GeneralComplexNumberDecimal newBase)
+    {
+        return Log() / newBase.Log();
+    }
+    // TODO: Log2, Log10,
     // TODO: Round, Round (digits), Round (algorithm), Round (digits, algorithm)
 }

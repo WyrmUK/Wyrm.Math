@@ -203,6 +203,15 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalLogiValues))]
+    public void Logi_Should_Return_Logi(decimal value, GeneralComplexNumberDecimal expected, decimal tolerance)
+    {
+        var result = value.Logi();
+        result.Real.ShouldBeWithinTolerance(expected.Real, tolerance);
+        result.Imaginary.ShouldBeWithinTolerance(expected.Imaginary, tolerance);
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalLogBaseValues))]
     public void LogBase_Should_Return_LogBase(decimal value, decimal newBase, decimal expected, decimal tolerance)
     {
@@ -734,6 +743,13 @@ public class DecimalExtensionsTests
         { 7.3890560989306502272304274606M, 2.0000000000000000000000000000033823246819443308297825432394530301037M, 0.0000000000000000000000000007M },
         { 10M, 2.30258509299404568401799145468436420760110148862877297603332790096757260967M, 0.0000000000000000000000000007M },
         { 33.115451958692313750653249350M, 3.4999999999999999999999999999882648048120713560734203117343180927565M, 0.0000000000000000000000000005M }
+    };
+
+    public static readonly TheoryData<decimal, GeneralComplexNumberDecimal, decimal> DecimalLogiValues = new()
+    {
+        { -1M, new GeneralComplexNumberDecimal(0.0M, 3.1415926535897932384626433832795028841971693993751058209749445923078164062M), 0.0000000000000000000000000000M },
+        { -4M, new GeneralComplexNumberDecimal(1.38629436111989061883446424291635313615100026872051050824136001898M, 3.14159265358979323846264338327950288419716939937510582097494459230M), 0.0000000000000000000000000003M },
+        { -123M, new GeneralComplexNumberDecimal(4.81218435537241749526200860995993329302390102722205108535395724389M, 3.14159265358979323846264338327950288419716939937510582097494459230M), 0.0000000000000000000000000008M }
     };
 
     public static readonly TheoryData<decimal, decimal, decimal, decimal> DecimalLogBaseValues = new()

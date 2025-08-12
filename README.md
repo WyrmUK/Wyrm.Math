@@ -23,6 +23,10 @@ Tan, Tanh, Truncate.
 Z = N.Cbrti()
 
 Calculates the cube root of a number (either decimal or double) and returns the result as a complex number.
+#### Complex Natural Log
+Z = N.Logi()
+
+Calculates the principal natural logarithm of a number (either decimal or double) and returns the result as a complex number.
 #### Complex Square Root
 Z = N.Sqrti()
 
@@ -175,6 +179,14 @@ Returns the value of e to the power of a complex number.
 Zv = Z.Log()
 
 Returns the principal natural logarithm of a complex number.
+#### Principal Logarithm to Base
+Zv = Z.Log(b)
+
+Returns the principal logarithm of a complex number in base b.
+#### Principal Logarithm to complex Base
+Zv = Z.Log(Zb)
+
+Returns the principal logarithm of a complex number in complex base Zb.
 
 ## Wyrm.Math.Matrix
 Provides matrix arithmetic.

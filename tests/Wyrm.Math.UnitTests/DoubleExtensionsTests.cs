@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using Wyrm.Math.ComplexNumbers;
+using Wyrm.Math.UnitTests.TestHelpers;
 
 namespace Wyrm.Math.UnitTests;
 
@@ -167,6 +168,13 @@ public class DoubleExtensionsTests
     public void Log_Should_Return_Log(double value)
     {
         value.Log().ShouldBe(System.Math.Log(value));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleLogiValues))]
+    public void Logi_Should_Return_Logi(double value, GeneralComplexNumberDouble expected)
+    {
+        value.Logi().ShouldBe(expected);
     }
 
     [Theory]
@@ -371,6 +379,13 @@ public class DoubleExtensionsTests
         { -1, new GeneralComplexNumberDouble(0.5000000000000001, 0.8660254037844385) },
         { -8, new GeneralComplexNumberDouble(0.9999999999999999, 1.732050807568877) },
         { -123, new GeneralComplexNumberDouble(2.4865949166342958, 4.306908733453094) }
+    };
+
+    public static readonly TheoryData<double, GeneralComplexNumberDouble> DoubleLogiValues = new()
+    {
+        { -1, new GeneralComplexNumberDouble(0.0, 3.141592653589793) },
+        { -4, new GeneralComplexNumberDouble(1.3862943611198906, 3.141592653589793) },
+        { -123, new GeneralComplexNumberDouble(4.812184355372417, 3.141592653589793) }
     };
 
     public static readonly TheoryData<double, GeneralComplexNumberDouble> DoubleSqrtiValues = new()
