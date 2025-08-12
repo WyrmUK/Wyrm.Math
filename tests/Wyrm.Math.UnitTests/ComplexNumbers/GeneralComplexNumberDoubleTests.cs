@@ -398,6 +398,14 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestComplexScaleBTheoryData))]
+    public void ScaleB_Should_Get_ScaleB(GeneralComplexNumberDouble c, int n, GeneralComplexNumberDouble expected)
+    {
+        var result = c.ScaleB(n);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestComplexExpTheoryData))]
     public void Exp_Should_Get_Exp(GeneralComplexNumberDouble c, GeneralComplexNumberDouble expected)
     {
@@ -733,6 +741,18 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue0_0), new GeneralComplexNumberDouble(TestValue9, -TestValue9), new GeneralComplexNumberDouble(TestValue1_1, -TestValue0_0) },
         { new GeneralComplexNumberDouble(-TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(TestValue9, -TestValue9), new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2) },
         { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(TestValue9, -TestValue9), new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, int, GeneralComplexNumberDouble> TestComplexScaleBTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), 3, new GeneralComplexNumberDouble(8.8, -TestValue0_0) },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), 3, new GeneralComplexNumberDouble(TestValue0_0, 17.6) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), 3, new GeneralComplexNumberDouble(8.8, 17.6) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), 0, new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), 1, new GeneralComplexNumberDouble(TestValue2_2, 4.4) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), -1, new GeneralComplexNumberDouble(0.55, 1.1) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), 2, new GeneralComplexNumberDouble(4.4, 8.8) },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), -2, new GeneralComplexNumberDouble(0.275, 0.55) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexExpTheoryData = new()

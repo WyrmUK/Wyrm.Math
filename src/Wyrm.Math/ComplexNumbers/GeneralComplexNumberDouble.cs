@@ -467,7 +467,15 @@ public readonly struct GeneralComplexNumberDouble
         return new GeneralComplexNumberDouble(Real.CopySign(y.Real), Imaginary.CopySign(y.Imaginary));
     }
 
-    // TODO: ScaleB
+    /// <summary>
+    /// Returns this * 2^n efficiently.
+    /// </summary>
+    /// <param name="n">The power to scale by.</param>
+    /// <returns>this * 2^n</returns>
+    public GeneralComplexNumberDouble ScaleB(int n)
+    {
+        return new GeneralComplexNumberDouble(Real.ScaleB(n), Imaginary.ScaleB(n));
+    }
 
     /// <summary>
     /// Gets the value of e to the power of this complex number.

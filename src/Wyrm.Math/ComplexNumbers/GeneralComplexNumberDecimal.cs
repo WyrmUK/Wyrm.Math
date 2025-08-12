@@ -467,7 +467,36 @@ public readonly struct GeneralComplexNumberDecimal
         return new GeneralComplexNumberDecimal(Real.CopySign(y.Real), Imaginary.CopySign(y.Imaginary));
     }
 
-    // TODO: ScaleB
+    /// <summary>
+    /// Returns this * 2^n efficiently.
+    /// </summary>
+    /// <param name="n">The power to scale by.</param>
+    /// <returns>this * 2^n</returns>
+    /// <exception cref="OverflowException">Throw if n is above 96 or below -93.</exception>
+    public GeneralComplexNumberDecimal ScaleB(int n)
+    {
+        if (n > 96 || n < -93) throw new OverflowException("Power of 2 outside decimal representation.");
+
+        if (n == 0) return this;
+        if (n == 1) return this * 2M;
+        if (n == -1) return this * 0.5M;
+
+        var inverse = false;
+        if (n < 0)
+        {
+            inverse = true;
+            n = -n;
+        }
+        var multiplier = 1.0M;
+        while (n > 0)
+        {
+            var pn = n > 62 ? 62 : n;
+            var power2 = 1L << pn;
+            multiplier *= power2;
+            n -= pn;
+        }
+        return this * (inverse ? 1M / multiplier : multiplier);
+    }
 
     /// <summary>
     /// Gets the value of e to the power of this complex number.
