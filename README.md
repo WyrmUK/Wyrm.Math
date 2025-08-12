@@ -187,6 +187,14 @@ Returns the principal logarithm of a complex number in base b.
 Zv = Z.Log(Zb)
 
 Returns the principal logarithm of a complex number in complex base Zb.
+#### Principal Logarithm to Base 2
+Zv = Z.Log2()
+
+Returns the principal logarithm of a complex number in base 2.
+#### Principal Logarithm to Base 10
+Zv = Z.Log10()
+
+Returns the principal logarithm of a complex number in base 10.
 
 ## Wyrm.Math.Matrix
 Provides matrix arithmetic.

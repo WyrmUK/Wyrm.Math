@@ -555,6 +555,24 @@ public readonly struct GeneralComplexNumberDecimal
     {
         return Log() / newBase.Log();
     }
-    // TODO: Log2, Log10,
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in base2.
+    /// </summary>
+    /// <returns>The principal base 2 logarithm.</returns>
+    public GeneralComplexNumberDecimal Log2()
+    {
+        return Log() / Decimal.Log2;
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in base 10.
+    /// </summary>
+    /// <returns>The principal base 10 logarithm.</returns>
+    public GeneralComplexNumberDecimal Log10()
+    {
+        return Log() / Decimal.Log10;
+    }
+
     // TODO: Round, Round (digits), Round (algorithm), Round (digits, algorithm)
 }
