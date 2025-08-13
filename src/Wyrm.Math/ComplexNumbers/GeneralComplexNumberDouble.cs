@@ -8,6 +8,9 @@ namespace Wyrm.Math.ComplexNumbers;
 /// </summary>
 public readonly struct GeneralComplexNumberDouble
 {
+    private static readonly GeneralComplexNumberDouble I = new GeneralComplexNumberDouble(0.0, 1.0);
+    private static readonly GeneralComplexNumberDouble I2 = new GeneralComplexNumberDouble(0.0, 0.5);
+
     internal GeneralComplexNumber<double> ComplexNumber { get; }
 
     /// <summary>
@@ -325,5 +328,248 @@ public readonly struct GeneralComplexNumberDouble
         var real = angle.Cos();
         var imaginary = angle.Sin();
         return new(multiplier * real, multiplier * imaginary);
+    }
+
+    /// <summary>
+    /// Gets the sine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The sine of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Sin()
+    {
+        return new GeneralComplexNumberDouble(
+            Real.Sin() * Imaginary.Cosh(),
+            Real.Cos() * Imaginary.Sinh());
+    }
+
+    /// <summary>
+    /// Gets the cosine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The cosine of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Cos()
+    {
+        return new GeneralComplexNumberDouble(
+            Real.Cos() * Imaginary.Cosh(),
+            -Real.Sin() * Imaginary.Sinh());
+    }
+
+    /// <summary>
+    /// Gets the tangent of this complex angle (radians).
+    /// </summary>
+    /// <returns>The tangent of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Tan()
+    {
+        return Sin() / Cos();
+    }
+
+    /// <summary>
+    /// Gets the angle that this complex number is the sine of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDouble Asin()
+    {
+        return ((1.0 - Sqr()).Sqrt() + (I * this)).Log() * -I;
+    }
+
+    /// <summary>
+    /// Gets the angle that this complex number is the cosine of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDouble Acos()
+    {
+        return new GeneralComplexNumberDouble(double.Pi / 2.0, 0.0) - Asin();
+    }
+
+    /// <summary>
+    /// Gets the angle that this complex number is the tangent of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDouble Atan()
+    {
+        var iz = I * this;
+        return ((1.0 + iz) / (1.0 - iz)).Log() * -I2;
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic sine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic sine of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Sinh()
+    {
+        return new GeneralComplexNumberDouble(
+            Real.Sinh() * Imaginary.Cos(),
+            Real.Cosh() * Imaginary.Sin());
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic cosine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic cosine of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Cosh()
+    {
+        return new GeneralComplexNumberDouble(
+            Real.Cosh() * Imaginary.Cos(),
+            Real.Sinh() * Imaginary.Sin());
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic tangent of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic tangent of the angle as a new <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public GeneralComplexNumberDouble Tanh()
+    {
+        return new GeneralComplexNumberDouble(Real.Tanh(), Imaginary.Tan()) /
+               new GeneralComplexNumberDouble(1.0, Real.Tanh() * Imaginary.Tan());
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic sine of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDouble Asinh()
+    {
+        return (this + (Sqr() + 1.0).Sqrt()).Log();
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic cosine of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDouble Acosh()
+    {
+        return (this + ((this + 1.0).Sqrt() * (this - 1.0).Sqrt())).Log();
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic tangent of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDouble Atanh()
+    {
+        return ((1.0 + this) / (1.0 - this)).Log() / 2.0;
+    }
+
+    /// <summary>
+    /// Returns the complex cube root of this complex number.
+    /// </summary>
+    /// <returns>The complex cube root.</returns>
+    public GeneralComplexNumberDouble Cbrt()
+    {
+        return (Log() / 3.0).Exp();
+    }
+
+    /// <summary>
+    /// Returns a complex number with the magnitudes of this but the signs of y.
+    /// </summary>
+    /// <param name="y">The complex number to take the signes from.</param>
+    /// <returns>A complex number with the magnitudes of this but the signs of y.</returns>
+    public GeneralComplexNumberDouble CopySign(GeneralComplexNumberDouble y)
+    {
+        return new GeneralComplexNumberDouble(Real.CopySign(y.Real), Imaginary.CopySign(y.Imaginary));
+    }
+
+    /// <summary>
+    /// Returns this * 2^n efficiently.
+    /// </summary>
+    /// <param name="n">The power to scale by.</param>
+    /// <returns>this * 2^n</returns>
+    public GeneralComplexNumberDouble ScaleB(int n)
+    {
+        return new GeneralComplexNumberDouble(Real.ScaleB(n), Imaginary.ScaleB(n));
+    }
+
+    /// <summary>
+    /// Gets the value of e to the power of this complex number.
+    /// </summary>
+    /// <returns>The complex value of e to the power of this.</returns>
+    public GeneralComplexNumberDouble Exp()
+    {
+        var estimate = new GeneralComplexNumberDouble(1.0, 0.0);
+        var prevEstimate = new GeneralComplexNumberDouble(0.0, 0.0);
+        var dVal = this;
+        var factor = 1.0;
+
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += dVal;
+            factor += 1.0;
+            try
+            {
+                dVal *= this / factor;
+            }
+            catch (Exception)
+            {
+                break;
+            }
+        }
+
+        return estimate;
+    }
+
+    /// <summary>
+    /// Gets the principal natural logarithm of this complex number.
+    /// </summary>
+    /// <returns>The principal natural logarithm.</returns>
+    public GeneralComplexNumberDouble Log()
+    {
+        return new GeneralComplexNumberDouble(Abs().Log(), Argument());
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in a specific base.
+    /// </summary>
+    /// <param name="newBase">The base for the logarithm.</param>
+    /// <returns>The principal logarithm in the base.</returns>
+    public GeneralComplexNumberDouble Log(double newBase)
+    {
+        return Log() / newBase.Logi();
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in a specific base.
+    /// </summary>
+    /// <param name="newBase">The base for the logarithm.</param>
+    /// <returns>The principal logarithm in the base.</returns>
+    public GeneralComplexNumberDouble Log(GeneralComplexNumberDouble newBase)
+    {
+        return Log() / newBase.Log();
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in base2.
+    /// </summary>
+    /// <returns>The principal base 2 logarithm.</returns>
+    public GeneralComplexNumberDouble Log2()
+    {
+        return Log() / Double.Log2;
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in base 10.
+    /// </summary>
+    /// <returns>The principal base 10 logarithm.</returns>
+    public GeneralComplexNumberDouble Log10()
+    {
+        return Log() / Double.Log10;
+    }
+
+    public GeneralComplexNumberDouble Round()
+    {
+        return new GeneralComplexNumberDouble(Real.Round(), Imaginary.Round());
+    }
+
+    public GeneralComplexNumberDouble Round(int digits)
+    {
+        return new GeneralComplexNumberDouble(Real.Round(digits), Imaginary.Round(digits));
+    }
+
+    public GeneralComplexNumberDouble Round(MidpointRounding algorithm)
+    {
+        return new GeneralComplexNumberDouble(Real.Round(algorithm), Imaginary.Round(algorithm));
+    }
+
+    public GeneralComplexNumberDouble Round(int digits, MidpointRounding algorithm)
+    {
+        return new GeneralComplexNumberDouble(Real.Round(digits, algorithm), Imaginary.Round(digits, algorithm));
     }
 }

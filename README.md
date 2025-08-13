@@ -6,7 +6,7 @@ Provides double and decimal extensions.
 ### Decimal
 Decimal constants E, Pi, and Tau.
 ### Double extensions
-Applies all the System.Math methods as extension methods and adds Sqr.
+Applies all the System.Math methods as extension methods and adds Sqr (square).
 ### Decimal extensions
 Replicates the System.Math methods for decimals as extension methods.
 Abs, Acos, Acosh, Asin, Asinh, Atan, Atanh, Atan2,
@@ -19,6 +19,18 @@ ReciprocalEstimate, ReciprocalSqrtEstimate,
 Round, Round (to digits), Round (with algorithm), Round (to digits with algorithm),
 ScaleB, Sign, Sin, SinCos, Sinh, Sqr, Sqrt,
 Tan, Tanh, Truncate.
+#### Complex Cube Root
+Z = N.Cbrti()
+
+Calculates the cube root of a number (either decimal or double) and returns the result as a complex number.
+#### Complex Natural Log
+Z = N.Logi()
+
+Calculates the principal natural logarithm of a number (either decimal or double) and returns the result as a complex number.
+#### Complex Square Root
+Z = N.Sqrti()
+
+Calculates the square root of a number (either decimal or double) and returns the result as a complex number.
 
 ## Wyrm.Math.ComplexNumbers
 Provides complex number arithmetic.
@@ -99,6 +111,97 @@ Z^n = Z.Pow(n)
 Z^z = Z.Pow(z)
 
 Raises a complex number by a power either real or complex.
+#### Sine
+Zv = Z.Sin()
+
+Returns the sine of a complex number (radians).
+#### Cosine
+Zv = Z.Cos()
+
+Returns the cosine of a complex number (radians).
+#### Tangent
+Zv = Z.Tan()
+
+Returns the tangent of a complex number (radians).
+#### Arsine
+Zv = Z.Asin()
+
+Returns the complex angle (radians) that has the sine.
+#### Arcosine
+Zv = Z.Acos()
+
+Returns the complex angle (radians) that has the cosine.
+#### Artangent
+Zv = Z.Atan()
+
+Returns the complex angle (radians) that has the tangent.
+#### Hyperbolic Sine
+Zv = Z.Sinh()
+
+Returns the hyperbolic sine of a complex number (radians).
+#### Hyperbolic Cosine
+Zv = Z.Cosh()
+
+Returns the hyperbolic cosine of a complex number (radians).
+#### Hyperbolic Tangent
+Zv = Z.Tanh()
+
+Returns the hyperbolic tangent of a complex number (radians).
+#### Principal Hyperbolic Arsine
+Zv = Z.Asinh()
+
+Returns the principal complex angle (radians) that the complex number is a hyperbolic sine of.
+#### Principal Hyperbolic Arcosine
+Zv = Z.Acosh()
+
+Returns the principal complex angle (radians) that the complex number is a hyperbolic cosine of.
+#### Principal Hyperbolic Artangent
+Zv = Z.Atanh()
+
+Returns the principal complex angle (radians) that the complex number is a hyperbolic tangent of.
+#### Cube Root
+Zv = Z.Cbrt()
+
+Returns the complex cube root of a complex number.
+#### Complex Copy Sign
+Zv = Zx.CopySign(Zy)
+
+Returns a complex number with the magnitudes of Zx but the signs of Zy. The real part has the magnitude of Zx.Real but the sign of Zy.Real and the imaginary part has the magnitude of Zx.Imaginary but the sign of Zy.Imaginary.
+#### Complex ScaleB
+Zv = Z.ScaleB(N)
+
+Returns the result of Zx * 2^N as a complex number.
+#### Exponential
+Zv = Z.Exp()
+
+Returns the value of e to the power of a complex number.
+#### Principal Natural Logarithm
+Zv = Z.Log()
+
+Returns the principal natural logarithm of a complex number.
+#### Principal Logarithm to Base
+Zv = Z.Log(b)
+
+Returns the principal logarithm of a complex number in base b.
+#### Principal Logarithm to complex Base
+Zv = Z.Log(Zb)
+
+Returns the principal logarithm of a complex number in complex base Zb.
+#### Principal Logarithm to Base 2
+Zv = Z.Log2()
+
+Returns the principal logarithm of a complex number in base 2.
+#### Principal Logarithm to Base 10
+Zv = Z.Log10()
+
+Returns the principal logarithm of a complex number in base 10.
+#### Rounding
+Zr = Z.Round()
+Zr = Z.Round(N)
+Zr = Z.Round(MidPointRounding)
+Zr = Z.Round(N, MidPointRounding)
+
+Returns a complex number with the real and imaginary parts rounded.
 
 ## Wyrm.Math.Matrix
 Provides matrix arithmetic.

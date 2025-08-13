@@ -1,4 +1,6 @@
-﻿namespace Wyrm.Math;
+﻿using Wyrm.Math.ComplexNumbers;
+
+namespace Wyrm.Math;
 
 /// <summary>
 /// Extension methods for <see cref="double"/>s.
@@ -38,6 +40,16 @@ public static class DoubleExtensions
     /// <inheritdoc cref="System.Math.Cbrt(double)"/>
     public static double Cbrt(this double d) => System.Math.Cbrt(d);
 
+    /// <summary>
+    /// Returns the complex cube root of a number.
+    /// </summary>
+    /// <param name="d">The number to get the cube root of.</param>
+    /// <returns>The complex cube root of a number as a <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public static GeneralComplexNumberDouble Cbrti(this double d)
+    {
+        return new GeneralComplexNumberDouble(d, 0.0).Cbrt();
+    }
+
     /// <inheritdoc cref="System.Math.Ceiling(double)"/>
     public static double Ceiling(this double a) => System.Math.Ceiling(a);
 
@@ -70,6 +82,16 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Log(double)"/>
     public static double Log(this double d) => System.Math.Log(d);
+
+    /// <summary>
+    /// Calculates the natural logarithm of a number giving the result as a complex number.
+    /// </summary>
+    /// <param name="d">The value to take the natural logatirhm of.</param>
+    /// <returns>The natural logatirhm as a complex number.</returns>
+    public static GeneralComplexNumberDouble Logi(this double d)
+    {
+        return new GeneralComplexNumberDouble(d, 0.0).Log();
+    }
 
     /// <inheritdoc cref="System.Math.Log(double, double)"/>
     public static double Log(this double d, double newBase) => System.Math.Log(d, newBase);
@@ -137,6 +159,14 @@ public static class DoubleExtensions
 
     /// <inheritdoc cref="System.Math.Sqrt(double)"/>
     public static double Sqrt(this double d) => System.Math.Sqrt(d);
+
+    /// <summary>
+    /// Returns the square root of a number giving the result as a complex number.
+    /// </summary>
+    /// <param name="d">The number to take the square root of.</param>
+    /// <returns>The square root of d as a <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public static GeneralComplexNumberDouble Sqrti(this double d) =>
+        new GeneralComplexNumberDouble(d, 0.0).Sqrt();
 
     /// <inheritdoc cref="System.Math.Tan(double)"/>
     public static double Tan(this double a) => System.Math.Tan(a);

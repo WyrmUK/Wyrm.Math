@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.UnitTests.TestHelpers;
 
 namespace Wyrm.Math.UnitTests;
@@ -89,6 +90,15 @@ public class DecimalExtensionsTests
     public void Cbrt_Should_Return_Cbrt(decimal value, decimal expected)
     {
         value.Cbrt().ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalCbrtiValues))]
+    public void Cbrti_Should_Return_Cbrti(decimal value, GeneralComplexNumberDecimal expected, decimal tolerance)
+    {
+        var result = value.Cbrti();
+        result.Real.ShouldBeWithinTolerance(expected.Real, tolerance);
+        result.Imaginary.ShouldBeWithinTolerance(expected.Imaginary, tolerance);
     }
 
     [Theory]
@@ -190,6 +200,15 @@ public class DecimalExtensionsTests
         {
             Should.Throw<Exception>(() => value.Log());
         }
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalLogiValues))]
+    public void Logi_Should_Return_Logi(decimal value, GeneralComplexNumberDecimal expected, decimal tolerance)
+    {
+        var result = value.Logi();
+        result.Real.ShouldBeWithinTolerance(expected.Real, tolerance);
+        result.Imaginary.ShouldBeWithinTolerance(expected.Imaginary, tolerance);
     }
 
     [Theory]
@@ -380,6 +399,15 @@ public class DecimalExtensionsTests
         {
             Should.Throw<InvalidOperationException>(() => value.Sqrt());
         }
+    }
+
+    [Theory]
+    [MemberData(nameof(DecimalSqrtiValues))]
+    public void Sqrti_Should_Return_Sqrti(decimal value, GeneralComplexNumberDecimal expected, decimal tolerance)
+    {
+        var result = value.Sqrti();
+        result.Real.ShouldBeWithinTolerance(expected.Real, tolerance);
+        result.Imaginary.ShouldBeWithinTolerance(expected.Imaginary, tolerance);
     }
 
     [Theory]
@@ -592,6 +620,13 @@ public class DecimalExtensionsTests
         { decimal.MaxValue, 4294967296.0000000000000000001M }
     };
 
+    public static readonly TheoryData<decimal, GeneralComplexNumberDecimal, decimal> DecimalCbrtiValues = new()
+    {
+        { -1, new GeneralComplexNumberDecimal(0.5M, 0.866025403784438646763723170752936183471402626905190314027903489725966508M), 0.0000000000000000000000000001M },
+        { -8, new GeneralComplexNumberDecimal(1.0M, 1.732050807568877293527446341505872366942805253810380628055806979451933016M), 0.0000000000000000000000000004M },
+        { -123, new GeneralComplexNumberDecimal(2.486594916634295207825041691427521139855974588929628346455623858011457705M, 4.306908733453096124863620096821923805915421415610408876276531894533221525M), 0.0000000000000000000000000016M }
+    };
+
     public static readonly TheoryData<decimal, decimal, decimal> DecimalCosValues = new()
     {
         { -Decimal.Pi * 9M / 4M, 0.70710678118654752440084436210484903928483593768847403658833986899536623923M, 0.0000000000000000000000000001M },
@@ -708,6 +743,13 @@ public class DecimalExtensionsTests
         { 7.3890560989306502272304274606M, 2.0000000000000000000000000000033823246819443308297825432394530301037M, 0.0000000000000000000000000007M },
         { 10M, 2.30258509299404568401799145468436420760110148862877297603332790096757260967M, 0.0000000000000000000000000007M },
         { 33.115451958692313750653249350M, 3.4999999999999999999999999999882648048120713560734203117343180927565M, 0.0000000000000000000000000005M }
+    };
+
+    public static readonly TheoryData<decimal, GeneralComplexNumberDecimal, decimal> DecimalLogiValues = new()
+    {
+        { -1M, new GeneralComplexNumberDecimal(0.0M, 3.1415926535897932384626433832795028841971693993751058209749445923078164062M), 0.0000000000000000000000000000M },
+        { -4M, new GeneralComplexNumberDecimal(1.38629436111989061883446424291635313615100026872051050824136001898M, 3.14159265358979323846264338327950288419716939937510582097494459230M), 0.0000000000000000000000000003M },
+        { -123M, new GeneralComplexNumberDecimal(4.81218435537241749526200860995993329302390102722205108535395724389M, 3.14159265358979323846264338327950288419716939937510582097494459230M), 0.0000000000000000000000000008M }
     };
 
     public static readonly TheoryData<decimal, decimal, decimal, decimal> DecimalLogBaseValues = new()
@@ -850,6 +892,13 @@ public class DecimalExtensionsTests
         { 123M, 11.0905365064094171620516001026099329184633767424540200228773128390850016331M, 0.0000000000000000000000000010M  },
         { 1234M, 35.1283361405005916058703116253563067645404854787765405690202683926394175654M, 0.0000000000000000000000000010M  },
         { decimal.MaxValue, 281474976710656M, 0.0000000000000000000000000000M  }
+    };
+
+    public static readonly TheoryData<decimal, GeneralComplexNumberDecimal, decimal> DecimalSqrtiValues = new()
+    {
+        { -1, new GeneralComplexNumberDecimal(0.0M, 1.0M), 0.0000000000000000000000000000M },
+        { -4, new GeneralComplexNumberDecimal(0.0M, 2.0M), 0.0000000000000000000000000000M },
+        { -123, new GeneralComplexNumberDecimal(0.0M, 11.090536506409417162051600103M), 0.0000000000000000000000000010M }
     };
 
     public static readonly TheoryData<decimal, decimal?, decimal> DecimalTanValues = new()

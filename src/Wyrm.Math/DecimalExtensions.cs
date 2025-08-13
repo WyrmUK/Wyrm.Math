@@ -1,4 +1,6 @@
-﻿namespace Wyrm.Math;
+﻿using Wyrm.Math.ComplexNumbers;
+
+namespace Wyrm.Math;
 
 /// <summary>
 /// Extension methods for <see cref="decimal"/>s.
@@ -30,7 +32,7 @@ public static class DecimalExtensions
     /// </summary>
     /// <param name="d">The number to get the Acosh of.</param>
     /// <returns>An angle, Θ, in radians.</returns>
-    /// <exception cref="InvalidOperationException">Thrown if d < 1.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if d &lt; 1.</exception>
     public static decimal Acosh(this decimal d)
     {
         if (d < 1M) throw new InvalidOperationException("Result would be complex.");
@@ -256,6 +258,16 @@ public static class DecimalExtensions
         return estimate;
     }
 
+    /// <summary>
+    /// Returns the complex cube root of a number.
+    /// </summary>
+    /// <param name="d">The number to get the cube root of.</param>
+    /// <returns>The complex cube root of a number as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public static GeneralComplexNumberDecimal Cbrti(this decimal d)
+    {
+        return new GeneralComplexNumberDecimal(d, 0.0M).Cbrt();
+    }
+
     /// <inheritdoc cref="System.Math.Ceiling(decimal)"/>
     public static decimal Ceiling(this decimal a) => System.Math.Ceiling(a);
 
@@ -475,6 +487,16 @@ public static class DecimalExtensions
             factor += 1M;
         }
         return addition + estimate;
+    }
+
+    /// <summary>
+    /// Calculates the natural logarithm of a number giving the result as a complex number.
+    /// </summary>
+    /// <param name="d">The value to take the natural logatirhm of.</param>
+    /// <returns>The natural logatirhm as a complex number.</returns>
+    public static GeneralComplexNumberDecimal Logi(this decimal d)
+    {
+        return new GeneralComplexNumberDecimal(d, 0.0M).Log();
     }
 
     /// <summary>
@@ -738,6 +760,14 @@ public static class DecimalExtensions
 
         return estimate;
     }
+
+    /// <summary>
+    /// Returns the square root of a number giving the result as a complex number.
+    /// </summary>
+    /// <param name="d">The number to take the square root of.</param>
+    /// <returns>The square root of d as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public static GeneralComplexNumberDecimal Sqrti(this decimal d) =>
+        new GeneralComplexNumberDecimal(d, 0.0M).Sqrt();
 
     /// <summary>
     /// Returns the tangent of the angle.

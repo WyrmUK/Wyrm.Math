@@ -8,6 +8,9 @@ namespace Wyrm.Math.ComplexNumbers;
 /// </summary>
 public readonly struct GeneralComplexNumberDecimal
 {
+    private static readonly GeneralComplexNumberDecimal I = new GeneralComplexNumberDecimal(0.0M, 1.0M);
+    private static readonly GeneralComplexNumberDecimal I2 = new GeneralComplexNumberDecimal(0.0M, 0.5M);
+
     internal GeneralComplexNumber<decimal> ComplexNumber { get; }
 
     /// <summary>
@@ -325,5 +328,269 @@ public readonly struct GeneralComplexNumberDecimal
         var real = angle.Cos();
         var imaginary = angle.Sin();
         return new(multiplier * real, multiplier * imaginary);
+    }
+
+    /// <summary>
+    /// Gets the sine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The sine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Sin()
+    {
+        return new GeneralComplexNumberDecimal(
+            Real.Sin() * Imaginary.Cosh(),
+            Real.Cos() * Imaginary.Sinh());
+    }
+
+    /// <summary>
+    /// Gets the cosine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The cosine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Cos()
+    {
+        return new GeneralComplexNumberDecimal(
+            Real.Cos() * Imaginary.Cosh(),
+            -Real.Sin() * Imaginary.Sinh());
+    }
+
+    /// <summary>
+    /// Gets the tangent of this complex angle (radians).
+    /// </summary>
+    /// <returns>The tangent of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Tan()
+    {
+        return Sin() / Cos();
+    }
+
+    /// <summary>
+    /// Gets the angle that this complex number is the sine of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDecimal Asin()
+    {
+        return ((1.0M - Sqr()).Sqrt() + (I * this)).Log() * -I;
+    }
+
+    /// <summary>
+    /// Gets the angle that this complex number is the cosine of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDecimal Acos()
+    {
+        return new GeneralComplexNumberDecimal(Decimal.HalfPi, 0.0M) - Asin();
+    }
+
+    /// <summary>
+    /// Gets the angle that this complex number is the tangent of.
+    /// </summary>
+    /// <returns>The angle in radians.</returns>
+    public GeneralComplexNumberDecimal Atan()
+    {
+        var iz = I * this;
+        return ((1.0M + iz) / (1.0M - iz)).Log() * -I2;
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic sine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic sine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Sinh()
+    {
+        return new GeneralComplexNumberDecimal(
+            Real.Sinh() * Imaginary.Cos(),
+            Real.Cosh() * Imaginary.Sin());
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic cosine of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic cosine of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Cosh()
+    {
+        return new GeneralComplexNumberDecimal(
+            Real.Cosh() * Imaginary.Cos(),
+            Real.Sinh() * Imaginary.Sin());
+    }
+
+    /// <summary>
+    /// Gets the hyperbolic tangent of this complex angle (radians).
+    /// </summary>
+    /// <returns>The hyperbolic tangent of the angle as a new <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public GeneralComplexNumberDecimal Tanh()
+    {
+        return new GeneralComplexNumberDecimal(Real.Tanh(), Imaginary.Tan()) /
+               new GeneralComplexNumberDecimal(1.0M, Real.Tanh() * Imaginary.Tan());
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic sine of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDecimal Asinh()
+    {
+        return (this + (Sqr() + 1.0M).Sqrt()).Log();
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic cosine of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDecimal Acosh()
+    {
+        return (this + ((this + 1.0M).Sqrt() * (this - 1.0M).Sqrt())).Log();
+    }
+
+    /// <summary>
+    /// Gets the principal complex angle (radians) that this value is the hyperbolic tangent of.
+    /// </summary>
+    /// <returns>The principal complex angle (radians).</returns>
+    public GeneralComplexNumberDecimal Atanh()
+    {
+        return ((1.0M + this) / (1.0M - this)).Log() / 2.0M;
+    }
+
+    /// <summary>
+    /// Returns the complex cube root of this complex number.
+    /// </summary>
+    /// <returns>The complex cube root.</returns>
+    public GeneralComplexNumberDecimal Cbrt()
+    {
+        return (Log() / 3.0M).Exp();
+    }
+
+    /// <summary>
+    /// Returns a complex number with the magnitudes of this but the signs of y.
+    /// </summary>
+    /// <param name="y">The complex number to take the signes from.</param>
+    /// <returns>A complex number with the magnitudes of this but the signs of y.</returns>
+    public GeneralComplexNumberDecimal CopySign(GeneralComplexNumberDecimal y)
+    {
+        return new GeneralComplexNumberDecimal(Real.CopySign(y.Real), Imaginary.CopySign(y.Imaginary));
+    }
+
+    /// <summary>
+    /// Returns this * 2^n efficiently.
+    /// </summary>
+    /// <param name="n">The power to scale by.</param>
+    /// <returns>this * 2^n</returns>
+    /// <exception cref="OverflowException">Throw if n is above 96 or below -93.</exception>
+    public GeneralComplexNumberDecimal ScaleB(int n)
+    {
+        if (n > 96 || n < -93) throw new OverflowException("Power of 2 outside decimal representation.");
+
+        if (n == 0) return this;
+        if (n == 1) return this * 2M;
+        if (n == -1) return this * 0.5M;
+
+        var inverse = false;
+        if (n < 0)
+        {
+            inverse = true;
+            n = -n;
+        }
+        var multiplier = 1.0M;
+        while (n > 0)
+        {
+            var pn = n > 62 ? 62 : n;
+            var power2 = 1L << pn;
+            multiplier *= power2;
+            n -= pn;
+        }
+        return this * (inverse ? 1M / multiplier : multiplier);
+    }
+
+    /// <summary>
+    /// Gets the value of e to the power of this complex number.
+    /// </summary>
+    /// <returns>The complex value of e to the power of this.</returns>
+    public GeneralComplexNumberDecimal Exp()
+    {
+        var estimate = new GeneralComplexNumberDecimal(1.0M, 0.0M);
+        var prevEstimate = new GeneralComplexNumberDecimal(0.0M, 0.0M);
+        var dVal = this;
+        var factor = 1.0M;
+
+        while (estimate != prevEstimate)
+        {
+            prevEstimate = estimate;
+            estimate += dVal;
+            factor += 1.0M;
+            try
+            {
+                dVal *= this / factor;
+            }
+            catch (Exception)
+            {
+                break;
+            }
+        }
+
+        return estimate;
+    }
+
+    /// <summary>
+    /// Gets the principal natural logarithm of this complex number.
+    /// </summary>
+    /// <returns>The principal natural logarithm.</returns>
+    public GeneralComplexNumberDecimal Log()
+    {
+        return new GeneralComplexNumberDecimal(Abs().Log(), Argument());
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in a specific base.
+    /// </summary>
+    /// <param name="newBase">The base for the logarithm.</param>
+    /// <returns>The principal logarithm in the base.</returns>
+    public GeneralComplexNumberDecimal Log(decimal newBase)
+    {
+        return Log() / newBase.Logi();
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in a specific base.
+    /// </summary>
+    /// <param name="newBase">The base for the logarithm.</param>
+    /// <returns>The principal logarithm in the base.</returns>
+    public GeneralComplexNumberDecimal Log(GeneralComplexNumberDecimal newBase)
+    {
+        return Log() / newBase.Log();
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in base2.
+    /// </summary>
+    /// <returns>The principal base 2 logarithm.</returns>
+    public GeneralComplexNumberDecimal Log2()
+    {
+        return Log() / Decimal.Log2;
+    }
+
+    /// <summary>
+    /// Gets the principal logarithm of this complex number in base 10.
+    /// </summary>
+    /// <returns>The principal base 10 logarithm.</returns>
+    public GeneralComplexNumberDecimal Log10()
+    {
+        return Log() / Decimal.Log10;
+    }
+
+    public GeneralComplexNumberDecimal Round()
+    {
+        return new GeneralComplexNumberDecimal(Real.Round(), Imaginary.Round());
+    }
+
+    public GeneralComplexNumberDecimal Round(int digits)
+    {
+        return new GeneralComplexNumberDecimal(Real.Round(digits), Imaginary.Round(digits));
+    }
+
+    public GeneralComplexNumberDecimal Round(MidpointRounding algorithm)
+    {
+        return new GeneralComplexNumberDecimal(Real.Round(algorithm), Imaginary.Round(algorithm));
+    }
+
+    public GeneralComplexNumberDecimal Round(int digits, MidpointRounding algorithm)
+    {
+        return new GeneralComplexNumberDecimal(Real.Round(digits, algorithm), Imaginary.Round(digits, algorithm));
     }
 }
