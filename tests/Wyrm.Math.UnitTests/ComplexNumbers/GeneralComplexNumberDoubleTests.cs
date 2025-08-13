@@ -453,6 +453,38 @@ public class GeneralComplexNumberDoubleTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexRoundTheoryData))]
+    public void Round_Should_Get_Round(GeneralComplexNumberDouble z, GeneralComplexNumberDouble expected)
+    {
+        var result = z.Round();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexRoundDigitsTheoryData))]
+    public void RoundDigits_Should_Get_RoundDigits(GeneralComplexNumberDouble z, int digits, GeneralComplexNumberDouble expected)
+    {
+        var result = z.Round(digits);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexRoundAlgorithmTheoryData))]
+    public void RoundAlgorithm_Should_Get_RoundAlgorithm(GeneralComplexNumberDouble z, MidpointRounding algorithm, GeneralComplexNumberDouble expected)
+    {
+        var result = z.Round(algorithm);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexRoundDigitsAlgorithmTheoryData))]
+    public void RoundDigitsAlgorithm_Should_Get_RoundDigitsAlgorithm(GeneralComplexNumberDouble z, int digits, MidpointRounding algorithm, GeneralComplexNumberDouble expected)
+    {
+        var result = z.Round(digits, algorithm);
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const double TestValue0_0 = 0.0;
@@ -845,6 +877,38 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDouble(0.3424226808222062, -0.6821881769209206) },
         { new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(0.39087768732623446, -0.480828578784234) },
         { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(0.39087768732623446, -0.8835477750576072) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble> TestComplexRoundTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValue1, TestValue2) },
+        { new GeneralComplexNumberDouble(1.5, 2.5), new GeneralComplexNumberDouble(TestValue2, TestValue2) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDouble(-TestValue1, -TestValue2) },
+        { new GeneralComplexNumberDouble(-1.5, -2.5), new GeneralComplexNumberDouble(-TestValue2, -TestValue2) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, int, GeneralComplexNumberDouble> TestComplexRoundDigitsTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(1.11, 2.22), 1, new GeneralComplexNumberDouble(1.1, 2.2) },
+        { new GeneralComplexNumberDouble(1.115, 2.225), 2, new GeneralComplexNumberDouble(1.12, 2.22) },
+        { new GeneralComplexNumberDouble(-1.11, -2.22), 1, new GeneralComplexNumberDouble(-1.1, -2.2) },
+        { new GeneralComplexNumberDouble(-1.115, -2.225), 2, new GeneralComplexNumberDouble(-1.12, -2.22) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, MidpointRounding, GeneralComplexNumberDouble> TestComplexRoundAlgorithmTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(TestValue1, TestValue2) },
+        { new GeneralComplexNumberDouble(1.5, 2.5), MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(TestValue2, TestValue3) },
+        { new GeneralComplexNumberDouble(-TestValue1_1, -TestValue2_2), MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(-TestValue1, -TestValue2) },
+        { new GeneralComplexNumberDouble(-1.5, -2.5), MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(-TestValue2, -TestValue3) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, int, MidpointRounding, GeneralComplexNumberDouble> TestComplexRoundDigitsAlgorithmTheoryData = new()
+    {
+        { new GeneralComplexNumberDouble(1.11, 2.22), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(1.1, 2.2) },
+        { new GeneralComplexNumberDouble(1.15, 2.25), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(1.2, 2.3) },
+        { new GeneralComplexNumberDouble(-1.11, -2.22), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(-1.1, -2.2) },
+        { new GeneralComplexNumberDouble(-1.15, -2.25), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDouble(-1.2, -2.3) }
     };
 
     #endregion

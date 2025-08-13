@@ -195,6 +195,13 @@ Returns the principal logarithm of a complex number in base 2.
 Zv = Z.Log10()
 
 Returns the principal logarithm of a complex number in base 10.
+#### Rounding
+Zr = Z.Round()
+Zr = Z.Round(N)
+Zr = Z.Round(MidPointRounding)
+Zr = Z.Round(N, MidPointRounding)
+
+Returns a complex number with the real and imaginary parts rounded.
 
 ## Wyrm.Math.Matrix
 Provides matrix arithmetic.

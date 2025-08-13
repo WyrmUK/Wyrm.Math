@@ -450,6 +450,38 @@ public class GeneralComplexNumberDecimalTests
         result.ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestComplexRoundTheoryData))]
+    public void Round_Should_Get_Round(GeneralComplexNumberDecimal z, GeneralComplexNumberDecimal expected)
+    {
+        var result = z.Round();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexRoundDigitsTheoryData))]
+    public void RoundDigits_Should_Get_RoundDigits(GeneralComplexNumberDecimal z, int digits, GeneralComplexNumberDecimal expected)
+    {
+        var result = z.Round(digits);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexRoundAlgorithmTheoryData))]
+    public void RoundAlgorithm_Should_Get_RoundAlgorithm(GeneralComplexNumberDecimal z, MidpointRounding algorithm, GeneralComplexNumberDecimal expected)
+    {
+        var result = z.Round(algorithm);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestComplexRoundDigitsAlgorithmTheoryData))]
+    public void RoundDigitsAlgorithm_Should_Get_RoundDigitsAlgorithm(GeneralComplexNumberDecimal z, int digits, MidpointRounding algorithm, GeneralComplexNumberDecimal expected)
+    {
+        var result = z.Round(digits, algorithm);
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const decimal TestValue0_0 = 0.0M;
@@ -839,6 +871,38 @@ public class GeneralComplexNumberDecimalTests
         { new GeneralComplexNumberDecimal(TestValue0_0, -TestValue2_2), new GeneralComplexNumberDecimal(0.3424226808222062359639388660M, -0.6821881769209206737428918127M) },
         { new GeneralComplexNumberDecimal(TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(0.390877687326234443143330524M, -0.4808285787842341027039415824M) },
         { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(0.390877687326234443143330524M, -0.883547775057607244781842043M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal> TestComplexRoundTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), new GeneralComplexNumberDecimal(TestValue1, TestValue2) },
+        { new GeneralComplexNumberDecimal(1.5M, 2.5M), new GeneralComplexNumberDecimal(TestValue2, TestValue2) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), new GeneralComplexNumberDecimal(-TestValue1, -TestValue2) },
+        { new GeneralComplexNumberDecimal(-1.5M, -2.5M), new GeneralComplexNumberDecimal(-TestValue2, -TestValue2) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, int, GeneralComplexNumberDecimal> TestComplexRoundDigitsTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(1.11M, 2.22M), 1, new GeneralComplexNumberDecimal(1.1M, 2.2M) },
+        { new GeneralComplexNumberDecimal(1.115M, 2.225M), 2, new GeneralComplexNumberDecimal(1.12M, 2.22M) },
+        { new GeneralComplexNumberDecimal(-1.11M, -2.22M), 1, new GeneralComplexNumberDecimal(-1.1M, -2.2M) },
+        { new GeneralComplexNumberDecimal(-1.115M, -2.225M), 2, new GeneralComplexNumberDecimal(-1.12M, -2.22M) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, MidpointRounding, GeneralComplexNumberDecimal> TestComplexRoundAlgorithmTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2), MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(TestValue1, TestValue2) },
+        { new GeneralComplexNumberDecimal(1.5M, 2.5M), MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(TestValue2, TestValue3) },
+        { new GeneralComplexNumberDecimal(-TestValue1_1, -TestValue2_2), MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(-TestValue1, -TestValue2) },
+        { new GeneralComplexNumberDecimal(-1.5M, -2.5M), MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(-TestValue2, -TestValue3) }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDecimal, int, MidpointRounding, GeneralComplexNumberDecimal> TestComplexRoundDigitsAlgorithmTheoryData = new()
+    {
+        { new GeneralComplexNumberDecimal(1.11M, 2.22M), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(1.1M, 2.2M) },
+        { new GeneralComplexNumberDecimal(1.15M, 2.25M), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(1.2M, 2.3M) },
+        { new GeneralComplexNumberDecimal(-1.11M, -2.22M), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(-1.1M, -2.2M) },
+        { new GeneralComplexNumberDecimal(-1.15M, -2.25M), 1, MidpointRounding.AwayFromZero, new GeneralComplexNumberDecimal(-1.2M, -2.3M) }
     };
 
     #endregion
