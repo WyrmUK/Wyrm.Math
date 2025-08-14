@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using System.Linq;
 using System.Numerics;
 using Wyrm.Math.Matrix;
 using Wyrm.Math.Matrix.Base;
@@ -127,11 +128,12 @@ public class GeneralMatrixDoubleTests
     [MemberData(nameof(TestMatrixTheoryData))]
     public void ToEnumerableOfEnumerable_Should_Get_Values(IEnumerable<IEnumerable<double>> expected, GeneralMatrixDouble matrix)
     {
+        var columnCount = expected.Max(v => v.Count());
         matrix.ToEnumerableOfEnumerable()
             .SelectMany(v => v.Select(c => c))
             .ToArray()
             .ShouldBeEquivalentTo(expected
-                .SelectMany(v => v.Select(c => c))
+                .SelectMany(v => v.Select(c => c).Concat(new double[columnCount - v.Count()]))
                 .ToArray());
     }
 
@@ -373,7 +375,8 @@ public class GeneralMatrixDoubleTests
     public static readonly TheoryData<IEnumerable<IEnumerable<double>>, GeneralMatrixDouble> TestMatrixTheoryData =
         new()
         {
-            { [[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]], new GeneralMatrixDouble(new GeneralMatrix<double>(3, [TestValue1_1, TestValue2_2, TestValue3_3, TestValue4_4, TestValue5_5, TestValue6_6])) }
+            { [[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]], new GeneralMatrixDouble(new GeneralMatrix<double>(3, [TestValue1_1, TestValue2_2, TestValue3_3, TestValue4_4, TestValue5_5, TestValue6_6])) },
+            { [[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4], [TestValue5_5, TestValue6_6]], new GeneralMatrixDouble(new GeneralMatrix<double>(3, [TestValue1_1, TestValue2_2, TestValue3_3, TestValue4_4, TestValue0, TestValue0, TestValue5_5, TestValue6_6, TestValue0])) }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble> TestGeneralMatrixTransposeTheoryData =

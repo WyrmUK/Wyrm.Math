@@ -33,6 +33,14 @@ public class DecimalExtensionsTests
     }
 
     [Theory]
+    [MemberData(nameof(DecimalValues))]
+    public void AsComplex_Should_Return_ComplexNumber(decimal value)
+    {
+        value.AsComplex().ShouldBe(new GeneralComplexNumberDecimal(value, 0M));
+        value.AsComplex(12.3M).ShouldBe(new GeneralComplexNumberDecimal(value, 12.3M));
+    }
+
+    [Theory]
     [MemberData(nameof(DecimalAsinValues))]
     public void Asin_Should_Return_Asin(decimal value, decimal expected, decimal tolerance)
     {

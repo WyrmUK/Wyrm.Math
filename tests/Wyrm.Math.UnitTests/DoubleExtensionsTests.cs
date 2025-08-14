@@ -29,6 +29,14 @@ public class DoubleExtensionsTests
 
     [Theory]
     [MemberData(nameof(DoubleValues))]
+    public void AsComplex_Should_Return_ComplexNumber(double value)
+    {
+        value.AsComplex().ShouldBe(new GeneralComplexNumberDouble(value, 0.0));
+        value.AsComplex(12.3).ShouldBe(new GeneralComplexNumberDouble(value, 12.3));
+    }
+
+    [Theory]
+    [MemberData(nameof(DoubleValues))]
     public void Asin_Should_Return_Asin(double value)
     {
         value.Asin().ShouldBe(System.Math.Asin(value));
