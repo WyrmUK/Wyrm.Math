@@ -574,21 +574,41 @@ public readonly struct GeneralComplexNumberDecimal
         return Log() / Decimal.Log10;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public GeneralComplexNumberDecimal Round()
     {
         return new GeneralComplexNumberDecimal(Real.Round(), Imaginary.Round());
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="digits"></param>
+    /// <returns></returns>
     public GeneralComplexNumberDecimal Round(int digits)
     {
         return new GeneralComplexNumberDecimal(Real.Round(digits), Imaginary.Round(digits));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="algorithm"></param>
+    /// <returns></returns>
     public GeneralComplexNumberDecimal Round(MidpointRounding algorithm)
     {
         return new GeneralComplexNumberDecimal(Real.Round(algorithm), Imaginary.Round(algorithm));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="digits"></param>
+    /// <param name="algorithm"></param>
+    /// <returns></returns>
     public GeneralComplexNumberDecimal Round(int digits, MidpointRounding algorithm)
     {
         return new GeneralComplexNumberDecimal(Real.Round(digits, algorithm), Imaginary.Round(digits, algorithm));

@@ -29,7 +29,8 @@ internal readonly struct GeneralMatrix<T> where T : struct
         var rowIndex = 0;
         foreach (var row in values)
         {
-            Array.Copy(row.ToArray(), 0, Values, rowIndex++ * Columns, Columns);
+            var columnValues = row.ToArray();
+            Array.Copy(columnValues, 0, Values, rowIndex++ * Columns, columnValues.Length);
         }
     }
 

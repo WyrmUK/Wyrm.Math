@@ -553,21 +553,41 @@ public readonly struct GeneralComplexNumberDouble
         return Log() / Double.Log10;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public GeneralComplexNumberDouble Round()
     {
         return new GeneralComplexNumberDouble(Real.Round(), Imaginary.Round());
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="digits"></param>
+    /// <returns></returns>
     public GeneralComplexNumberDouble Round(int digits)
     {
         return new GeneralComplexNumberDouble(Real.Round(digits), Imaginary.Round(digits));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="algorithm"></param>
+    /// <returns></returns>
     public GeneralComplexNumberDouble Round(MidpointRounding algorithm)
     {
         return new GeneralComplexNumberDouble(Real.Round(algorithm), Imaginary.Round(algorithm));
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="digits"></param>
+    /// <param name="algorithm"></param>
+    /// <returns></returns>
     public GeneralComplexNumberDouble Round(int digits, MidpointRounding algorithm)
     {
         return new GeneralComplexNumberDouble(Real.Round(digits, algorithm), Imaginary.Round(digits, algorithm));

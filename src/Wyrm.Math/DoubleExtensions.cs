@@ -16,6 +16,15 @@ public static class DoubleExtensions
     /// <inheritdoc cref="System.Math.Acosh(double)"/>
     public static double Acosh(this double d) => System.Math.Acosh(d);
 
+    /// <summary>
+    /// Creates a complex number from a double with an optional imaginary value.
+    /// </summary>
+    /// <param name="real">The real value to create the complex number from.</param>
+    /// <param name="imaginary">The imaginary value to create the complex number from.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDouble"/>.</returns>
+    public static GeneralComplexNumberDouble AsComplex(this double real, double imaginary = 0.0) =>
+        new GeneralComplexNumberDouble(real, imaginary);
+
     /// <inheritdoc cref="System.Math.Asin(double)"/>
     public static double Asin(this double d) => System.Math.Asin(d);
 

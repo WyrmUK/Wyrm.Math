@@ -19,6 +19,12 @@ ReciprocalEstimate, ReciprocalSqrtEstimate,
 Round, Round (to digits), Round (with algorithm), Round (to digits with algorithm),
 ScaleB, Sign, Sin, SinCos, Sinh, Sqr, Sqrt,
 Tan, Tanh, Truncate.
+#### Create complex number
+Z = N.AsComplex()
+
+Z = N.AsComplex(Ni)
+
+Creates a double or decimal complex number from a value with an optional imaginary part.
 #### Complex Cube Root
 Z = N.Cbrti()
 
@@ -299,3 +305,8 @@ The number of columns of the first matrix must be the same as the number of rows
 {Mv} = n / {M}
 
 Divides a scalar value into every element in a matrix or divides each value in a matrix into a scalar, creating a new matrix.
+### Extensions
+#### Create matrix
+M = [[],...].AsMatrix()
+
+Creates a matrix from an enumerable of enumerable decimal or double values.

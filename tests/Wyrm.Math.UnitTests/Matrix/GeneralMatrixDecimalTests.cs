@@ -126,11 +126,12 @@ public class GeneralMatrixDecimalTests
     [MemberData(nameof(TestMatrixTheoryData))]
     public void ToEnumerableOfEnumerable_Should_Get_Values(IEnumerable<IEnumerable<decimal>> expected, GeneralMatrixDecimal matrix)
     {
+        var columnCount = expected.Max(v => v.Count());
         matrix.ToEnumerableOfEnumerable()
             .SelectMany(v => v.Select(c => c))
             .ToArray()
             .ShouldBeEquivalentTo(expected
-                .SelectMany(v => v.Select(c => c))
+                .SelectMany(v => v.Select(c => c).Concat(new decimal[columnCount - v.Count()]))
                 .ToArray());
     }
 
@@ -372,7 +373,8 @@ public class GeneralMatrixDecimalTests
     public static readonly TheoryData<IEnumerable<IEnumerable<decimal>>, GeneralMatrixDecimal> TestMatrixTheoryData =
         new()
         {
-            { [[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]], new GeneralMatrixDecimal(new GeneralMatrix<decimal>(3, [TestValue1_1, TestValue2_2, TestValue3_3, TestValue4_4, TestValue5_5, TestValue6_6])) }
+            { [[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]], new GeneralMatrixDecimal(new GeneralMatrix<decimal>(3, [TestValue1_1, TestValue2_2, TestValue3_3, TestValue4_4, TestValue5_5, TestValue6_6])) },
+            { [[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4], [TestValue5_5, TestValue6_6]], new GeneralMatrixDecimal(new GeneralMatrix<decimal>(3, [TestValue1_1, TestValue2_2, TestValue3_3, TestValue4_4, TestValue0, TestValue0, TestValue5_5, TestValue6_6, TestValue0])) }
         };
 
     public static readonly TheoryData<GeneralMatrixDecimal, GeneralMatrixDecimal> TestGeneralMatrixTransposeTheoryData =

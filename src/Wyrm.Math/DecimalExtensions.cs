@@ -56,6 +56,15 @@ public static class DecimalExtensions
     }
 
     /// <summary>
+    /// Creates a complex number from a decimal with an optional imaginary value.
+    /// </summary>
+    /// <param name="real">The real value to create the complex number from.</param>
+    /// <param name="imaginary">The imaginary value to create the complex number from.</param>
+    /// <returns>A <see cref="GeneralComplexNumberDecimal"/>.</returns>
+    public static GeneralComplexNumberDecimal AsComplex(this decimal real, decimal imaginary = 0M) =>
+        new GeneralComplexNumberDecimal(real, imaginary);
+
+    /// <summary>
     /// Returns the angle whose sine is the number.
     /// </summary>
     /// <param name="d">The number to get the asin of (-1 &lt;= d &lt;= 1).</param>
