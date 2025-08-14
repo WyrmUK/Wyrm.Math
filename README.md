@@ -35,9 +35,9 @@ Calculates the square root of a number (either decimal or double) and returns th
 ## Wyrm.Math.ComplexNumbers
 Provides complex number arithmetic.
 ### GeneralComplexNumberDouble
-This class allows complex numbers with double values to be created, added, subtracted, and multiplied.
+This class allows complex numbers with double values to be created, added, subtracted, multiplied, and divided.
 ### GeneralComplexNumberDecimal
-This class allows complex numbers with decimal values to be created, added, subtracted, and multiplied.
+This class allows complex numbers with decimal values to be created, added, subtracted, multiplied, and divided.
 ### Operations
 #### Cast
 You can cast a complex number with no imaginary part to a scalar and cast a scalar to a complex number.
@@ -101,6 +101,10 @@ Zv = Z / n
 Zv = n / Z
 
 Divides a scalar value into a complex number or divides a complex number into a scalar, creating a new complex number.
+#### Divide by a complex number
+Zv = Z / Zd
+
+Divides complex numbers, creating a new complex number.
 #### Raise to a Power
 Z^2 = Z.Sqr()
 
@@ -197,8 +201,11 @@ Zv = Z.Log10()
 Returns the principal logarithm of a complex number in base 10.
 #### Rounding
 Zr = Z.Round()
+
 Zr = Z.Round(N)
+
 Zr = Z.Round(MidPointRounding)
+
 Zr = Z.Round(N, MidPointRounding)
 
 Returns a complex number with the real and imaginary parts rounded.
