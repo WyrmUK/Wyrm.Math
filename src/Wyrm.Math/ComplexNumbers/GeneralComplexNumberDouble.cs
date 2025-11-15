@@ -6,12 +6,18 @@ namespace Wyrm.Math.ComplexNumbers;
 /// <summary>
 /// A general complex number struct for <see cref="double"/> values.
 /// </summary>
-public readonly struct GeneralComplexNumberDouble
+public readonly struct GeneralComplexNumberDouble :
+    IParsable<GeneralComplexNumberDouble>,
+    IFormattable,
+    IEquatable<object>,
+    IEquatable<GeneralComplexNumberDouble>
 {
     private static readonly GeneralComplexNumberDouble I = new GeneralComplexNumberDouble(0.0, 1.0);
     private static readonly GeneralComplexNumberDouble I2 = new GeneralComplexNumberDouble(0.0, 0.5);
 
     internal GeneralComplexNumber<double> ComplexNumber { get; }
+
+    #region Constructors
 
     /// <summary>
     /// Creates a new <see cref="GeneralComplexNumberDouble"/> with specific values.
@@ -38,17 +44,106 @@ public readonly struct GeneralComplexNumberDouble
         ComplexNumber = complexNumber;
     }
 
+    #endregion
+
+    #region ToString
+
     /// <summary>
     /// Returns a human-readable representation of this complex number.
     /// </summary>
     /// <returns>The human-readable representation.</returns>
     public override string ToString() => ComplexNumber.ToString();
 
+    /// <summary>
+    /// Returns a human-readable representation of this complex number using the specified format.
+    /// </summary>
+    /// <param name="format">The format to use on the real and imaginary parts.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format) =>
+        ToString(format, null);
+
+    /// <summary>
+    /// Returns a human-readable representation of this complex number using the specified culture-specific format.
+    /// </summary>
+    /// <param name="formatProvider">The culture-specific format to use on the real and imaginary parts.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString(IFormatProvider? formatProvider) =>
+        ToString(null, formatProvider);
+
+    /// <summary>
+    /// Returns a human-readable representation of this complex number using the specified format and culture-specific format.
+    /// </summary>
+    /// <param name="format">The format to use on the real and imaginary parts.</param>
+    /// <param name="formatProvider">The culture-specific format to use on the real and imaginary parts.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format, IFormatProvider? formatProvider) =>
+        GeneralComplexNumber<double>.ToString(
+            ComplexNumber.Real.ToString(format, formatProvider),
+            ComplexNumber.Imaginary.ToString(format, formatProvider));
+
+    #endregion
+
+    #region Parse
+
+    /// <summary>
+    /// Parses a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <returns>The result of parsing s.</returns>
+    public static GeneralComplexNumberDouble Parse(string s) => Parse(s, null);
+
+    /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
+    public static GeneralComplexNumberDouble Parse(string s, IFormatProvider? provider)
+    {
+        var stringValues = GeneralComplexNumber<double>.SplitForParse(s);
+        return new(double.Parse(stringValues.Real, provider), double.Parse(stringValues.Imaginary, provider));
+    }
+
+    /// <summary>
+    /// Tries to parse a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <param name="result">When this method returns, contains the result of successfully parsing s or an undefined value on failure.</param>
+    /// <returns><see langword="true"/> if s was successfully parsed; otherwise <see langword="false"/>.</returns>
+    public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false)] out GeneralComplexNumberDouble result) =>
+        TryParse(s, null, out result);
+
+    /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDouble result)
+    {
+        var stringValues = GeneralComplexNumber<double>.SplitForParse(s ?? string.Empty);
+        if (!double.TryParse(stringValues.Real, provider, out var realValue) ||
+            !double.TryParse(stringValues.Imaginary, provider, out var imaginaryValue))
+        {
+            result = default;
+            return false;
+        }
+        result = new(realValue, imaginaryValue);
+        return true;
+    }
+
+    #endregion
+
+    #region GetHashCode Equals
+
     /// <inheritdoc cref="GeneralComplexNumber{T}.GetHashCode()"/>
     public override int GetHashCode() => ComplexNumber.GetHashCode();
 
     /// <inheritdoc cref="GeneralComplexNumber{T}.Equals(object?)"/>
-    public override bool Equals([NotNullWhen(true)] object? obj) => ComplexNumber.Equals((obj as GeneralComplexNumberDouble?)?.ComplexNumber ?? obj);
+    public override bool Equals([NotNullWhen(true)] object? obj) =>
+        ComplexNumber.Equals((obj as GeneralComplexNumberDouble?)?.ComplexNumber ?? obj);
+
+    /// <summary>
+    /// Indicates whether the current <see cref="GeneralComplexNumberDouble"/> is equal to another <see cref="GeneralComplexNumberDouble"/>.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to compare with this <see cref="GeneralComplexNumberDouble"/>.</param>
+    /// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
+    public bool Equals(GeneralComplexNumberDouble complexNumber) =>
+        ComplexNumber.Equals(complexNumber.ComplexNumber);
+
+    #endregion
+
+    #region Casts
 
     /// <summary>
     /// Casts a <see cref="GeneralComplexNumberDouble"/> to a double.
@@ -64,6 +159,10 @@ public readonly struct GeneralComplexNumberDouble
     /// <param name="real">The <see cref="double"/> to convert.</param>
     public static explicit operator GeneralComplexNumberDouble(double real) =>
         new GeneralComplexNumberDouble(real, 0.0);
+
+    #endregion
+
+    #region operator == !=
 
     /// <summary>
     /// Indicates whether a scalar and a <see cref="GeneralComplexNumberDouble"/> are equal.
@@ -113,6 +212,10 @@ public readonly struct GeneralComplexNumberDouble
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(GeneralComplexNumberDouble left, GeneralComplexNumberDouble? right) => !(left == right);
 
+    #endregion
+
+    #region Properties
+
     /// <summary>
     /// Gets the real part of the number.
     /// </summary>
@@ -122,6 +225,10 @@ public readonly struct GeneralComplexNumberDouble
     /// Gets the imaginary part of the number.
     /// </summary>
     public double Imaginary => ComplexNumber.Imaginary;
+
+    #endregion
+
+    #region Complex Methods
 
     /// <summary>
     /// Returns the complex conjugate as a new <see cref="GeneralComplexNumberDouble"/>.
@@ -155,6 +262,10 @@ public readonly struct GeneralComplexNumberDouble
         var imaginary = -(Imaginary / divisor);
         return new(real, imaginary);
     }
+
+    #endregion
+
+    #region Addition/Subtraction
 
     /// <summary>
     /// Adds a scalar value to a <see cref="GeneralComplexNumberDouble"/>.
@@ -226,6 +337,10 @@ public readonly struct GeneralComplexNumberDouble
     public static GeneralComplexNumberDouble operator -(GeneralComplexNumberDouble c) =>
         new(-c.Real, -c.Imaginary);
 
+    #endregion
+
+    #region Multiplication/Division
+
     /// <summary>
     /// Multiplies a scalar value with a <see cref="GeneralComplexNumberDouble"/>.
     /// </summary>
@@ -279,6 +394,10 @@ public readonly struct GeneralComplexNumberDouble
     /// <returns>A <see cref="GeneralComplexNumberDouble"/> of the left hand operand multiplied by the right hand operand.</returns>
     public static GeneralComplexNumberDouble operator /(GeneralComplexNumberDouble c1, GeneralComplexNumberDouble c2) =>
         new(c1 * c2.Inverse());
+
+    #endregion
+
+    #region Maths Methods
 
     /// <summary>
     /// Squares a <see cref="GeneralComplexNumberDouble"/>.
@@ -554,42 +673,44 @@ public readonly struct GeneralComplexNumberDouble
     }
 
     /// <summary>
-    /// 
+    /// Rounds the real and imaginary values to the nearest integral value, and rounds midpoint values to the nearest even number.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A new <see cref="GeneralComplexNumberDouble"/> with real and imaginary values rounded to the nearest integral value.</returns>
     public GeneralComplexNumberDouble Round()
     {
         return new GeneralComplexNumberDouble(Real.Round(), Imaginary.Round());
     }
 
     /// <summary>
-    /// 
+    /// Rounds the real and imaginary values to a specified number of fractional digits, and rounds midpoint values to the nearest even number.
     /// </summary>
-    /// <param name="digits"></param>
-    /// <returns></returns>
+    /// <param name="digits">The number of fractional digits to round to.</param>
+    /// <returns>A new <see cref="GeneralComplexNumberDouble"/> with real and imaginary values rounded to the specified number of fractional digits.</returns>
     public GeneralComplexNumberDouble Round(int digits)
     {
         return new GeneralComplexNumberDouble(Real.Round(digits), Imaginary.Round(digits));
     }
 
     /// <summary>
-    /// 
+    /// Rounds the real and imaginary values to an integer using the specified rounding convention.
     /// </summary>
-    /// <param name="algorithm"></param>
-    /// <returns></returns>
+    /// <param name="algorithm">The rounding convention to use.</param>
+    /// <returns>A new <see cref="GeneralComplexNumberDouble"/> with real and imaginary values rounded to an integer using the specified rounding convention.</returns>
     public GeneralComplexNumberDouble Round(MidpointRounding algorithm)
     {
         return new GeneralComplexNumberDouble(Real.Round(algorithm), Imaginary.Round(algorithm));
     }
 
     /// <summary>
-    /// 
+    /// Rounds the real and imaginary values to a specified number of fractional digits using the specified rounding convention.
     /// </summary>
-    /// <param name="digits"></param>
-    /// <param name="algorithm"></param>
-    /// <returns></returns>
+    /// <param name="digits">The number of fractional digits to round to.</param>
+    /// <param name="algorithm">The rounding convention to use.</param>
+    /// <returns>A new <see cref="GeneralComplexNumberDouble"/> with real and imaginary values rounded to the specified number of fractional digits using the specified rounding convention.</returns>
     public GeneralComplexNumberDouble Round(int digits, MidpointRounding algorithm)
     {
         return new GeneralComplexNumberDouble(Real.Round(digits, algorithm), Imaginary.Round(digits, algorithm));
     }
+
+    #endregion
 }

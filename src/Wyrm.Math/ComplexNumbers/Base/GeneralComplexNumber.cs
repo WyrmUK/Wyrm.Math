@@ -7,6 +7,10 @@ internal readonly struct GeneralComplexNumber<T> where T : struct
     public T Real { get; } = default;
     public T Imaginary { get; } = default;
 
+    internal const char ImaginaryIdentifier = 'i';
+    internal const char ComplexStartChar = '(';
+    internal const char ComplexEndChar = ')';
+
     public GeneralComplexNumber(T real, T imaginary)
     {
         Real = real;
@@ -28,17 +32,37 @@ internal readonly struct GeneralComplexNumber<T> where T : struct
             Real.Equals(compareValue) &&
             Imaginary.Equals((T)(object)(Imaginary is double ? 0.0 : 0.0M)));
 
-    public override string ToString()
-    {
-        var realValue = Real.ToString() ?? "0";
-        var complexValue = Imaginary.ToString() ?? "0";
+    public bool Equals(GeneralComplexNumber<T> complexNumber) =>
+        Real.Equals(complexNumber.Real) &&
+        Imaginary.Equals(complexNumber.Imaginary);
 
-        return complexValue == "0" || complexValue == "0.0"
+    public override string ToString() =>
+        ToString(Real.ToString() ?? "0", Imaginary.ToString() ?? "0");
+
+    internal static string ToString(string realValue, string imaginaryValue)
+    {
+        return imaginaryValue.All(c => !char.IsDigit(c) || c == '0')
         ? realValue
-        : realValue == "0" || realValue == "0.0"
-            ? $"{complexValue}i"
-            : complexValue.StartsWith('-')
-                ? $"({realValue}-{complexValue[1..]}i)"
-                : $"({realValue}+{complexValue}i)";
+        : realValue.All(c => !char.IsDigit(c) || c == '0')
+            ? $"{imaginaryValue}{ImaginaryIdentifier}"
+            : imaginaryValue.StartsWith('-')
+                ? $"{ComplexStartChar}{realValue}{imaginaryValue}{ImaginaryIdentifier}{ComplexEndChar}"
+                : $"{ComplexStartChar}{realValue}+{imaginaryValue}{ImaginaryIdentifier}{ComplexEndChar}";
+    }
+
+    internal static (string Real, string Imaginary) SplitForParse(string s)
+    {
+        var minimisedValue = s.Replace(" ", string.Empty).Trim(ComplexStartChar, ComplexEndChar);
+        var pos = minimisedValue.IndexOfAny(['+', '-'], 1);
+        string[] parts = pos < 1
+            ? [minimisedValue]
+            : [minimisedValue[..pos], minimisedValue[pos..].TrimStart('+')];
+        return parts.Length == 1
+            ? (parts[0].EndsWith($"{ImaginaryIdentifier}", StringComparison.OrdinalIgnoreCase)
+                ? ("0", parts[0][..^1])
+                : (parts[0], "0"))
+            : (parts[0].EndsWith($"{ImaginaryIdentifier}", StringComparison.OrdinalIgnoreCase)
+                ? (parts[1], parts[0][..^1])
+                : (parts[0], parts[1][..^1]));
     }
 }
