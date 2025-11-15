@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using System.Globalization;
 using Wyrm.Math.ComplexNumbers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -35,6 +36,64 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(ToStringFormatTestData))]
+    public void ToString_Format_Should_Return_Expected(GeneralComplexNumberDouble complexNumber, string? format, string expected)
+    {
+        var result = complexNumber.ToString(format);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(ToStringProviderTestData))]
+    public void ToString_Provider_Should_Return_Expected(GeneralComplexNumberDouble complexNumber, IFormatProvider? provider, string expected)
+    {
+        var result = complexNumber.ToString(provider);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(ToStringFormatProviderTestData))]
+    public void ToString_Format_Provider_Should_Return_Expected(GeneralComplexNumberDouble complexNumber, string? format, IFormatProvider? provider, string expected)
+    {
+        var result = complexNumber.ToString(format, provider);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(ParseTestData))]
+    public void Parse_Should_Return_Expected(string complexNumber, GeneralComplexNumberDouble expected)
+    {
+        var result = GeneralComplexNumberDouble.Parse(complexNumber);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(ParseProviderTestData))]
+    public void Parse_Provider_Should_Return_Expected(string complexNumber, IFormatProvider? provider, GeneralComplexNumberDouble expected)
+    {
+        var result = GeneralComplexNumberDouble.Parse(complexNumber, provider);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TryParseTestData))]
+    public void TryParse_Should_Return_Expected(string complexNumber, bool expected, GeneralComplexNumberDouble expectedNumber)
+    {
+        var result = GeneralComplexNumberDouble.TryParse(complexNumber, out var actual);
+        result.ShouldBe(expected);
+        if (result) actual.ShouldBe(expectedNumber);
+    }
+
+    [Theory]
+    [MemberData(nameof(TryParseProviderTestData))]
+    public void TryParse_Provider_Should_Return_Expected(string complexNumber, IFormatProvider? provider, bool expected, GeneralComplexNumberDouble expectedNumber)
+    {
+        var result = GeneralComplexNumberDouble.TryParse(complexNumber, provider, out var actual);
+        result.ShouldBe(expected);
+        if (result) actual.ShouldBe(expectedNumber);
+    }
+
+    [Theory]
     [MemberData(nameof(GetHashCodeTestData))]
     public void GetHashCode_Should_Return_Expected(GeneralComplexNumberDouble complexNumber, int expected)
     {
@@ -47,6 +106,13 @@ public class GeneralComplexNumberDoubleTests
     public void Equals_Should_Return_True_When_ComplexNumbers_Have_The_Same_Values(GeneralComplexNumberDouble complexNumber1, object? obj, bool expected)
     {
         complexNumber1.Equals(obj).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralComplexNumberDoubleEqualityTheoryData))]
+    public void Equals_Should_Return_True_When_Double_ComplexNumbers_Have_The_Same_Values(GeneralComplexNumberDouble complexNumber1, GeneralComplexNumberDouble complexNumber2, bool expected)
+    {
+        complexNumber1.Equals(complexNumber2).ShouldBe(expected);
     }
 
     [Fact]
@@ -510,6 +576,8 @@ public class GeneralComplexNumberDoubleTests
     public const double Error2 = 0.0000000000000002;
     public const double Error7 = 0.000000000000007;
 
+    private static readonly IFormatProvider FormatProvider = new CultureInfo("it-IT");
+
     public static readonly TheoryData<GeneralComplexNumberDouble, string> ToStringTestData = new()
     {
         { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), "2.2i" },
@@ -520,6 +588,92 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2), "(1.1-2.2i)" },
         { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2), "(-1.1+2.2i)" },
         { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2), "(-1.1-2.2i)" }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, string?, string> ToStringFormatTestData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), "#0.00", "2.20i" },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValueNeg2_2), "#0.00", "-2.20i" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), "#0.00", "1.10" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue0_0), "#0.00", "-1.10" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), "#0.00", "(1.10+2.20i)" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2), "#0.00", "(1.10-2.20i)" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2), "#0.00", "(-1.10+2.20i)" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2), "#0.00", "(-1.10-2.20i)" }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, IFormatProvider?, string> ToStringProviderTestData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), FormatProvider, "2,2i" },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValueNeg2_2), FormatProvider, "-2,2i" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), FormatProvider, "1,1" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue0_0), FormatProvider, "-1,1" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), FormatProvider, "(1,1+2,2i)" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2), FormatProvider, "(1,1-2,2i)" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2), FormatProvider, "(-1,1+2,2i)" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2), FormatProvider, "(-1,1-2,2i)" }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, string?, IFormatProvider?, string> ToStringFormatProviderTestData = new()
+    {
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), "#0.00", FormatProvider, "2,20i" },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValueNeg2_2), "#0.00", FormatProvider, "-2,20i" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), "#0.00", FormatProvider, "1,10" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue0_0), "#0.00", FormatProvider, "-1,10" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), "#0.00", FormatProvider, "(1,10+2,20i)" },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2), "#0.00", FormatProvider, "(1,10-2,20i)" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2), "#0.00", FormatProvider, "(-1,10+2,20i)" },
+        { new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2), "#0.00", FormatProvider, "(-1,10-2,20i)" }
+    };
+
+    public static readonly TheoryData<string, GeneralComplexNumberDouble> ParseTestData = new()
+    {
+        { "2.2i", new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
+        { "-2.2i", new GeneralComplexNumberDouble(TestValue0_0, TestValueNeg2_2) },
+        { "1.1", new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0) },
+        { "-1.1", new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue0_0) },
+        { "(1.1+2.2i)", new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2) },
+        { "(1.1-2.2i)", new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2) },
+        { "(-1.1+2.2i)", new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2) },
+        { "(-1.1-2.2i)", new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2) }
+    };
+
+    public static readonly TheoryData<string, IFormatProvider?, GeneralComplexNumberDouble> ParseProviderTestData = new()
+    {
+        { "2,2i", FormatProvider, new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
+        { "-2,2i", FormatProvider, new GeneralComplexNumberDouble(TestValue0_0, TestValueNeg2_2) },
+        { "1,1", FormatProvider, new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0) },
+        { "-1,1", FormatProvider, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue0_0) },
+        { "(1,1+2,2i)", FormatProvider, new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2) },
+        { "(1,1-2,2i)", FormatProvider, new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2) },
+        { "(-1,1+2,2i)", FormatProvider, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2) },
+        { "(-1,1-2,2i)", FormatProvider, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2) }
+    };
+
+    public static readonly TheoryData<string, bool, GeneralComplexNumberDouble> TryParseTestData = new()
+    {
+        { "2.2i", true, new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
+        { "-2.2i", true, new GeneralComplexNumberDouble(TestValue0_0, TestValueNeg2_2) },
+        { "1.1", true, new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0) },
+        { "-1.1", true, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue0_0) },
+        { "(1.1+2.2i)", true, new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2) },
+        { "(1.1-2.2i)", true, new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2) },
+        { "(-1.1+2.2i)", true, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2) },
+        { "(-1.1-2.2i)", true, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2) },
+        { "(1.1 2.2i)", false, new GeneralComplexNumberDouble(0.0, 0.0) }
+    };
+
+    public static readonly TheoryData<string, IFormatProvider?, bool, GeneralComplexNumberDouble> TryParseProviderTestData = new()
+    {
+        { "2,2i", FormatProvider, true, new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2) },
+        { "-2,2i", FormatProvider, true, new GeneralComplexNumberDouble(TestValue0_0, TestValueNeg2_2) },
+        { "1,1", FormatProvider, true, new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0) },
+        { "-1,1", FormatProvider, true, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue0_0) },
+        { "(1,1+2,2i)", FormatProvider, true, new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2) },
+        { "(1,1-2,2i)", FormatProvider, true, new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2) },
+        { "(-1,1+2,2i)", FormatProvider, true, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2) },
+        { "(-1,1-2,2i)", FormatProvider, true, new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2) },
+        { "(1,1 2,2i)", FormatProvider, false, new GeneralComplexNumberDouble(0.0, 0.0) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDouble, int> GetHashCodeTestData = new()
@@ -540,6 +694,16 @@ public class GeneralComplexNumberDoubleTests
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), TestValue1_1, false },
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), TestValue1_1, true },
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), TestValue2_2, false },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2), false },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2), false },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2), false },
+        { new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), new GeneralComplexNumberDouble(TestValue0_0, TestValue2_2), true },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), new GeneralComplexNumberDouble(TestValue1_1, TestValue0_0), true },
+        { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), true }
+    };
+
+    public static readonly TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble, bool> TestGeneralComplexNumberDoubleEqualityTheoryData = new()
+    {
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValue1_1, TestValueNeg2_2), false },
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValueNeg1_1, TestValue2_2), false },
         { new GeneralComplexNumberDouble(TestValue1_1, TestValue2_2), new GeneralComplexNumberDouble(TestValueNeg1_1, TestValueNeg2_2), false },
