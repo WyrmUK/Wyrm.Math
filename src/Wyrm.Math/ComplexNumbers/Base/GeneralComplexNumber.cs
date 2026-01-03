@@ -67,22 +67,13 @@ internal readonly struct GeneralComplexNumber<T> where T : struct
         T real = default;
         if (source[0] == ComplexStartChar && source[^1] == ComplexEndChar)
         {
-            source = source[1..^1];
+            source = source[1..^1].Trim().TrimStart(plusChar);
             if (source.Length == 0) return false;
 
-            var start = source.IndexOfAnyExcept(paddingSpace, plusChar);
-            var end = source.LastIndexOfAnyExcept(paddingSpace) + 1;
-            if (start < 0 || end <= start) return false;
+            var end = source[0] == minusChar
+                ? source[1..].IndexOfAny(paddingSpace, plusChar, minusChar) + 1
+                : source.IndexOfAny(paddingSpace, plusChar, minusChar);
 
-            source = source[start..end];
-            if (source[0] == minusChar)
-            {
-                end = source[1..].IndexOfAny(paddingSpace, plusChar, minusChar) + 1;
-            }
-            else
-            {
-                end = source.IndexOfAny(paddingSpace, plusChar, minusChar);
-            }
             if (end > 0 && (source[end] == minusChar || source[end] == plusChar) && char.ToUpper(source[end - 1]) == exponentChar)
             {
                 end = source[(end + 1)..].IndexOfAny(paddingSpace, plusChar, minusChar) + end + 1;
@@ -90,7 +81,7 @@ internal readonly struct GeneralComplexNumber<T> where T : struct
             if (end > 0)
             {
                 if (!tryParseFunc(source[..end], numberStyles, out real)) return false;
-                start = source[end..].IndexOfAnyExcept(paddingSpace, plusChar) + end;
+                var start = source[end..].IndexOfAnyExcept(paddingSpace, plusChar) + end;
                 if (source[start - 1] != plusChar && source[start] != minusChar) return false;
                 source = start < end ? source[end..] : source[start..];
             }

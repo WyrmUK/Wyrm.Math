@@ -9,6 +9,7 @@ namespace Wyrm.Math.ComplexNumbers;
 /// </summary>
 public readonly struct GeneralComplexNumberDouble :
     IParsable<GeneralComplexNumberDouble>,
+    ISpanParsable<GeneralComplexNumberDouble>,
     IFormattable,
     IEquatable<object>,
     IEquatable<GeneralComplexNumberDouble>
@@ -112,7 +113,25 @@ public readonly struct GeneralComplexNumberDouble :
     /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDouble result)
     {
-        var parsed = GeneralComplexNumber<double>.TryParse(s.AsSpan(), DoubleTryParse, out var complexNumber);
+        if (s == null)
+        {
+            result = default;
+            return false;
+        }
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
+    public static GeneralComplexNumberDouble Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDouble result)
+    {
+        var parsed = GeneralComplexNumber<double>.TryParse(s, DoubleTryParse, out var complexNumber);
         result = new GeneralComplexNumberDouble(complexNumber);
         return parsed;
 

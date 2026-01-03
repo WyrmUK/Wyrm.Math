@@ -94,6 +94,23 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(ParseProviderTestData))]
+    public void Parse_Span_Provider_Should_Return_Expected(string complexNumber, IFormatProvider? provider, GeneralComplexNumberDouble expected)
+    {
+        var result = GeneralComplexNumberDouble.Parse(complexNumber.AsSpan(), provider);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TryParseProviderTestData))]
+    public void TryParse_Span_Provider_Should_Return_Expected(string complexNumber, IFormatProvider? provider, bool expected, GeneralComplexNumberDouble expectedNumber)
+    {
+        var result = GeneralComplexNumberDouble.TryParse(complexNumber.AsSpan(), provider, out var actual);
+        result.ShouldBe(expected);
+        if (result) actual.ShouldBe(expectedNumber);
+    }
+
+    [Theory]
     [MemberData(nameof(GetHashCodeTestData))]
     public void GetHashCode_Should_Return_Expected(GeneralComplexNumberDouble complexNumber, int expected)
     {

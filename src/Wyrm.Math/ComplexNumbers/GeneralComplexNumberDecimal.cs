@@ -9,6 +9,7 @@ namespace Wyrm.Math.ComplexNumbers;
 /// </summary>
 public readonly struct GeneralComplexNumberDecimal :
     IParsable<GeneralComplexNumberDecimal>,
+    ISpanParsable<GeneralComplexNumberDecimal>,
     IFormattable,
     IEquatable<object>,
     IEquatable<GeneralComplexNumberDecimal>
@@ -112,7 +113,25 @@ public readonly struct GeneralComplexNumberDecimal :
     /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDecimal result)
     {
-        var parsed = GeneralComplexNumber<decimal>.TryParse(s.AsSpan(), DecimalTryParse, out var complexNumber);
+        if (s == null)
+        {
+            result = default;
+            return false;
+        }
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
+    public static GeneralComplexNumberDecimal Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDecimal result)
+    {
+        var parsed = GeneralComplexNumber<decimal>.TryParse(s, DecimalTryParse, out var complexNumber);
         result = new GeneralComplexNumberDecimal(complexNumber);
         return parsed;
 

@@ -93,6 +93,23 @@ public class GeneralComplexNumberDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(ParseProviderTestData))]
+    public void Parse_Span_Provider_Should_Return_Expected(string complexNumber, IFormatProvider? provider, GeneralComplexNumberDecimal expected)
+    {
+        var result = GeneralComplexNumberDecimal.Parse(complexNumber.AsSpan(), provider);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TryParseProviderTestData))]
+    public void TryParse_Span_Provider_Should_Return_Expected(string complexNumber, IFormatProvider? provider, bool expected, GeneralComplexNumberDecimal expectedNumber)
+    {
+        var result = GeneralComplexNumberDecimal.TryParse(complexNumber.AsSpan(), provider, out var actual);
+        result.ShouldBe(expected);
+        if (result) actual.ShouldBe(expectedNumber);
+    }
+
+    [Theory]
     [MemberData(nameof(GetHashCodeTestData))]
     public void GetHashCode_Should_Return_Expected(GeneralComplexNumberDecimal complexNumber, int expected)
     {
