@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.ComplexNumbers;
@@ -8,6 +9,7 @@ namespace Wyrm.Math.ComplexNumbers;
 /// </summary>
 public readonly struct GeneralComplexNumberDecimal :
     IParsable<GeneralComplexNumberDecimal>,
+    ISpanParsable<GeneralComplexNumberDecimal>,
     IFormattable,
     IEquatable<object>,
     IEquatable<GeneralComplexNumberDecimal>
@@ -95,8 +97,8 @@ public readonly struct GeneralComplexNumberDecimal :
     /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
     public static GeneralComplexNumberDecimal Parse(string s, IFormatProvider? provider)
     {
-        var stringValues = GeneralComplexNumber<decimal>.SplitForParse(s);
-        return new(decimal.Parse(stringValues.Real, provider), decimal.Parse(stringValues.Imaginary, provider));
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
     }
 
     /// <summary>
@@ -111,15 +113,30 @@ public readonly struct GeneralComplexNumberDecimal :
     /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDecimal result)
     {
-        var stringValues = GeneralComplexNumber<decimal>.SplitForParse(s ?? string.Empty);
-        if (!decimal.TryParse(stringValues.Real, provider, out var realValue) ||
-            !decimal.TryParse(stringValues.Imaginary, provider, out var imaginaryValue))
+        if (s == null)
         {
             result = default;
             return false;
         }
-        result = new(realValue, imaginaryValue);
-        return true;
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
+    public static GeneralComplexNumberDecimal Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDecimal result)
+    {
+        var parsed = GeneralComplexNumber<decimal>.TryParse(s, DecimalTryParse, out var complexNumber);
+        result = new GeneralComplexNumberDecimal(complexNumber);
+        return parsed;
+
+        bool DecimalTryParse(ReadOnlySpan<char> source, NumberStyles numberStyles, out decimal value) =>
+            decimal.TryParse(source, numberStyles, provider, out value);
     }
 
     #endregion

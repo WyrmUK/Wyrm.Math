@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.ComplexNumbers;
@@ -8,6 +9,7 @@ namespace Wyrm.Math.ComplexNumbers;
 /// </summary>
 public readonly struct GeneralComplexNumberDouble :
     IParsable<GeneralComplexNumberDouble>,
+    ISpanParsable<GeneralComplexNumberDouble>,
     IFormattable,
     IEquatable<object>,
     IEquatable<GeneralComplexNumberDouble>
@@ -95,8 +97,8 @@ public readonly struct GeneralComplexNumberDouble :
     /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
     public static GeneralComplexNumberDouble Parse(string s, IFormatProvider? provider)
     {
-        var stringValues = GeneralComplexNumber<double>.SplitForParse(s);
-        return new(double.Parse(stringValues.Real, provider), double.Parse(stringValues.Imaginary, provider));
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
     }
 
     /// <summary>
@@ -111,15 +113,30 @@ public readonly struct GeneralComplexNumberDouble :
     /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDouble result)
     {
-        var stringValues = GeneralComplexNumber<double>.SplitForParse(s ?? string.Empty);
-        if (!double.TryParse(stringValues.Real, provider, out var realValue) ||
-            !double.TryParse(stringValues.Imaginary, provider, out var imaginaryValue))
+        if (s == null)
         {
             result = default;
             return false;
         }
-        result = new(realValue, imaginaryValue);
-        return true;
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
+    public static GeneralComplexNumberDouble Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDouble result)
+    {
+        var parsed = GeneralComplexNumber<double>.TryParse(s, DoubleTryParse, out var complexNumber);
+        result = new GeneralComplexNumberDouble(complexNumber);
+        return parsed;
+
+        bool DoubleTryParse(ReadOnlySpan<char> source, NumberStyles numberStyles, out double value) =>
+            double.TryParse(source, numberStyles, provider, out value);
     }
 
     #endregion
