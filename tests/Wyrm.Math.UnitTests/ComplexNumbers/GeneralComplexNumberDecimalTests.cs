@@ -632,10 +632,18 @@ public class GeneralComplexNumberDecimalTests
         { "-2.2i", new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
         { "1.1", new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
         { "-1.1", new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
+        { "(2.2i)", new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2) },
+        { "(-2.2i)", new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
+        { "(1.1)", new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
+        { "(-1.1)", new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
         { "(1.1+2.2i)", new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
         { "(1.1-2.2i)", new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
         { "(-1.1+2.2i)", new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
-        { "(-1.1-2.2i)", new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) }
+        { "(-1.1-2.2i)", new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
+        { "( 1.1 +2.2i )", new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
+        { "( 1.1 -2.2i )", new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
+        { "( -1.1 +2.2i )", new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
+        { "( -1.1 -2.2i )", new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) }
     };
 
     public static readonly TheoryData<string, IFormatProvider?, GeneralComplexNumberDecimal> ParseProviderTestData = new()
@@ -644,10 +652,18 @@ public class GeneralComplexNumberDecimalTests
         { "-2,2i", FormatProvider, new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
         { "1,1", FormatProvider, new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
         { "-1,1", FormatProvider, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
+        { "(2,2i)", FormatProvider, new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2) },
+        { "(-2,2i)", FormatProvider, new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
+        { "(1,1)", FormatProvider, new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
+        { "(-1,1)", FormatProvider, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
         { "(1,1+2,2i)", FormatProvider, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
         { "(1,1-2,2i)", FormatProvider, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
         { "(-1,1+2,2i)", FormatProvider, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
-        { "(-1,1-2,2i)", FormatProvider, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) }
+        { "(-1,1-2,2i)", FormatProvider, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
+        { "( 1,1 +2,2i )", FormatProvider, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
+        { "( 1,1 -2,2i )", FormatProvider, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
+        { "( -1,1 +2,2i )", FormatProvider, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
+        { "( -1,1 -2,2i )", FormatProvider, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) }
     };
 
     public static readonly TheoryData<string, bool, GeneralComplexNumberDecimal> TryParseTestData = new()
@@ -656,11 +672,31 @@ public class GeneralComplexNumberDecimalTests
         { "-2.2i", true, new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
         { "1.1", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
         { "-1.1", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
+        { "(2.2i)", true, new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2) },
+        { "(-2.2i)", true, new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
+        { "(1.1)", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
+        { "(-1.1)", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
         { "(1.1+2.2i)", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
         { "(1.1-2.2i)", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
         { "(-1.1+2.2i)", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
         { "(-1.1-2.2i)", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
-        { "(1.1 2.2i)", false, new GeneralComplexNumberDecimal(0M, 0M) }
+        { "(11E-1+22E-1i)", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
+        { "(0.11E+1-0.22E+1i)", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
+        { "(-11E-1+22E-1i)", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
+        { "(-0.11E+1-0.22E+1i)", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
+        { "( 1.1 +2.2i )", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
+        { "( 1.1 -2.2i )", true, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
+        { "( -1.1 +2.2i )", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
+        { "( -1.1 -2.2i )", true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
+        { "(1.1 2.2i)", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "(1.1+2.2 i)", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "(1.1+2.2i", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "1.1+2.2i)", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "1.1 2.2i", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "()", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "( )", false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "(1x1+2.2i)", false, new GeneralComplexNumberDecimal(0M, 0M) }
     };
 
     public static readonly TheoryData<string, IFormatProvider?, bool, GeneralComplexNumberDecimal> TryParseProviderTestData = new()
@@ -669,11 +705,31 @@ public class GeneralComplexNumberDecimalTests
         { "-2,2i", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
         { "1,1", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
         { "-1,1", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
+        { "(2,2i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue0_0, TestValue2_2) },
+        { "(-2,2i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue0_0, TestValueNeg2_2) },
+        { "(1,1)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue0_0) },
+        { "(-1,1)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue0_0) },
         { "(1,1+2,2i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
         { "(1,1-2,2i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
         { "(-1,1+2,2i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
         { "(-1,1-2,2i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
-        { "(1,1 2,2i)", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) }
+        { "(11E-1+22E-1i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
+        { "(0,11E+1-0,22E+1i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
+        { "(-11E-1+22E-1i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
+        { "(-0,11E+1-0,22E+1i)", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
+        { "( 1,1 +2,2i )", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValue2_2) },
+        { "( 1,1 -2,2i )", FormatProvider, true, new GeneralComplexNumberDecimal(TestValue1_1, TestValueNeg2_2) },
+        { "( -1,1 +2,2i )", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValue2_2) },
+        { "( -1,1 -2,2i )", FormatProvider, true, new GeneralComplexNumberDecimal(TestValueNeg1_1, TestValueNeg2_2) },
+        { "(1,1 2,2i)", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "(1,1+2,2 i)", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "(1,1+2,2i", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "1,1+2,2i)", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "1,1 2,2i", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "()", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "( )", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) },
+        { "(1x1+2.2i)", FormatProvider, false, new GeneralComplexNumberDecimal(0M, 0M) }
     };
 
     public static readonly TheoryData<GeneralComplexNumberDecimal, int> GetHashCodeTestData = new()

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.ComplexNumbers;
@@ -95,8 +96,8 @@ public readonly struct GeneralComplexNumberDouble :
     /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
     public static GeneralComplexNumberDouble Parse(string s, IFormatProvider? provider)
     {
-        var stringValues = GeneralComplexNumber<double>.SplitForParse(s);
-        return new(double.Parse(stringValues.Real, provider), double.Parse(stringValues.Imaginary, provider));
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
     }
 
     /// <summary>
@@ -111,15 +112,12 @@ public readonly struct GeneralComplexNumberDouble :
     /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralComplexNumberDouble result)
     {
-        var stringValues = GeneralComplexNumber<double>.SplitForParse(s ?? string.Empty);
-        if (!double.TryParse(stringValues.Real, provider, out var realValue) ||
-            !double.TryParse(stringValues.Imaginary, provider, out var imaginaryValue))
-        {
-            result = default;
-            return false;
-        }
-        result = new(realValue, imaginaryValue);
-        return true;
+        var parsed = GeneralComplexNumber<double>.TryParse(s.AsSpan(), DoubleTryParse, out var complexNumber);
+        result = new GeneralComplexNumberDouble(complexNumber);
+        return parsed;
+
+        bool DoubleTryParse(ReadOnlySpan<char> source, NumberStyles numberStyles, out double value) =>
+            double.TryParse(source, numberStyles, provider, out value);
     }
 
     #endregion
