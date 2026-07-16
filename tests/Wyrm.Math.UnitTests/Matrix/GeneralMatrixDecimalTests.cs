@@ -56,7 +56,7 @@ public class GeneralMatrixDecimalTests
     [Fact]
     public void GetHashCode_Should_Return_Unique_Value()
     {
-        var hashes = TestGeneralMatrixRankTheoryData.ToDictionary(x => ((GeneralMatrixDecimal)x[0]).GetHashCode(), x => x);
+        var hashes = TestGeneralMatrixRankTheoryData.ToDictionary(x => x.Data.Item1.GetHashCode(), x => x);
         hashes.Count.ShouldBe(TestGeneralMatrixRankTheoryData.Count);
     }
 
