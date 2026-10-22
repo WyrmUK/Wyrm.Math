@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Wyrm.Math.ComplexNumbers.Base;
+using System.Globalization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -9,8 +9,8 @@ namespace Wyrm.Math.Matrix;
 /// A general matrix struct for <see cref="double"/> values.
 /// </summary>
 public readonly struct GeneralMatrixDouble :
-    // TODO: IParsable<GeneralMatrixDouble>,
-    // TODO: ISpanParsable<GeneralMatrixDouble>,
+    IParsable<GeneralMatrixDouble>,
+    ISpanParsable<GeneralMatrixDouble>,
     IFormattable,
     IEquatable<object>,
     IEquatable<GeneralMatrixDouble>
@@ -95,6 +95,58 @@ public readonly struct GeneralMatrixDouble :
     #endregion
 
     #region Parse
+
+    /// <summary>
+    /// Parses a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <returns>The result of parsing s.</returns>
+    public static GeneralMatrixDouble Parse(string s) => Parse(s, null);
+
+    /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
+    public static GeneralMatrixDouble Parse(string s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <summary>
+    /// Tries to parse a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <param name="result">When this method returns, contains the result of successfully parsing s or an undefined value on failure.</param>
+    /// <returns><see langword="true"/> if s was successfully parsed; otherwise <see langword="false"/>.</returns>
+    public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false)] out GeneralMatrixDouble result) =>
+        TryParse(s, null, out result);
+
+    /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralMatrixDouble result)
+    {
+        if (s == null)
+        {
+            result = default;
+            return false;
+        }
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
+    public static GeneralMatrixDouble Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralMatrixDouble result)
+    {
+        var parsed = GeneralMatrix<double>.TryParse(s, DoubleTryParse, out var matrix);
+        result = new GeneralMatrixDouble(matrix);
+        return parsed;
+
+        bool DoubleTryParse(ReadOnlySpan<char> source, NumberStyles numberStyles, out double value) =>
+            double.TryParse(source, numberStyles, provider, out value);
+    }
 
     #endregion
 
