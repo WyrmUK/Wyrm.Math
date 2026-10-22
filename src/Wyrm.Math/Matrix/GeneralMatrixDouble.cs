@@ -7,9 +7,13 @@ namespace Wyrm.Math.Matrix;
 /// <summary>
 /// A general matrix struct for <see cref="double"/> values.
 /// </summary>
-public readonly struct GeneralMatrixDouble
+public readonly struct GeneralMatrixDouble :
+    IEquatable<object>,
+    IEquatable<GeneralMatrixDouble>
 {
     internal GeneralMatrix<double> Matrix { get; }
+
+    #region Constructors
 
     /// <summary>
     /// Creates a new empty <see cref="GeneralMatrixDouble"/>.
@@ -49,17 +53,32 @@ public readonly struct GeneralMatrixDouble
         Matrix = matrix;
     }
 
+    #endregion
+
     /// <summary>
     /// Returns a human-readable representation of this matrix.
     /// </summary>
     /// <returns>The human-readable representation.</returns>
     public override string ToString() => Matrix.ToString();
 
+    #region GetHashCode Equals
+
     /// <inheritdoc cref="GeneralMatrix{T}.GetHashCode()"/>
     public override int GetHashCode() => Matrix.GetHashCode();
 
     /// <inheritdoc cref="GeneralMatrix{T}.Equals(object?)"/>
-    public override bool Equals([NotNullWhen(true)] object? obj) => Matrix.Equals((obj as GeneralMatrixDouble?)?.Matrix);
+    public override bool Equals([NotNullWhen(true)] object? obj) =>
+        Matrix.Equals((obj as GeneralMatrixDouble?)?.Matrix);
+
+    /// <summary>
+    /// Indicates whether the current <see cref="GeneralMatrixDouble"/> is equal to another <see cref="GeneralMatrixDouble"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="GeneralMatrixDouble"/> to compare with this <see cref="GeneralMatrixDouble"/>.</param>
+    /// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
+    public bool Equals(GeneralMatrixDouble matrix) =>
+        Matrix.Equals(matrix.Matrix);
+
+    #endregion
 
     /// <summary>
     /// Indicates whether two <see cref="GeneralMatrixDouble"/>s are equal.

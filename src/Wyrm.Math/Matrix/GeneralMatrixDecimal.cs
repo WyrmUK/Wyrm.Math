@@ -7,9 +7,13 @@ namespace Wyrm.Math.Matrix;
 /// <summary>
 /// A general matrix struct for <see cref="decimal"/> values.
 /// </summary>
-public readonly struct GeneralMatrixDecimal
+public readonly struct GeneralMatrixDecimal :
+    IEquatable<object>,
+    IEquatable<GeneralMatrixDecimal>
 {
     internal GeneralMatrix<decimal> Matrix { get; }
+
+    #region Constructors
 
     /// <summary>
     /// Creates a new empty <see cref="GeneralMatrixDecimal"/>.
@@ -49,17 +53,32 @@ public readonly struct GeneralMatrixDecimal
         Matrix = matrix;
     }
 
+    #endregion
+
     /// <summary>
     /// Returns a human-readable representation of this matrix.
     /// </summary>
     /// <returns>The human-readable representation.</returns>
     public override string ToString() => Matrix.ToString();
 
+    #region GetHashCode Equals
+
     /// <inheritdoc cref="GeneralMatrix{T}.GetHashCode()"/>
     public override int GetHashCode() => Matrix.GetHashCode();
 
     /// <inheritdoc cref="GeneralMatrix{T}.Equals(object?)"/>
-    public override bool Equals([NotNullWhen(true)] object? obj) => Matrix.Equals((obj as GeneralMatrixDecimal?)?.Matrix);
+    public override bool Equals([NotNullWhen(true)] object? obj) =>
+        Matrix.Equals((obj as GeneralMatrixDecimal?)?.Matrix);
+
+    /// <summary>
+    /// Indicates whether the current <see cref="GeneralMatrixDecimal"/> is equal to another <see cref="GeneralMatrixDecimal"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="GeneralMatrixDecimal"/> to compare with this <see cref="GeneralMatrixDecimal"/>.</param>
+    /// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
+    public bool Equals(GeneralMatrixDecimal matrix) =>
+        Matrix.Equals(matrix.Matrix);
+
+    #endregion
 
     /// <summary>
     /// Indicates whether two <see cref="GeneralMatrixDecimal"/>s are equal.

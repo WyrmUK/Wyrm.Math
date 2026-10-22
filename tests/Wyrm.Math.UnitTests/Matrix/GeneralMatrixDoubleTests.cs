@@ -70,6 +70,13 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
+    [MemberData(nameof(TestGeneralMatrixDoubleEqualityTheoryData))]
+    public void Equals_Should_Return_True_When_Double_Matrices_Have_The_Same_Values(GeneralMatrixDouble matrix1, GeneralMatrixDouble matrix2, bool expected)
+    {
+        matrix1.Equals(matrix2).ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestGeneralMatrixEqualityTheoryData))]
     public void Operator_Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDouble matrix1, object? obj, bool expected)
     {
@@ -367,6 +374,14 @@ public class GeneralMatrixDoubleTests
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), null, false },
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), TestValue1_1, false },
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[(decimal)TestValue1_1, (decimal)TestValue2_2], [(decimal)TestValue3_3, (decimal)TestValue4_4]]), false },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue], [TestValue3_3, TestValue4_4, TestValue]]), false },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue5_5]]), false },
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), true }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble, bool> TestGeneralMatrixDoubleEqualityTheoryData =
+        new()
+        {
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue], [TestValue3_3, TestValue4_4, TestValue]]), false },
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue5_5]]), false },
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), true }

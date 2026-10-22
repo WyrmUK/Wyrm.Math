@@ -60,8 +60,11 @@ internal readonly struct GeneralMatrix<T> where T : struct
 
     public override bool Equals([NotNullWhen(true)] object? obj) =>
         (obj is GeneralMatrix<T> compare) &&
-        (Columns == compare.Columns) &&
-        Values.SequenceEqual(compare.Values);
+        Equals(compare);
+
+    public bool Equals(GeneralMatrix<T> matrix) =>
+        (Columns == matrix.Columns) &&
+        Values.SequenceEqual(matrix.Values);
 
     public override string ToString()
     {
