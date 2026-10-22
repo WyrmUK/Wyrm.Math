@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace Wyrm.Math.Matrix.Base;
@@ -24,7 +25,7 @@ internal readonly struct GeneralMatrix<T> where T : struct
         Values = new T[rows * columns];
     }
 
-    public GeneralMatrix(IEnumerable<IEnumerable<T>> values) : this(values.Max(v => v.Count()), values.Count())
+    public GeneralMatrix(IEnumerable<IEnumerable<T>> values) : this(values.Max(v => (int?)v.Count()) ?? 0, values.Count())
     {
         var rowIndex = 0;
         foreach (var row in values)
@@ -93,5 +94,64 @@ internal readonly struct GeneralMatrix<T> where T : struct
         }
         builder.Append(MatrixEndChar);
         return builder.ToString();
+    }
+
+    internal delegate bool TryParseFunc(ReadOnlySpan<char> source, NumberStyles numberStyles, out T value);
+
+    internal static bool TryParse(ReadOnlySpan<char> source, TryParseFunc tryParseFunc, out GeneralMatrix<T> matrix)
+    {
+        const char plusChar = '+';
+        const NumberStyles numberStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands | NumberStyles.AllowExponent;
+
+        matrix = new GeneralMatrix<T>([]);
+        if (source.Length == 0) return false;
+
+        var values = new List<List<T>>();
+        if (source[0] == MatrixStartChar && source[^1] == MatrixEndChar)
+        {
+            source = source[1..^1].Trim();
+
+            while (source.Length > 0)
+            {
+                if (source[0] != MatrixRowStartChar || source[^1] != MatrixRowEndChar) return false;
+
+                var end = source.IndexOf(MatrixRowEndChar);
+                if (end == 1) return false;
+
+                var rowSource = source[1..end].Trim();
+                if (rowSource.Length == 0) return false;
+
+                var rowValues = new List<T>();
+
+                while (rowSource.Length > 0)
+                {
+                    var numEnd = rowSource.IndexOf(MatrixRowValueSeparatorChar);
+                    if (numEnd == 0 || numEnd == rowSource.Length - 1) return false;
+
+                    var valueSource = (numEnd < 0
+                        ? rowSource
+                        : rowSource[0..numEnd]).Trim().TrimStart(plusChar);
+
+                    if (!tryParseFunc(valueSource, numberStyles, out var value)) return false;
+                    rowValues.Add(value);
+
+                    if (numEnd < 0) break;
+                    rowSource = rowSource[(numEnd + 1)..].TrimStart();
+                }
+
+                values.Add(rowValues);
+
+                if (source.Length == end + 1) break;
+                source = source[(end + 1)..].TrimStart();
+            }
+        }
+        else
+        {
+            if (!tryParseFunc(source.TrimStart(plusChar), numberStyles, out var value)) return false;
+            values.Add([value]);
+        }
+
+        matrix = new GeneralMatrix<T>(values);
+        return true;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Wyrm.Math.ComplexNumbers.Base;
+using System.Globalization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -9,8 +9,8 @@ namespace Wyrm.Math.Matrix;
 /// A general matrix struct for <see cref="decimal"/> values.
 /// </summary>
 public readonly struct GeneralMatrixDecimal :
-    // TODO: IParsable<GeneralMatrixDecimal>,
-    // TODO: ISpanParsable<GeneralMatrixDecimal>,
+    IParsable<GeneralMatrixDecimal>,
+    ISpanParsable<GeneralMatrixDecimal>,
     IFormattable,
     IEquatable<object>,
     IEquatable<GeneralMatrixDecimal>
@@ -95,6 +95,58 @@ public readonly struct GeneralMatrixDecimal :
     #endregion
 
     #region Parse
+
+    /// <summary>
+    /// Parses a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <returns>The result of parsing s.</returns>
+    public static GeneralMatrixDecimal Parse(string s) => Parse(s, null);
+
+    /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
+    public static GeneralMatrixDecimal Parse(string s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <summary>
+    /// Tries to parse a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <param name="result">When this method returns, contains the result of successfully parsing s or an undefined value on failure.</param>
+    /// <returns><see langword="true"/> if s was successfully parsed; otherwise <see langword="false"/>.</returns>
+    public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false)] out GeneralMatrixDecimal result) =>
+        TryParse(s, null, out result);
+
+    /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralMatrixDecimal result)
+    {
+        if (s == null)
+        {
+            result = default;
+            return false;
+        }
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
+    public static GeneralMatrixDecimal Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralMatrixDecimal result)
+    {
+        var parsed = GeneralMatrix<decimal>.TryParse(s, DecimalTryParse, out var matrix);
+        result = new GeneralMatrixDecimal(matrix);
+        return parsed;
+
+        bool DecimalTryParse(ReadOnlySpan<char> source, NumberStyles numberStyles, out decimal value) =>
+            decimal.TryParse(source, numberStyles, provider, out value);
+    }
 
     #endregion
 
