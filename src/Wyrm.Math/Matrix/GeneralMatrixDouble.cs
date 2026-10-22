@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -7,9 +8,16 @@ namespace Wyrm.Math.Matrix;
 /// <summary>
 /// A general matrix struct for <see cref="double"/> values.
 /// </summary>
-public readonly struct GeneralMatrixDouble
+public readonly struct GeneralMatrixDouble :
+    IParsable<GeneralMatrixDouble>,
+    ISpanParsable<GeneralMatrixDouble>,
+    IFormattable,
+    IEquatable<object>,
+    IEquatable<GeneralMatrixDouble>
 {
     internal GeneralMatrix<double> Matrix { get; }
+
+    #region Constructors
 
     /// <summary>
     /// Creates a new empty <see cref="GeneralMatrixDouble"/>.
@@ -49,17 +57,119 @@ public readonly struct GeneralMatrixDouble
         Matrix = matrix;
     }
 
+    #endregion
+
+    #region ToString
+
     /// <summary>
     /// Returns a human-readable representation of this matrix.
     /// </summary>
     /// <returns>The human-readable representation.</returns>
     public override string ToString() => Matrix.ToString();
 
+    /// <summary>
+    /// Returns a human-readable representation of this matrix using the specified format.
+    /// </summary>
+    /// <param name="format">The format to use on the values.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format) =>
+        ToString(format, null);
+
+    /// <summary>
+    /// Returns a human-readable representation of this matrix using the specified culture-specific format.
+    /// </summary>
+    /// <param name="formatProvider">The culture-specific format to use on the values.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString(IFormatProvider? formatProvider) =>
+        ToString(null, formatProvider);
+
+    /// <summary>
+    /// Returns a human-readable representation of this matrix using the specified format and culture-specific format.
+    /// </summary>
+    /// <param name="format">The format to use on the real and imaginary parts.</param>
+    /// <param name="formatProvider">The culture-specific format to use on the values.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format, IFormatProvider? formatProvider) =>
+        Matrix.ToString(x => x.ToString(format, formatProvider));
+
+    #endregion
+
+    #region Parse
+
+    /// <summary>
+    /// Parses a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <returns>The result of parsing s.</returns>
+    public static GeneralMatrixDouble Parse(string s) => Parse(s, null);
+
+    /// <inheritdoc cref="IParsable{TSelf}.Parse(string, IFormatProvider?)"/>
+    public static GeneralMatrixDouble Parse(string s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <summary>
+    /// Tries to parse a string into a value.
+    /// </summary>
+    /// <param name="s">The string to parse.</param>
+    /// <param name="result">When this method returns, contains the result of successfully parsing s or an undefined value on failure.</param>
+    /// <returns><see langword="true"/> if s was successfully parsed; otherwise <see langword="false"/>.</returns>
+    public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false)] out GeneralMatrixDouble result) =>
+        TryParse(s, null, out result);
+
+    /// <inheritdoc cref="IParsable{TSelf}.TryParse(string?, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralMatrixDouble result)
+    {
+        if (s == null)
+        {
+            result = default;
+            return false;
+        }
+        return TryParse(s.AsSpan(), provider, out result);
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.Parse(ReadOnlySpan{char}, IFormatProvider?)"/>
+    public static GeneralMatrixDouble Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    {
+        if (TryParse(s, provider, out var value)) return value;
+        throw new FormatException();
+    }
+
+    /// <inheritdoc cref="ISpanParsable{TSelf}.TryParse(ReadOnlySpan{char}, IFormatProvider?, out TSelf)"/>
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, [MaybeNullWhen(false)] out GeneralMatrixDouble result)
+    {
+        var parsed = GeneralMatrix<double>.TryParse(s, DoubleTryParse, out var matrix);
+        result = new GeneralMatrixDouble(matrix);
+        return parsed;
+
+        bool DoubleTryParse(ReadOnlySpan<char> source, NumberStyles numberStyles, out double value) =>
+            double.TryParse(source, numberStyles, provider, out value);
+    }
+
+    #endregion
+
+    #region GetHashCode Equals
+
     /// <inheritdoc cref="GeneralMatrix{T}.GetHashCode()"/>
     public override int GetHashCode() => Matrix.GetHashCode();
 
     /// <inheritdoc cref="GeneralMatrix{T}.Equals(object?)"/>
-    public override bool Equals([NotNullWhen(true)] object? obj) => Matrix.Equals((obj as GeneralMatrixDouble?)?.Matrix);
+    public override bool Equals([NotNullWhen(true)] object? obj) =>
+        Matrix.Equals((obj as GeneralMatrixDouble?)?.Matrix);
+
+    /// <summary>
+    /// Indicates whether the current <see cref="GeneralMatrixDouble"/> is equal to another <see cref="GeneralMatrixDouble"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="GeneralMatrixDouble"/> to compare with this <see cref="GeneralMatrixDouble"/>.</param>
+    /// <returns><see langword="true"/> if the current object is equal to the other parameter; otherwise, <see langword="false"/>.</returns>
+    public bool Equals(GeneralMatrixDouble matrix) =>
+        Matrix.Equals(matrix.Matrix);
+
+    #endregion
+
+    #region operator == !=
 
     /// <summary>
     /// Indicates whether two <see cref="GeneralMatrixDouble"/>s are equal.
@@ -76,6 +186,10 @@ public readonly struct GeneralMatrixDouble
     /// <param name="right">A <see cref="GeneralMatrixDouble"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(GeneralMatrixDouble left, GeneralMatrixDouble right) => !(left == right);
+
+    #endregion
+
+    #region Properties
 
     /// <summary>
     /// Gets the number of rows for the matrix.
@@ -97,6 +211,10 @@ public readonly struct GeneralMatrixDouble
     {
         get => Matrix[column, row];
     }
+
+    #endregion
+
+    #region Matrix Methods
 
     /// <summary>
     /// Returns true only if the matrix is square (rows == columns).
@@ -147,6 +265,10 @@ public readonly struct GeneralMatrixDouble
     /// <returns>The inverse as a <see cref="GeneralMatrixDouble"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
     public GeneralMatrixDouble Inverse() => new(Matrix.Inverse());
+
+    #endregion
+
+    #region Addition/Subtraction
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDouble"/>.
@@ -220,6 +342,10 @@ public readonly struct GeneralMatrixDouble
     public static GeneralMatrixDouble operator -(GeneralMatrixDouble m) =>
         new(m.Matrix.PerformOperation(Neg));
 
+    #endregion
+
+    #region Multiplication/Division
+
     /// <summary>
     /// Multiplies each value of a <see cref="GeneralMatrixDouble"/> with a scalar.
     /// </summary>
@@ -266,6 +392,8 @@ public readonly struct GeneralMatrixDouble
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand divided by the right hand value.</returns>
     public static GeneralMatrixDouble operator /(double m1, GeneralMatrixDouble m2) =>
         new(m2.Matrix.PerformOperation(v => Div(m1, v)));
+
+    #endregion
 
     private static bool Nez(double v) => v != 0D;
     private static double Neg(double v) => -v;

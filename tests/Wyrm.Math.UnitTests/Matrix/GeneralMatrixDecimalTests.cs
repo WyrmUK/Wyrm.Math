@@ -1,4 +1,5 @@
 ﻿using Shouldly;
+using System.Globalization;
 using Wyrm.Math.Matrix;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.UnitTests.TestHelpers;
@@ -53,6 +54,78 @@ public class GeneralMatrixDecimalTests
         matrix.ToString().ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestToStringFormatTheoryData))]
+    public void ToString_Format_Should_Return_String_Representation(GeneralMatrixDecimal matrix, string? format, string expected)
+    {
+        matrix.ToString(format).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestToStringProviderTheoryData))]
+    public void ToString_Provider_Should_Return_String_Representation(GeneralMatrixDecimal matrix, IFormatProvider? provider, string expected)
+    {
+        matrix.ToString(provider).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestToStringFormatProviderTheoryData))]
+    public void ToString_Format_Provider_Should_Return_String_Representation(GeneralMatrixDecimal matrix, string? format, IFormatProvider? provider, string expected)
+    {
+        matrix.ToString(format, provider).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(ParseTestData))]
+    public void Parse_Should_Return_Expected(string matrix, GeneralMatrixDecimal expected)
+    {
+        var result = GeneralMatrixDecimal.Parse(matrix);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(ParseProviderTestData))]
+    public void Parse_Provider_Should_Return_Expected(string matrix, IFormatProvider? provider, GeneralMatrixDecimal expected)
+    {
+        var result = GeneralMatrixDecimal.Parse(matrix, provider);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TryParseTestData))]
+    public void TryParse_Should_Return_Expected(string matrix, bool expected, GeneralMatrixDecimal expectedNumber)
+    {
+        var result = GeneralMatrixDecimal.TryParse(matrix, out var actual);
+        result.ShouldBe(expected);
+        if (result) actual.ShouldBe(expectedNumber);
+    }
+
+    [Theory]
+    [MemberData(nameof(TryParseProviderTestData))]
+    public void TryParse_Provider_Should_Return_Expected(string matrix, IFormatProvider? provider, bool expected, GeneralMatrixDecimal expectedNumber)
+    {
+        var result = GeneralMatrixDecimal.TryParse(matrix, provider, out var actual);
+        result.ShouldBe(expected);
+        if (result) actual.ShouldBe(expectedNumber);
+    }
+
+    [Theory]
+    [MemberData(nameof(ParseProviderTestData))]
+    public void Parse_Span_Provider_Should_Return_Expected(string matrix, IFormatProvider? provider, GeneralMatrixDecimal expected)
+    {
+        var result = GeneralMatrixDecimal.Parse(matrix.AsSpan(), provider);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TryParseProviderTestData))]
+    public void TryParse_Span_Provider_Should_Return_Expected(string matrix, IFormatProvider? provider, bool expected, GeneralMatrixDecimal expectedNumber)
+    {
+        var result = GeneralMatrixDecimal.TryParse(matrix.AsSpan(), provider, out var actual);
+        result.ShouldBe(expected);
+        if (result) actual.ShouldBe(expectedNumber);
+    }
+
     [Fact]
     public void GetHashCode_Should_Return_Unique_Value()
     {
@@ -65,6 +138,13 @@ public class GeneralMatrixDecimalTests
     public void Equals_Should_Return_True_When_Matrices_Have_The_Same_Values(GeneralMatrixDecimal matrix1, object? obj, bool expected)
     {
         matrix1.Equals(obj).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralMatrixDecimalEqualityTheoryData))]
+    public void Equals_Should_Return_True_When_Decimal_Matrices_Have_The_Same_Values(GeneralMatrixDecimal matrix1, GeneralMatrixDecimal matrix2, bool expected)
+    {
+        matrix1.Equals(matrix2).ShouldBe(expected);
     }
 
     [Theory]
@@ -349,15 +429,118 @@ public class GeneralMatrixDecimalTests
     public const decimal TestValue8_8 = 8.8M;
     public const decimal TestValue20_2 = 20.2M;
 
+    private static readonly IFormatProvider FormatProvider = new CultureInfo("it-IT");
+
     public static readonly TheoryData<GeneralMatrixDecimal> TestGeneralMatrixTheoryData =
         new(new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]));
 
     public static readonly TheoryData<GeneralMatrixDecimal, string> TestToStringTheoryData =
         new()
         {
-            { new GeneralMatrixDecimal([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "(  1.1, 10.1 )\r\n( -1.0,  2.0 )" },
-            { new GeneralMatrixDecimal([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "( 0.0, -4.0 )\r\n( 2.0,  2.0 )" }
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "((1.1|10.1)(-1.0|2.0))" },
+            { new GeneralMatrixDecimal([[TestValue1_1], [TestValueNeg1]]), "((1.1)(-1.0))" },
+            { new GeneralMatrixDecimal([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "((0.0|-4.0)(2.0|2.0))" }
         };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, string?, string> TestToStringFormatTheoryData =
+        new()
+        {
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "#0.00", "((1.10|10.10)(-1.00|2.00))" },
+            { new GeneralMatrixDecimal([[TestValue1_1], [TestValueNeg1]]), " #0.00;-#0.00", "(( 1.10)(-1.00))" },
+            { new GeneralMatrixDecimal([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "#0.00", "((0.00|-4.00)(2.00|2.00))" }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, IFormatProvider?, string> TestToStringProviderTheoryData =
+        new()
+        {
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), FormatProvider, "((1,1|10,1)(-1,0|2,0))" },
+            { new GeneralMatrixDecimal([[TestValue1_1], [TestValueNeg1]]), FormatProvider, "((1,1)(-1,0))" },
+            { new GeneralMatrixDecimal([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), FormatProvider, "((0,0|-4,0)(2,0|2,0))" }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, string?, IFormatProvider?, string> TestToStringFormatProviderTheoryData =
+        new()
+        {
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "#0.00", FormatProvider, "((1,10|10,10)(-1,00|2,00))" },
+            { new GeneralMatrixDecimal([[TestValue1_1], [TestValueNeg1]]), " #0.00;-#0.00", FormatProvider, "(( 1,10)(-1,00))" },
+            { new GeneralMatrixDecimal([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "#0.00", FormatProvider, "((0,00|-4,00)(2,00|2,00))" }
+        };
+
+    public static readonly TheoryData<string, GeneralMatrixDecimal> ParseTestData = new()
+    {
+        { "()", new GeneralMatrixDecimal([]) },
+        { "2", new GeneralMatrixDecimal([[TestValue2]]) },
+        { "2.2", new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "-1.0", new GeneralMatrixDecimal([[TestValueNeg1]]) },
+        { "+2.2", new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "((1.1)(2.2))", new GeneralMatrixDecimal([[TestValue1_1],[TestValue2_2]]) },
+        { "((+1.1|-2.2)(2.2|-1.1))", new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) },
+        { "( ( +1.1 | -2.2 ) ( 2.2 | -1.1 ) )", new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) }
+    };
+
+    public static readonly TheoryData<string, IFormatProvider?, GeneralMatrixDecimal> ParseProviderTestData = new()
+    {
+        { "()", FormatProvider, new GeneralMatrixDecimal([]) },
+        { "2", FormatProvider, new GeneralMatrixDecimal([[TestValue2]]) },
+        { "2,2", FormatProvider, new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "-1,0", FormatProvider, new GeneralMatrixDecimal([[TestValueNeg1]]) },
+        { "+2,2", FormatProvider, new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "((1,1)(2,2))", FormatProvider, new GeneralMatrixDecimal([[TestValue1_1],[TestValue2_2]]) },
+        { "((+1,1|-2,2)(2,2|-1,1))", FormatProvider, new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) },
+        { "( ( +1,1 | -2,2 ) ( 2,2 | -1,1 ) )", FormatProvider, new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) }
+    };
+
+    public static readonly TheoryData<string, bool, GeneralMatrixDecimal> TryParseTestData = new()
+    {
+        { "()", true, new GeneralMatrixDecimal([]) },
+        { "( )", true, new GeneralMatrixDecimal([]) },
+        { "2", true, new GeneralMatrixDecimal([[TestValue2]]) },
+        { "2.2", true, new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "-1.0", true, new GeneralMatrixDecimal([[TestValueNeg1]]) },
+        { "+2.2", true, new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "((1.1)(2.2))", true, new GeneralMatrixDecimal([[TestValue1_1],[TestValue2_2]]) },
+        { "((+1.1|-2.2)(2.2|-1.1))", true, new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) },
+        { "( ( +1.1 | -2.2 ) ( 2.2 | -1.1 ) )", true, new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) },
+        { "", false, new GeneralMatrixDecimal([]) },
+        { "(2", false, new GeneralMatrixDecimal([]) },
+        { "2)", false, new GeneralMatrixDecimal([]) },
+        { "(2)", false, new GeneralMatrixDecimal([]) },
+        { "(()(2.2))", false, new GeneralMatrixDecimal([]) },
+        { "((1.1)( ))", false, new GeneralMatrixDecimal([]) },
+        { "(1.1)(2.2))", false, new GeneralMatrixDecimal([]) },
+        { "((1.1(2.2))", false, new GeneralMatrixDecimal([]) },
+        { "((1.1)2.2))", false, new GeneralMatrixDecimal([]) },
+        { "((1.1)(2.2)", false, new GeneralMatrixDecimal([]) },
+        { "((1.1|)(2.2|-1.1))", false, new GeneralMatrixDecimal([]) },
+        { "((1.1|-2.2)(|-1.1))", false, new GeneralMatrixDecimal([]) },
+        { "((|-2.2)(|-1.1))", false, new GeneralMatrixDecimal([]) }
+    };
+
+    public static readonly TheoryData<string, IFormatProvider?, bool, GeneralMatrixDecimal> TryParseProviderTestData = new()
+    {
+        { "()", FormatProvider, true, new GeneralMatrixDecimal([]) },
+        { "( )", FormatProvider, true, new GeneralMatrixDecimal([]) },
+        { "2", FormatProvider, true, new GeneralMatrixDecimal([[TestValue2]]) },
+        { "2,2", FormatProvider, true, new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "-1,0", FormatProvider, true, new GeneralMatrixDecimal([[TestValueNeg1]]) },
+        { "+2,2", FormatProvider, true, new GeneralMatrixDecimal([[TestValue2_2]]) },
+        { "((1,1)(2,2))", FormatProvider, true, new GeneralMatrixDecimal([[TestValue1_1],[TestValue2_2]]) },
+        { "((+1,1|-2,2)(2,2|-1,1))", FormatProvider, true, new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) },
+        { "( ( +1,1 | -2,2 ) ( 2,2 | -1,1 ) )", FormatProvider, true, new GeneralMatrixDecimal([[TestValue1_1, -TestValue2_2],[TestValue2_2, -TestValue1_1]]) },
+        { "", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "(2", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "2)", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "(2)", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "(()(2,2))", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "((1,1)( ))", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "(1,1)(2,2))", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "((1,1(2,2))", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "((1,1)2,2))", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "((1,1)(2,2)", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "((1,1|)(2,2|-1,1))", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "((1,1|-2,2)(|-1,1))", FormatProvider, false, new GeneralMatrixDecimal([]) },
+        { "((|-2,2)(|-1,1))", FormatProvider, false, new GeneralMatrixDecimal([]) }
+    };
 
     public static readonly TheoryData<GeneralMatrixDecimal, object?, bool> TestGeneralMatrixEqualityTheoryData =
         new()
@@ -365,6 +548,14 @@ public class GeneralMatrixDecimalTests
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), null, false },
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), TestValue1_1, false },
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[(double)TestValue1_1, (double)TestValue2_2], [(double)TestValue3_3, (double)TestValue4_4]]), false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue], [TestValue3_3, TestValue4_4, TestValue]]), false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue5_5]]), false },
+            { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), true }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, GeneralMatrixDecimal, bool> TestGeneralMatrixDecimalEqualityTheoryData =
+        new()
+        {
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue], [TestValue3_3, TestValue4_4, TestValue]]), false },
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue5_5]]), false },
             { new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), true }

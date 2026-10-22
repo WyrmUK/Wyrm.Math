@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace Wyrm.Math.Matrix.Base;
@@ -24,7 +25,7 @@ internal readonly struct GeneralMatrix<T> where T : struct
         Values = new T[rows * columns];
     }
 
-    public GeneralMatrix(IEnumerable<IEnumerable<T>> values) : this(values.Max(v => v.Count()), values.Count())
+    public GeneralMatrix(IEnumerable<IEnumerable<T>> values) : this(values.Max(v => (int?)v.Count()) ?? 0, values.Count())
     {
         var rowIndex = 0;
         foreach (var row in values)
@@ -60,50 +61,97 @@ internal readonly struct GeneralMatrix<T> where T : struct
 
     public override bool Equals([NotNullWhen(true)] object? obj) =>
         (obj is GeneralMatrix<T> compare) &&
-        (Columns == compare.Columns) &&
-        Values.SequenceEqual(compare.Values);
+        Equals(compare);
 
-    public override string ToString()
+    public bool Equals(GeneralMatrix<T> matrix) =>
+        (Columns == matrix.Columns) &&
+        Values.SequenceEqual(matrix.Values);
+
+    private const char MatrixStartChar = '(';
+    private const char MatrixEndChar = ')';
+    private const char MatrixRowStartChar = '(';
+    private const char MatrixRowEndChar = ')';
+    private const char MatrixRowValueSeparatorChar = '|';
+
+    public override string ToString() => ToString(null);
+
+    public string ToString(Func<T, string>? formatter)
     {
-        var stringValues = StringValues(out var leftWidths, out var rightWidths);
-        var builder = new StringBuilder();
-        for (var index = 0; index < stringValues.Count; ++index)
+        var builder = new StringBuilder($"{MatrixStartChar}");
+        for (var row = 0; row < Rows; ++row)
         {
-            var column = index % Columns;
-            builder.Append(column == 0 ? (index == 0 ? "( " : "\r\n( ") : string.Empty);
-            builder.Append(stringValues[index][0].PadLeft(leftWidths[column]));
-            if (rightWidths[column] > 0)
+            builder.Append(MatrixRowStartChar);
+            for (var column = 0; column < Columns; ++column)
             {
-                builder.Append('.');
-                builder.Append((stringValues[index].Length > 1
-                    ? stringValues[index][1]
-                    : "0").PadRight(rightWidths[column]));
+                if (column > 0)
+                {
+                    builder.Append(MatrixRowValueSeparatorChar);
+                }
+                var value = this[column, row];
+                builder.Append(formatter?.Invoke(value) ?? value.ToString());
             }
-            builder.Append(column == (Columns - 1) ? " )" : ", ");
+            builder.Append(MatrixRowEndChar);
         }
+        builder.Append(MatrixEndChar);
         return builder.ToString();
     }
 
-    private static readonly char[] DecimalPointSplit = ['.'];
+    internal delegate bool TryParseFunc(ReadOnlySpan<char> source, NumberStyles numberStyles, out T value);
 
-    private List<string[]> StringValues(out List<int> leftWidths, out List<int> rightWidths)
+    internal static bool TryParse(ReadOnlySpan<char> source, TryParseFunc tryParseFunc, out GeneralMatrix<T> matrix)
     {
-        leftWidths = new int[Columns].ToList();
-        rightWidths = new int[Columns].ToList();
-        var stringList = new List<string[]>(Values.Length);
-        for (var index = 0; index < Values.Length; ++index)
+        const char plusChar = '+';
+        const NumberStyles numberStyles = NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands | NumberStyles.AllowExponent;
+
+        matrix = new GeneralMatrix<T>([]);
+        if (source.Length == 0) return false;
+
+        var values = new List<List<T>>();
+        if (source[0] == MatrixStartChar && source[^1] == MatrixEndChar)
         {
-            stringList.Add((Values[index].ToString() ?? string.Empty).Split(DecimalPointSplit, 2));
-            var parts = stringList[index].Select(p => p.Length).ToArray();
-            if (parts[0] > leftWidths[index % Columns])
+            source = source[1..^1].Trim();
+
+            while (source.Length > 0)
             {
-                leftWidths[index % Columns] = parts[0];
-            }
-            if (parts.Length > 1 && parts[1] > rightWidths[index % Columns])
-            {
-                rightWidths[index % Columns] = parts[1];
+                if (source[0] != MatrixRowStartChar || source[^1] != MatrixRowEndChar) return false;
+
+                var end = source.IndexOf(MatrixRowEndChar);
+                if (end == 1) return false;
+
+                var rowSource = source[1..end].Trim();
+                if (rowSource.Length == 0) return false;
+
+                var rowValues = new List<T>();
+
+                while (rowSource.Length > 0)
+                {
+                    var numEnd = rowSource.IndexOf(MatrixRowValueSeparatorChar);
+                    if (numEnd == 0 || numEnd == rowSource.Length - 1) return false;
+
+                    var valueSource = (numEnd < 0
+                        ? rowSource
+                        : rowSource[0..numEnd]).Trim().TrimStart(plusChar);
+
+                    if (!tryParseFunc(valueSource, numberStyles, out var value)) return false;
+                    rowValues.Add(value);
+
+                    if (numEnd < 0) break;
+                    rowSource = rowSource[(numEnd + 1)..].TrimStart();
+                }
+
+                values.Add(rowValues);
+
+                if (source.Length == end + 1) break;
+                source = source[(end + 1)..].TrimStart();
             }
         }
-        return stringList;
+        else
+        {
+            if (!tryParseFunc(source.TrimStart(plusChar), numberStyles, out var value)) return false;
+            values.Add([value]);
+        }
+
+        matrix = new GeneralMatrix<T>(values);
+        return true;
     }
 }
