@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Wyrm.Math.ComplexNumbers.Base;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -8,6 +9,9 @@ namespace Wyrm.Math.Matrix;
 /// A general matrix struct for <see cref="decimal"/> values.
 /// </summary>
 public readonly struct GeneralMatrixDecimal :
+    // TODO: IParsable<GeneralMatrixDecimal>,
+    // TODO: ISpanParsable<GeneralMatrixDecimal>,
+    IFormattable,
     IEquatable<object>,
     IEquatable<GeneralMatrixDecimal>
 {
@@ -55,11 +59,44 @@ public readonly struct GeneralMatrixDecimal :
 
     #endregion
 
+    #region ToString
+
     /// <summary>
     /// Returns a human-readable representation of this matrix.
     /// </summary>
     /// <returns>The human-readable representation.</returns>
     public override string ToString() => Matrix.ToString();
+
+    /// <summary>
+    /// Returns a human-readable representation of this matrix using the specified format.
+    /// </summary>
+    /// <param name="format">The format to use on the values.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format) =>
+        ToString(format, null);
+
+    /// <summary>
+    /// Returns a human-readable representation of this matrix using the specified culture-specific format.
+    /// </summary>
+    /// <param name="formatProvider">The culture-specific format to use on the values.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString(IFormatProvider? formatProvider) =>
+        ToString(null, formatProvider);
+
+    /// <summary>
+    /// Returns a human-readable representation of this matrix using the specified format and culture-specific format.
+    /// </summary>
+    /// <param name="format">The format to use on the real and imaginary parts.</param>
+    /// <param name="formatProvider">The culture-specific format to use on the values.</param>
+    /// <returns>The human-readable representation.</returns>
+    public string ToString([StringSyntax(StringSyntaxAttribute.NumericFormat)] string? format, IFormatProvider? formatProvider) =>
+        Matrix.ToString(x => x.ToString(format, formatProvider));
+
+    #endregion
+
+    #region Parse
+
+    #endregion
 
     #region GetHashCode Equals
 
@@ -80,6 +117,8 @@ public readonly struct GeneralMatrixDecimal :
 
     #endregion
 
+    #region operator == !=
+
     /// <summary>
     /// Indicates whether two <see cref="GeneralMatrixDecimal"/>s are equal.
     /// </summary>
@@ -95,6 +134,10 @@ public readonly struct GeneralMatrixDecimal :
     /// <param name="right">A <see cref="GeneralMatrixDecimal"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(GeneralMatrixDecimal left, GeneralMatrixDecimal? right) => !(left == right);
+
+    #endregion
+
+    #region Properties
 
     /// <summary>
     /// Gets the number of rows for the matrix.
@@ -116,6 +159,10 @@ public readonly struct GeneralMatrixDecimal :
     {
         get => Matrix[column, row];
     }
+
+    #endregion
+
+    #region Matrix Methods
 
     /// <summary>
     /// Returns true only if the matrix is square (rows == columns).
@@ -166,6 +213,10 @@ public readonly struct GeneralMatrixDecimal :
     /// <returns>The inverse as a <see cref="GeneralMatrixDecimal"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
     public GeneralMatrixDecimal Inverse() => new(Matrix.Inverse());
+
+    #endregion
+
+    #region Addition/Subtraction
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDecimal"/>.
@@ -239,6 +290,10 @@ public readonly struct GeneralMatrixDecimal :
     public static GeneralMatrixDecimal operator -(GeneralMatrixDecimal m) =>
         new(m.Matrix.PerformOperation(Neg));
 
+    #endregion
+
+    #region Multiplication/Division
+
     /// <summary>
     /// Multiplies each value of a <see cref="GeneralMatrixDecimal"/> with a scalar.
     /// </summary>
@@ -284,6 +339,8 @@ public readonly struct GeneralMatrixDecimal :
     /// <returns>A <see cref="GeneralMatrixDecimal"/> of the of the left hand operand divided by the right hand value.</returns>
     public static GeneralMatrixDecimal operator /(decimal m1, GeneralMatrixDecimal m2) =>
         new(m2.Matrix.PerformOperation(v => Div(m1, v)));
+
+    #endregion
 
     private static bool Nez(decimal v) => v != 0M;
     private static decimal Neg(decimal v) => -v;

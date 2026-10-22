@@ -1,6 +1,5 @@
 ﻿using Shouldly;
-using System.Linq;
-using System.Numerics;
+using System.Globalization;
 using Wyrm.Math.Matrix;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.UnitTests.TestHelpers;
@@ -53,6 +52,27 @@ public class GeneralMatrixDoubleTests
     public void ToString_Should_Return_String_Representation(GeneralMatrixDouble matrix, string expected)
     {
         matrix.ToString().ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestToStringFormatTheoryData))]
+    public void ToString_Format_Should_Return_String_Representation(GeneralMatrixDouble matrix, string? format, string expected)
+    {
+        matrix.ToString(format).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestToStringProviderTheoryData))]
+    public void ToString_Provider_Should_Return_String_Representation(GeneralMatrixDouble matrix, IFormatProvider? provider, string expected)
+    {
+        matrix.ToString(provider).ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestToStringFormatProviderTheoryData))]
+    public void ToString_Format_Provider_Should_Return_String_Representation(GeneralMatrixDouble matrix, string? format, IFormatProvider? provider, string expected)
+    {
+        matrix.ToString(format, provider).ShouldBe(expected);
     }
 
     [Fact]
@@ -358,14 +378,41 @@ public class GeneralMatrixDoubleTests
     public const double TestValue8_8 = 8.8;
     public const double TestValue20_2 = 20.2;
 
+    private static readonly IFormatProvider FormatProvider = new CultureInfo("it-IT");
+
     public static readonly TheoryData<GeneralMatrixDouble> TestGeneralMatrixTheoryData =
         new(new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]));
 
     public static readonly TheoryData<GeneralMatrixDouble, string> TestToStringTheoryData =
         new()
         {
-            { new GeneralMatrixDouble([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "(  1.1, 10.1 )\r\n( -1.0,  2.0 )" },
-            { new GeneralMatrixDouble([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "( 0, -4 )\r\n( 2,  2 )" }
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "((1.1|10.1)(-1|2))" },
+            { new GeneralMatrixDouble([[TestValue1_1], [TestValueNeg1]]), "((1.1)(-1))" },
+            { new GeneralMatrixDouble([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "((0|-4)(2|2))" }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, string?, string> TestToStringFormatTheoryData =
+        new()
+        {
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "#0.00", "((1.10|10.10)(-1.00|2.00))" },
+            { new GeneralMatrixDouble([[TestValue1_1], [TestValueNeg1]]), " #0.00;-#0.00", "(( 1.10)(-1.00))" },
+            { new GeneralMatrixDouble([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "#0.00", "((0.00|-4.00)(2.00|2.00))" }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, IFormatProvider?, string> TestToStringProviderTheoryData =
+        new()
+        {
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), FormatProvider, "((1,1|10,1)(-1|2))" },
+            { new GeneralMatrixDouble([[TestValue1_1], [TestValueNeg1]]), FormatProvider, "((1,1)(-1))" },
+            { new GeneralMatrixDouble([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), FormatProvider, "((0|-4)(2|2))" }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, string?, IFormatProvider?, string> TestToStringFormatProviderTheoryData =
+        new()
+        {
+            { new GeneralMatrixDouble([[TestValue1_1, TestValue], [TestValueNeg1, TestValue2]]), "#0.00", FormatProvider, "((1,10|10,10)(-1,00|2,00))" },
+            { new GeneralMatrixDouble([[TestValue1_1], [TestValueNeg1]]), " #0.00;-#0.00", FormatProvider, "(( 1,10)(-1,00))" },
+            { new GeneralMatrixDouble([[TestValue0, TestValueNeg4], [TestValue2, TestValue2]]), "#0.00", FormatProvider, "((0,00|-4,00)(2,00|2,00))" }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, object?, bool> TestGeneralMatrixEqualityTheoryData =

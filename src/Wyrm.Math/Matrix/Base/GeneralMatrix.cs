@@ -66,47 +66,32 @@ internal readonly struct GeneralMatrix<T> where T : struct
         (Columns == matrix.Columns) &&
         Values.SequenceEqual(matrix.Values);
 
-    public override string ToString()
+    private const char MatrixStartChar = '(';
+    private const char MatrixEndChar = ')';
+    private const char MatrixRowStartChar = '(';
+    private const char MatrixRowEndChar = ')';
+    private const char MatrixRowValueSeparatorChar = '|';
+
+    public override string ToString() => ToString(null);
+
+    public string ToString(Func<T, string>? formatter)
     {
-        var stringValues = StringValues(out var leftWidths, out var rightWidths);
-        var builder = new StringBuilder();
-        for (var index = 0; index < stringValues.Count; ++index)
+        var builder = new StringBuilder($"{MatrixStartChar}");
+        for (var row = 0; row < Rows; ++row)
         {
-            var column = index % Columns;
-            builder.Append(column == 0 ? (index == 0 ? "( " : "\r\n( ") : string.Empty);
-            builder.Append(stringValues[index][0].PadLeft(leftWidths[column]));
-            if (rightWidths[column] > 0)
+            builder.Append(MatrixRowStartChar);
+            for (var column = 0; column < Columns; ++column)
             {
-                builder.Append('.');
-                builder.Append((stringValues[index].Length > 1
-                    ? stringValues[index][1]
-                    : "0").PadRight(rightWidths[column]));
+                if (column > 0)
+                {
+                    builder.Append(MatrixRowValueSeparatorChar);
+                }
+                var value = this[column, row];
+                builder.Append(formatter?.Invoke(value) ?? value.ToString());
             }
-            builder.Append(column == (Columns - 1) ? " )" : ", ");
+            builder.Append(MatrixRowEndChar);
         }
+        builder.Append(MatrixEndChar);
         return builder.ToString();
-    }
-
-    private static readonly char[] DecimalPointSplit = ['.'];
-
-    private List<string[]> StringValues(out List<int> leftWidths, out List<int> rightWidths)
-    {
-        leftWidths = new int[Columns].ToList();
-        rightWidths = new int[Columns].ToList();
-        var stringList = new List<string[]>(Values.Length);
-        for (var index = 0; index < Values.Length; ++index)
-        {
-            stringList.Add((Values[index].ToString() ?? string.Empty).Split(DecimalPointSplit, 2));
-            var parts = stringList[index].Select(p => p.Length).ToArray();
-            if (parts[0] > leftWidths[index % Columns])
-            {
-                leftWidths[index % Columns] = parts[0];
-            }
-            if (parts.Length > 1 && parts[1] > rightWidths[index % Columns])
-            {
-                rightWidths[index % Columns] = parts[1];
-            }
-        }
-        return stringList;
     }
 }
