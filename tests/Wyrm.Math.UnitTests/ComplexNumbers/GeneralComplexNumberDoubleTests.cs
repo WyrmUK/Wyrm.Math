@@ -1,7 +1,6 @@
 ﻿using Shouldly;
 using System.Globalization;
 using Wyrm.Math.ComplexNumbers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Wyrm.Math.UnitTests.ComplexNumbers;
 
@@ -108,6 +107,15 @@ public class GeneralComplexNumberDoubleTests
         var result = GeneralComplexNumberDouble.TryParse(complexNumber.AsSpan(), provider, out var actual);
         result.ShouldBe(expected);
         if (result) actual.ShouldBe(expectedNumber);
+    }
+
+    [Fact]
+    public void ToString_Should_Parse()
+    {
+        var matrix = new GeneralComplexNumberDouble(TestValue1_1, -TestValue2_2);
+        var str = matrix.ToString();
+        var result = GeneralComplexNumberDouble.Parse(str);
+        result.ShouldBe(matrix);
     }
 
     [Theory]

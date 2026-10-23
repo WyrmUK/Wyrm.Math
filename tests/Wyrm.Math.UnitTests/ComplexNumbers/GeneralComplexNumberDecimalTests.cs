@@ -109,6 +109,15 @@ public class GeneralComplexNumberDecimalTests
         if (result) actual.ShouldBe(expectedNumber);
     }
 
+    [Fact]
+    public void ToString_Should_Parse()
+    {
+        var matrix = new GeneralComplexNumberDecimal(TestValue1_1, -TestValue2_2);
+        var str = matrix.ToString();
+        var result = GeneralComplexNumberDecimal.Parse(str);
+        result.ShouldBe(matrix);
+    }
+
     [Theory]
     [MemberData(nameof(GetHashCodeTestData))]
     public void GetHashCode_Should_Return_Expected(GeneralComplexNumberDecimal complexNumber, int expected)

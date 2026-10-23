@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -8,6 +9,7 @@ namespace Wyrm.Math.Matrix;
 /// <summary>
 /// A general matrix struct for <see cref="double"/> values.
 /// </summary>
+[JsonConverter(typeof(GeneralMatrixDoubleJsonConverter))]
 public readonly struct GeneralMatrixDouble :
     IParsable<GeneralMatrixDouble>,
     ISpanParsable<GeneralMatrixDouble>,

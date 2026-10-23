@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.ComplexNumbers;
@@ -7,6 +8,7 @@ namespace Wyrm.Math.ComplexNumbers;
 /// <summary>
 /// A general complex number struct for <see cref="decimal"/> values.
 /// </summary>
+[JsonConverter(typeof(GeneralComplexNumberDecimalJsonConverter))]
 public readonly struct GeneralComplexNumberDecimal :
     IParsable<GeneralComplexNumberDecimal>,
     ISpanParsable<GeneralComplexNumberDecimal>,

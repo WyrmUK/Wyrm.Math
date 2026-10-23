@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text.Json.Serialization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -8,6 +9,7 @@ namespace Wyrm.Math.Matrix;
 /// <summary>
 /// A general matrix struct for <see cref="decimal"/> values.
 /// </summary>
+[JsonConverter(typeof(GeneralMatrixDecimalJsonConverter))]
 public readonly struct GeneralMatrixDecimal :
     IParsable<GeneralMatrixDecimal>,
     ISpanParsable<GeneralMatrixDecimal>,

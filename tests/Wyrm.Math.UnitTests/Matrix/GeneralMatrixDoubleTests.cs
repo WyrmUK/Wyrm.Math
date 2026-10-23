@@ -127,6 +127,15 @@ public class GeneralMatrixDoubleTests
     }
 
     [Fact]
+    public void ToString_Should_Parse()
+    {
+        var matrix = new GeneralMatrixDouble([[TestValue1_1, -TestValue2_2], [-TestValue2, TestValue]]);
+        var str = matrix.ToString();
+        var result = GeneralMatrixDouble.Parse(str);
+        result.ShouldBe(matrix);
+    }
+
+    [Fact]
     public void GetHashCode_Should_Return_Unique_Value()
     {
         var hashes = TestGeneralMatrixRankTheoryData.ToDictionary(x => x.Data.Item1.GetHashCode(), x => x);
