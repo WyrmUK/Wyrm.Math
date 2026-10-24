@@ -290,6 +290,14 @@ public class GeneralMatrixDoubleTests
                 .Inverse());
     }
 
+    [Fact]
+    public void EigenValuesAndVectors_Should_Return_EigenValuesAndVectors()
+    {
+        var matrix = new GeneralMatrixDouble([[1.0, 2.0], [-3.0, -4.0]]);
+        var eigenvaluesAndVectors = matrix.EigenValuesAndVectors();
+        // TODO
+    }
+
     [Theory]
     [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Double_To_Matrix(GeneralMatrixDouble m, double value, GeneralMatrixDouble expected)

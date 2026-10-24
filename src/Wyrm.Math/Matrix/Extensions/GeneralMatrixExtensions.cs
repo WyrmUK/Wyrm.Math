@@ -4,6 +4,9 @@ namespace Wyrm.Math.Matrix.Extensions;
 
 internal static class GeneralMatrixExtensions
 {
+    public static bool IsSquare<T>(this GeneralMatrix<T> matrix) where T : struct =>
+        matrix.Rows == matrix.Columns;
+
     public static IEnumerable<IEnumerable<T>> ToEnumerableOfEnumerable<T>(this GeneralMatrix<T> matrix) where T : struct =>
         Enumerable.Range(0, matrix.Rows)
             .Select(row => row * matrix.Columns)
@@ -18,7 +21,7 @@ internal static class GeneralMatrixExtensions
 
     public static T Trace<T>(this GeneralMatrix<T> matrix, Func<T, T, T> additionFunc) where T : struct
     {
-        if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
+        if (!matrix.IsSquare()) throw new ArgumentException("Matrix isn't square.");
 
         return Enumerable.Range(0, matrix.Columns)
             .Select(index => matrix.Values[index * matrix.Columns + index])
@@ -27,7 +30,7 @@ internal static class GeneralMatrixExtensions
 
     public static T Determinant<T>(this GeneralMatrix<T> matrix, Func<T, T, T> multiplyFunc, Func<T, T> negateFunc) where T : struct
     {
-        if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
+        if (!matrix.IsSquare()) throw new ArgumentException("Matrix isn't square.");
 
         var negate = false;
         var triangularForm = matrix.TriangularForm(() => negate = !negate);

@@ -290,6 +290,8 @@ public class GeneralMatrixDecimalTests
                 .Inverse());
     }
 
+    // TODO: public void EigenValuesAndVectors_Should_Return_EigenValuesAndVectors()
+
     [Theory]
     [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Decimal_To_Matrix(GeneralMatrixDecimal m, decimal value, GeneralMatrixDecimal expected)

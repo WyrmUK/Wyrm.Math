@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json.Serialization;
 using Wyrm.Math.Matrix.Base;
@@ -221,7 +222,7 @@ public readonly struct GeneralMatrixDouble :
     /// <summary>
     /// Returns true only if the matrix is square (rows == columns).
     /// </summary>
-    public bool IsSquare => Matrix.Rows == Matrix.Columns;
+    public bool IsSquare => Matrix.IsSquare();
 
     /// <summary>
     /// Gets the values of the matrix as an enumeration of enumerations of the values.
@@ -267,6 +268,35 @@ public readonly struct GeneralMatrixDouble :
     /// <returns>The inverse as a <see cref="GeneralMatrixDouble"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
     public GeneralMatrixDouble Inverse() => new(Matrix.Inverse());
+
+    #endregion
+
+    #region EigenValues EigenVectors
+
+    /// <summary>
+    /// Gets the eigenvalues for the matrix.
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of eigenvalues.</returns>
+    public ICollection<double> Eigenvalues() =>
+        Matrix.Eigenvalues(Add, Mul, Neg, x => -4.0 * x, x => x.Sqrti(), x => x / 2.0);
+
+    /// <summary>
+    /// Gets the eigenvectors for the matrix (one per eigenvalue).
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="GeneralMatrixDouble"/> eigenvectors.</returns>
+    public ICollection<GeneralMatrixDouble> Eigenvectors() =>
+        EigenValuesAndVectors().Select(x => x.Matrix).ToList();
+
+    /// <summary>
+    /// Gets the eigenvalues each with a matching eigenvector.
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="ValueMatrixDoublePair"/>s.</returns>
+    public ICollection<ValueMatrixDoublePair> EigenValuesAndVectors()
+    {
+        var eigenvalues = Eigenvalues();
+        var eigenvectors = Matrix.Eigenvectors(eigenvalues);
+        // TODO
+    }
 
     #endregion
 

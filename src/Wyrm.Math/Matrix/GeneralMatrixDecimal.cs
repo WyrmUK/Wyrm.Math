@@ -221,7 +221,7 @@ public readonly struct GeneralMatrixDecimal :
     /// <summary>
     /// Returns true only if the matrix is square (rows == columns).
     /// </summary>
-    public bool IsSquare => Matrix.Rows == Matrix.Columns;
+    public bool IsSquare => Matrix.IsSquare();
 
     /// <summary>
     /// Gets the values of the matrix as an enumeration of enumerations of the values.
@@ -267,6 +267,39 @@ public readonly struct GeneralMatrixDecimal :
     /// <returns>The inverse as a <see cref="GeneralMatrixDecimal"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
     public GeneralMatrixDecimal Inverse() => new(Matrix.Inverse());
+
+    #endregion
+
+    #region EigenValues EigenVectors
+
+    /// <summary>
+    /// Gets the eigenvalues for the matrix.
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of eigenvalues.</returns>
+    public ICollection<decimal> Eigenvalues() =>
+        Matrix.Eigenvalues(Add, Mul, Neg, x => -4M * x, x => x.Sqrti(), x => x / 2M, () => 0M);
+
+    /// <summary>
+    /// Gets the eigenvectors for the matrix (one per eigenvalue).
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="GeneralMatrixDecimal"/> eigenvectors.</returns>
+    public ICollection<GeneralMatrixDecimal> Eigenvectors() =>
+        EigenValuesAndVectors().Select(x => x.Matrix).ToList();
+
+    /// <summary>
+    /// Gets the eigenvalues each with a matching eigenvector.
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="ValueMatrixDecimalPair"/>s.</returns>
+    public ICollection<ValueMatrixDecimalPair> EigenValuesAndVectors()
+    {
+        var eigenvalues = Eigenvalues();
+        var valueMatrixPairs = new List<ValueMatrixDecimalPair>();
+        foreach (var eigenvalue in eigenvalues)
+        {
+            valueMatrixPairs.Add(new ValueMatrixDecimalPair(eigenvalue, new GeneralMatrixDecimal(Matrix.Eigenvector(eigenvalue, eigenvalues))));
+        }
+        return valueMatrixPairs;
+    }
 
     #endregion
 
