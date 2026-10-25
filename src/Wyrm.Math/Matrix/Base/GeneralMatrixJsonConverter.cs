@@ -28,7 +28,7 @@ public abstract class GeneralMatrixJsonConverter<T1, T2> : JsonConverter<T1>
 
             while (reader.TokenType != JsonTokenType.EndArray)
             {
-                rowValues.Add(GetValue(ref reader));
+                rowValues.Add(GetValue(ref reader, options));
                 reader.Read();
             }
             reader.Read();
@@ -45,8 +45,9 @@ public abstract class GeneralMatrixJsonConverter<T1, T2> : JsonConverter<T1>
     /// Gets a number value.
     /// </summary>
     /// <param name="reader">The reader.</param>
+    /// <param name="options">The serialiser options.</param>
     /// <returns>The value.</returns>
-    protected abstract T2 GetValue(ref Utf8JsonReader reader);
+    protected abstract T2 GetValue(ref Utf8JsonReader reader, JsonSerializerOptions options);
 
     /// <summary>
     /// Makes the matrix.
@@ -64,7 +65,7 @@ public abstract class GeneralMatrixJsonConverter<T1, T2> : JsonConverter<T1>
             writer.WriteStartArray();
             for (var col = 0; col < Columns(value); ++col)
             {
-                WriteValue(writer, value, col, row);
+                WriteValue(writer, value, col, row, options);
             }
             writer.WriteEndArray();
         }
@@ -92,5 +93,6 @@ public abstract class GeneralMatrixJsonConverter<T1, T2> : JsonConverter<T1>
     /// <param name="value">The value to write.</param>
     /// <param name="column">The column.</param>
     /// <param name="row">The row.</param>
-    protected abstract void WriteValue(Utf8JsonWriter writer, T1 value, int column, int row);
+    /// <param name="options">The serialiser options.</param>
+    protected abstract void WriteValue(Utf8JsonWriter writer, T1 value, int column, int row, JsonSerializerOptions options);
 }

@@ -16,8 +16,8 @@ public readonly struct GeneralComplexNumberDouble :
     IEquatable<object>,
     IEquatable<GeneralComplexNumberDouble>
 {
-    private static readonly GeneralComplexNumberDouble I = new GeneralComplexNumberDouble(0.0, 1.0);
-    private static readonly GeneralComplexNumberDouble I2 = new GeneralComplexNumberDouble(0.0, 0.5);
+    private static readonly GeneralComplexNumberDouble I = new(0.0, 1.0);
+    private static readonly GeneralComplexNumberDouble I2 = new(0.0, 0.5);
 
     internal GeneralComplexNumber<double> ComplexNumber { get; }
 
@@ -177,7 +177,29 @@ public readonly struct GeneralComplexNumberDouble :
     /// </summary>
     /// <param name="real">The <see cref="double"/> to convert.</param>
     public static explicit operator GeneralComplexNumberDouble(double real) =>
-        new GeneralComplexNumberDouble(real, 0.0);
+        new(real, 0.0);
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a decimal.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
+    /// <exception cref="ArgumentException">Thrown if the imaginary part is non zero.</exception>
+    public static implicit operator decimal(GeneralComplexNumberDouble complexNumber) =>
+        complexNumber.Imaginary != 0.0 ? throw new ArgumentException("Imaginary part is non-zero.") : (decimal)complexNumber.Real;
+
+    /// <summary>
+    /// Casts a decimal to a <see cref="GeneralComplexNumberDouble"/>.
+    /// </summary>
+    /// <param name="real">The <see cref="decimal"/> to convert.</param>
+    public static explicit operator GeneralComplexNumberDouble(decimal real) =>
+        new((double)real, 0.0);
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
+    public static implicit operator GeneralComplexNumberDecimal(GeneralComplexNumberDouble complexNumber) =>
+        new((decimal)complexNumber.Real, (decimal)complexNumber.Imaginary);
 
     #endregion
 

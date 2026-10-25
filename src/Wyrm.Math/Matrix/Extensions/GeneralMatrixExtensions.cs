@@ -4,6 +4,9 @@ namespace Wyrm.Math.Matrix.Extensions;
 
 internal static class GeneralMatrixExtensions
 {
+    public static bool IsSquare<T>(this GeneralMatrix<T> matrix) where T : struct =>
+        matrix.Rows == matrix.Columns;
+
     public static IEnumerable<IEnumerable<T>> ToEnumerableOfEnumerable<T>(this GeneralMatrix<T> matrix) where T : struct =>
         Enumerable.Range(0, matrix.Rows)
             .Select(row => row * matrix.Columns)
@@ -16,45 +19,44 @@ internal static class GeneralMatrixExtensions
         return new GeneralMatrix<T>(matrix.Rows, newMatrix);
     }
 
-    public static T Trace<T>(this GeneralMatrix<T> matrix, Func<T, T, T> additionFunc) where T : struct
+    public static T Trace<T>(this GeneralMatrix<T> matrix, ITypeFunctions<T> funcs) where T : struct
     {
         if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
 
         return Enumerable.Range(0, matrix.Columns)
             .Select(index => matrix.Values[index * matrix.Columns + index])
-            .Aggregate(additionFunc);
+            .Aggregate(funcs.Add);
     }
 
-    public static T Determinant<T>(this GeneralMatrix<T> matrix, Func<T, T, T> multiplyFunc, Func<T, T> negateFunc) where T : struct
+    public static T Determinant<T>(this GeneralMatrix<T> matrix, ITypeFunctions<T> funcs) where T : struct
     {
         if (matrix.Columns != matrix.Rows) throw new ArgumentException("Matrix isn't square.");
 
         var negate = false;
-        var triangularForm = matrix.TriangularForm(() => negate = !negate);
+        var triangularForm = matrix.TriangularForm(funcs, () => negate = !negate);
 
         var determinantAbs = Enumerable.Range(0, triangularForm.Columns)
             .Select(index => triangularForm.Values[index * triangularForm.Columns + index])
-            .Aggregate((v1, v2) => multiplyFunc(v1, v2));
-        return negate ? negateFunc(determinantAbs) : determinantAbs;
+            .Aggregate(funcs.Mul);
+        return negate ? funcs.Neg(determinantAbs) : determinantAbs;
     }
 
-    public static int Rank<T>(this GeneralMatrix<T> matrix, Func<T, bool> isNonZeroFunc) where T : struct
+    public static int Rank<T>(this GeneralMatrix<T> matrix, ITypeFunctions<T> funcs) where T : struct
     {
-        var triangularForm = matrix.TriangularForm(() => {});
+        var triangularForm = matrix.TriangularForm(funcs, () => {});
 
         return triangularForm.ToEnumerableOfEnumerable()
-            .Where(r => r.Any(c => isNonZeroFunc(c)))
-            .Count();
+            .Count(r => r.Any(c => funcs.Nez(c)));
     }
 
-    public static int Nullity<T>(this GeneralMatrix<T> matrix, Func<T, bool> isNonZeroFunc) where T : struct
+    public static int Nullity<T>(this GeneralMatrix<T> matrix, ITypeFunctions<T> funcs) where T : struct
     {
-        return matrix.Columns - matrix.Rank(isNonZeroFunc);
+        return matrix.Columns - matrix.Rank(funcs);
     }
 
-    public static GeneralMatrix<T> Inverse<T>(this GeneralMatrix<T> matrix) where T : struct
+    public static GeneralMatrix<T> Inverse<T>(this GeneralMatrix<T> matrix, ITypeFunctions<T> funcs) where T : struct
     {
-        return matrix.InverseForm();
+        return matrix.InverseForm(funcs);
     }
 
     public static GeneralMatrix<T> PerformOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> operationFunc) where T : struct
@@ -74,15 +76,15 @@ internal static class GeneralMatrixExtensions
         return new GeneralMatrix<T>(matrix.Columns, newMatrix);
     }
 
-    public static GeneralMatrix<T> PerformMultiplyOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, Func<T, T, T> multiplyFunc, Func<T, T, T> additionFunc) where T : struct
+    public static GeneralMatrix<T> PerformMultiplyOperation<T>(this GeneralMatrix<T> matrix1, GeneralMatrix<T> matrix2, ITypeFunctions<T> funcs) where T : struct
     {
         if (matrix1.Columns != matrix2.Rows) throw new ArgumentException("Columns on left hand matrix mismatch with Rows on right hand matrix.");
 
         var newMatrix = new T[matrix1.Rows * matrix2.Columns];
         Parallel.For(0, newMatrix.Length, index => newMatrix[index] =
             Enumerable.Range(0, matrix1.Columns)
-                .Select(columnIndex => multiplyFunc(matrix1.Values[columnIndex + index / matrix2.Columns * matrix1.Columns], matrix2.Values[(index % matrix2.Columns) + columnIndex * matrix2.Columns]))
-                .Aggregate(additionFunc));
+                .Select(columnIndex => funcs.Mul(matrix1.Values[columnIndex + index / matrix2.Columns * matrix1.Columns], matrix2.Values[(index % matrix2.Columns) + columnIndex * matrix2.Columns]))
+                .Aggregate(funcs.Add));
         return new GeneralMatrix<T>(matrix2.Columns, newMatrix);
     }
 }

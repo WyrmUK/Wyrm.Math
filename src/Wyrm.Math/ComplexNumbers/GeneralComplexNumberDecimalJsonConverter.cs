@@ -15,7 +15,7 @@ public class GeneralComplexNumberDecimalJsonConverter : GeneralComplexNumberJson
 
     /// <inheritdoc/>
     protected override GeneralComplexNumberDecimal MakeValue(decimal real, decimal imaginary) =>
-        new GeneralComplexNumberDecimal(real, imaginary);
+        new(real, imaginary);
 
     /// <inheritdoc/>
     protected override void WriteValues(Utf8JsonWriter writer, GeneralComplexNumberDecimal value)

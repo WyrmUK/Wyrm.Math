@@ -9,12 +9,12 @@ namespace Wyrm.Math.Matrix;
 public class GeneralMatrixDecimalJsonConverter : GeneralMatrixJsonConverter<GeneralMatrixDecimal, decimal>
 {
     /// <inheritdoc/>
-    protected override decimal GetValue(ref Utf8JsonReader reader) =>
+    protected override decimal GetValue(ref Utf8JsonReader reader, JsonSerializerOptions options) =>
         reader.GetDecimal();
 
     /// <inheritdoc/>
     protected override GeneralMatrixDecimal MakeValue(IEnumerable<IEnumerable<decimal>> values) =>
-        new GeneralMatrixDecimal(values);
+        new(values);
 
     /// <inheritdoc/>
     protected override int Rows(GeneralMatrixDecimal value) =>
@@ -25,6 +25,6 @@ public class GeneralMatrixDecimalJsonConverter : GeneralMatrixJsonConverter<Gene
         value.Columns;
 
     /// <inheritdoc/>
-    protected override void WriteValue(Utf8JsonWriter writer, GeneralMatrixDecimal value, int column, int row) =>
+    protected override void WriteValue(Utf8JsonWriter writer, GeneralMatrixDecimal value, int column, int row, JsonSerializerOptions options) =>
         writer.WriteNumberValue(value[column, row]);
 }

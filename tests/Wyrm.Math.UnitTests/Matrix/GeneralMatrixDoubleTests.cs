@@ -367,7 +367,7 @@ public class GeneralMatrixDoubleTests
     public void Operator_Negate_Should_Negate_Matrix(GeneralMatrixDouble matrix)
     {
         (-matrix)
-            .ShouldMatch(new GeneralMatrixDouble(new GeneralMatrix<double>(matrix.Columns, matrix.Matrix.Values.Select(v => -v).ToArray())));
+            .ShouldMatch(new GeneralMatrixDouble(new GeneralMatrix<double>(matrix.Columns, [.. matrix.Matrix.Values.Select(v => -v)])));
     }
 
     [Theory]

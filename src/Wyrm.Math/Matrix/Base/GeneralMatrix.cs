@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
+using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.Matrix.Base;
 
@@ -18,8 +19,8 @@ internal readonly struct GeneralMatrix<T> where T : struct
 
     public GeneralMatrix(int columns, int rows)
     {
-        if (columns < 0) throw new ArgumentOutOfRangeException(nameof(columns));
-        if (rows < 0) throw new ArgumentOutOfRangeException(nameof(rows));
+        ArgumentOutOfRangeException.ThrowIfNegative(columns);
+        ArgumentOutOfRangeException.ThrowIfNegative(rows);
 
         Columns = columns;
         Values = new T[rows * columns];
@@ -106,6 +107,13 @@ internal readonly struct GeneralMatrix<T> where T : struct
         matrix = new GeneralMatrix<T>([]);
         if (source.Length == 0) return false;
 
+        if (source.Count(GeneralComplexNumber<T>.ComplexStartChar) == 1 && source.Count(GeneralComplexNumber<T>.ComplexEndChar) == 1 && source.Count(GeneralComplexNumber<T>.ImaginaryIdentifier) == 1)
+        {
+            if (!tryParseFunc(source, numberStyles, out var value)) return false;
+            matrix = new GeneralMatrix<T>([[value]]);
+            return true;
+        }
+
         var values = new List<List<T>>();
         if (source[0] == MatrixStartChar && source[^1] == MatrixEndChar)
         {
@@ -115,7 +123,7 @@ internal readonly struct GeneralMatrix<T> where T : struct
             {
                 if (source[0] != MatrixRowStartChar || source[^1] != MatrixRowEndChar) return false;
 
-                var end = source.IndexOf(MatrixRowEndChar);
+                var end = EndOfRowPosition(source);
                 if (end == 1) return false;
 
                 var rowSource = source[1..end].Trim();
@@ -153,5 +161,25 @@ internal readonly struct GeneralMatrix<T> where T : struct
 
         matrix = new GeneralMatrix<T>(values);
         return true;
+    }
+
+    private static int EndOfRowPosition(ReadOnlySpan<char> source)
+    {
+        var end = 1;
+        var inParenthesis = false;
+        while (end < source.Length - 1)
+        {
+            if (source[end] == GeneralComplexNumber<T>.ComplexStartChar)
+            {
+                inParenthesis = true;
+            }
+            else if (source[end] == GeneralComplexNumber<T>.ComplexEndChar && inParenthesis)
+            {
+                inParenthesis = false;
+            }
+            else if (source[end] == MatrixRowEndChar) break;
+            ++end;
+        }
+        return end;
     }
 }

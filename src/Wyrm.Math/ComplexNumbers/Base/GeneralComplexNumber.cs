@@ -3,20 +3,14 @@ using System.Globalization;
 
 namespace Wyrm.Math.ComplexNumbers.Base;
 
-internal readonly struct GeneralComplexNumber<T> where T : struct
+internal readonly struct GeneralComplexNumber<T>(T real, T imaginary) where T : struct
 {
-    public T Real { get; } = default;
-    public T Imaginary { get; } = default;
+    public T Real { get; } = real;
+    public T Imaginary { get; } = imaginary;
 
     internal const char ImaginaryIdentifier = 'i';
     internal const char ComplexStartChar = '(';
     internal const char ComplexEndChar = ')';
-
-    public GeneralComplexNumber(T real, T imaginary)
-    {
-        Real = real;
-        Imaginary = imaginary;
-    }
 
     public GeneralComplexNumber(GeneralComplexNumber<T> complexNumber) : this(complexNumber.Real, complexNumber.Imaginary)
     {

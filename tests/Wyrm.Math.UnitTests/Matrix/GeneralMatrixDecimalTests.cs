@@ -367,7 +367,7 @@ public class GeneralMatrixDecimalTests
     public void Operator_Negate_Should_Negate_Matrix(GeneralMatrixDecimal matrix)
     {
         (-matrix)
-            .ShouldMatch(new GeneralMatrixDecimal(new GeneralMatrix<decimal>(matrix.Columns, matrix.Matrix.Values.Select(v => -v).ToArray())));
+            .ShouldMatch(new GeneralMatrixDecimal(new GeneralMatrix<decimal>(matrix.Columns, [.. matrix.Matrix.Values.Select(v => -v)])));
     }
 
     [Theory]

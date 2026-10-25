@@ -177,7 +177,29 @@ public readonly struct GeneralComplexNumberDecimal :
     /// </summary>
     /// <param name="real">The <see cref="decimal"/> to convert.</param>
     public static explicit operator GeneralComplexNumberDecimal(decimal real) =>
-        new GeneralComplexNumberDecimal(real, 0M);
+        new(real, 0M);
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDecimal"/> to a double.
+    /// If there is an imaginary part then the result is NaN.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDecimal"/> to convert.</param>
+    public static implicit operator double(GeneralComplexNumberDecimal complexNumber) =>
+        complexNumber.Imaginary != 0M ? double.NaN : (double)complexNumber.Real;
+
+    /// <summary>
+    /// Casts a double to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="real">The <see cref="double"/> to convert.</param>
+    public static explicit operator GeneralComplexNumberDecimal(double real) =>
+        new((decimal)real, 0M);
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDecimal"/> to a <see cref="GeneralComplexNumberDouble"/>.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDecimal"/> to convert.</param>
+    public static implicit operator GeneralComplexNumberDouble(GeneralComplexNumberDecimal complexNumber) =>
+        new((double)complexNumber.Real, (double)complexNumber.Imaginary);
 
     #endregion
 
