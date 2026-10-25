@@ -162,6 +162,34 @@ public class GeneralComplexNumberDoubleTests
         result.Imaginary.ShouldBe(TestValue0_0);
     }
 
+    [Fact]
+    public void Operator_Cast_Should_Cast_To_Decimal()
+    {
+        var result = (decimal)new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);
+        result.ShouldBe((decimal)TestValue2_2);
+    }
+
+    [Fact]
+    public void Operator_Cast_Should_Throw_If_Imaginary()
+    {
+        Should.Throw<ArgumentException>(() => (decimal)new GeneralComplexNumberDouble(TestValue2_2, TestValue2_2));
+    }
+
+    [Fact]
+    public void Operator_Cast_Should_Cast_From_Decimal()
+    {
+        var result = (GeneralComplexNumberDouble)(decimal)TestValue2_2;
+        result.Real.ShouldBe(TestValue2_2);
+        result.Imaginary.ShouldBe(TestValue0_0);
+    }
+
+    [Fact]
+    public void Operator_Cast_Should_Cast_To_GeneralComplexNumberDecimal()
+    {
+        var result = (GeneralComplexNumberDecimal)new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);
+        result.ShouldBe(new GeneralComplexNumberDecimal((decimal)TestValue2_2, (decimal)TestValue0_0));
+    }
+
     [Theory]
     [MemberData(nameof(TestGeneralComplexNumberEqualityTheoryData))]
     public void Operator_Equals_Should_Return_True_When_ComplexNumbers_Have_The_Same_Values(GeneralComplexNumberDouble complexNumber1, object? obj, bool expected)

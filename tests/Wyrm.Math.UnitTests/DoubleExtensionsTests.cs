@@ -1,6 +1,5 @@
 ﻿using Shouldly;
 using Wyrm.Math.ComplexNumbers;
-using Wyrm.Math.UnitTests.TestHelpers;
 
 namespace Wyrm.Math.UnitTests;
 

@@ -23,7 +23,7 @@ public static class DoubleExtensions
     /// <param name="imaginary">The imaginary value to create the complex number from.</param>
     /// <returns>A <see cref="GeneralComplexNumberDouble"/>.</returns>
     public static GeneralComplexNumberDouble AsComplex(this double real, double imaginary = 0.0) =>
-        new GeneralComplexNumberDouble(real, imaginary);
+        new(real, imaginary);
 
     /// <inheritdoc cref="System.Math.Asin(double)"/>
     public static double Asin(this double d) => System.Math.Asin(d);
