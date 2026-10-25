@@ -14,7 +14,7 @@ public class GeneralComplexNumberDoubleJsonConverter : GeneralComplexNumberJsonC
 
     /// <inheritdoc/>
     protected override GeneralComplexNumberDouble MakeValue(double real, double imaginary) =>
-        new GeneralComplexNumberDouble(real, imaginary);
+        new(real, imaginary);
 
     /// <inheritdoc/>
     protected override void WriteValues(Utf8JsonWriter writer, GeneralComplexNumberDouble value)

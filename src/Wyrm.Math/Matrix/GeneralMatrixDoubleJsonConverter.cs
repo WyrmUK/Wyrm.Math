@@ -9,12 +9,12 @@ namespace Wyrm.Math.Matrix;
 public class GeneralMatrixDoubleJsonConverter : GeneralMatrixJsonConverter<GeneralMatrixDouble, double>
 {
     /// <inheritdoc/>
-    protected override double GetValue(ref Utf8JsonReader reader) =>
+    protected override double GetValue(ref Utf8JsonReader reader, JsonSerializerOptions options) =>
         reader.GetDouble();
 
     /// <inheritdoc/>
     protected override GeneralMatrixDouble MakeValue(IEnumerable<IEnumerable<double>> values) =>
-        new GeneralMatrixDouble(values);
+        new(values);
 
     /// <inheritdoc/>
     protected override int Rows(GeneralMatrixDouble value) =>
@@ -25,6 +25,6 @@ public class GeneralMatrixDoubleJsonConverter : GeneralMatrixJsonConverter<Gener
         value.Columns;
 
     /// <inheritdoc/>
-    protected override void WriteValue(Utf8JsonWriter writer, GeneralMatrixDouble value, int column, int row) =>
+    protected override void WriteValue(Utf8JsonWriter writer, GeneralMatrixDouble value, int column, int row, JsonSerializerOptions options) =>
         writer.WriteNumberValue(value[column, row]);
 }

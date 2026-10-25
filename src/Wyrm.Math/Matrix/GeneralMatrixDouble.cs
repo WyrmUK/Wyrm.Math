@@ -241,33 +241,33 @@ public readonly struct GeneralMatrixDouble :
     /// </summary>
     /// <returns>The Trace.</returns>
     /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
-    public double Trace() => Matrix.Trace(Add);
+    public double Trace() => Matrix.Trace(TypeFunctions);
 
     /// <summary>
     /// Returns the Determinant of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The Determinant.</returns>
     /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
-    public double Determinant() => Matrix.Determinant(Mul, Neg);
+    public double Determinant() => Matrix.Determinant(TypeFunctions);
 
     /// <summary>
     /// Returns the rank of a matrix.
     /// </summary>
     /// <returns>The rank.</returns>
-    public int Rank() => Matrix.Rank(Nez);
+    public int Rank() => Matrix.Rank(TypeFunctions);
 
     /// <summary>
     /// Returns the nullity of a matrix.
     /// </summary>
     /// <returns>The nullity.</returns>
-    public int Nullity() => Matrix.Nullity(Nez);
+    public int Nullity() => Matrix.Nullity(TypeFunctions);
 
     /// <summary>
     /// Returns the inverse of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The inverse as a <see cref="GeneralMatrixDouble"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
-    public GeneralMatrixDouble Inverse() => new(Matrix.Inverse());
+    public GeneralMatrixDouble Inverse() => new(Matrix.Inverse(TypeFunctions));
 
     #endregion
 
@@ -309,7 +309,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="scalar">Right hand <see cref="double"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the sum of the two operands.</returns>
     public static GeneralMatrixDouble operator +(GeneralMatrixDouble m, double scalar) =>
-        new(m.Matrix.PerformOperation(v => Add(v, scalar)));
+        new(m.Matrix.PerformOperation(v => TypeFunctions.Add(v, scalar)));
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="GeneralMatrixDouble"/>.
@@ -318,7 +318,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="m">Right hand <see cref="GeneralMatrixDouble"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the sum of the two operands.</returns>
     public static GeneralMatrixDouble operator +(double scalar, GeneralMatrixDouble m) =>
-        new(m.Matrix.PerformOperation(v => Add(v, scalar)));
+        new(m.Matrix.PerformOperation(v => TypeFunctions.Add(v, scalar)));
 
     /// <summary>
     /// Adds two <see cref="GeneralMatrixDouble"/>s together.
@@ -328,7 +328,7 @@ public readonly struct GeneralMatrixDouble :
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the sum of the two operands.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static GeneralMatrixDouble operator +(GeneralMatrixDouble m1, GeneralMatrixDouble m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, Add));
+        new(m1.Matrix.PerformOperation(m2.Matrix, TypeFunctions.Add));
 
     /// <summary>
     /// Generates a new <see cref="GeneralMatrixDouble"/> from an existing one.
@@ -345,7 +345,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="scalar">Right hand <see cref="double"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand minus the right hand value.</returns>
     public static GeneralMatrixDouble operator -(GeneralMatrixDouble m, double scalar) =>
-        new(m.Matrix.PerformOperation(v => Sub(v, scalar)));
+        new(m.Matrix.PerformOperation(v => TypeFunctions.Sub(v, scalar)));
 
     /// <summary>
     /// Subtracts each value of a <see cref="GeneralMatrixDouble"/> from a scalar.
@@ -354,7 +354,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="m">Right hand <see cref="GeneralMatrixDouble"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand minus the right hand value.</returns>
     public static GeneralMatrixDouble operator -(double scalar, GeneralMatrixDouble m) =>
-        new(m.Matrix.PerformOperation(v => Sub(scalar, v)));
+        new(m.Matrix.PerformOperation(v => TypeFunctions.Sub(scalar, v)));
 
     /// <summary>
     /// Subtracts one <see cref="GeneralMatrixDouble"/> from another.
@@ -364,7 +364,7 @@ public readonly struct GeneralMatrixDouble :
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the left hand operand minus the right hand operand.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static GeneralMatrixDouble operator -(GeneralMatrixDouble m1, GeneralMatrixDouble m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, Sub));
+        new(m1.Matrix.PerformOperation(m2.Matrix, TypeFunctions.Sub));
 
     /// <summary>
     /// Negates all values in a <see cref="GeneralMatrixDouble"/>.
@@ -372,7 +372,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="m">The <see cref="GeneralMatrixDouble"/> to negate.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> which is the negated operand.</returns>
     public static GeneralMatrixDouble operator -(GeneralMatrixDouble m) =>
-        new(m.Matrix.PerformOperation(Neg));
+        new(m.Matrix.PerformOperation(TypeFunctions.Neg));
 
     #endregion
 
@@ -385,7 +385,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="scalar">Right hand <see cref="double"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static GeneralMatrixDouble operator *(GeneralMatrixDouble m, double scalar) =>
-        new(m.Matrix.PerformOperation(v => Mul(v, scalar)));
+        new(m.Matrix.PerformOperation(v => TypeFunctions.Mul(v, scalar)));
 
     /// <summary>
     /// Multiplies a scalar with each value of a <see cref="GeneralMatrixDouble"/>.
@@ -394,7 +394,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="m2">Right hand <see cref="GeneralMatrixDouble"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static GeneralMatrixDouble operator *(double m1, GeneralMatrixDouble m2) =>
-        new(m2.Matrix.PerformOperation(v => Mul(m1, v)));
+        new(m2.Matrix.PerformOperation(v => TypeFunctions.Mul(m1, v)));
 
     /// <summary>
     /// Multiplies each value of a <see cref="GeneralMatrixDouble"/> with another <see cref="GeneralMatrixDouble"/>.
@@ -405,7 +405,7 @@ public readonly struct GeneralMatrixDouble :
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand multiplied by the right hand value.</returns>
     /// <exception cref="ArgumentException">Thrown when the number of columns of m1 is not the same as the number of rows of m2.</exception>
     public static GeneralMatrixDouble operator *(GeneralMatrixDouble m1, GeneralMatrixDouble m2) =>
-        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, Mul, Add));
+        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, TypeFunctions));
 
     /// <summary>
     /// Divides a each value of a <see cref="GeneralMatrixDouble"/> with a scalar.
@@ -414,7 +414,7 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="scalar">Right hand <see cref="double"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand divided by the right hand value.</returns>
     public static GeneralMatrixDouble operator /(GeneralMatrixDouble m, double scalar) =>
-        new(m.Matrix.PerformOperation(v => Div(v, scalar)));
+        new(m.Matrix.PerformOperation(v => TypeFunctions.Div(v, scalar)));
 
     /// <summary>
     /// Divides a scalar with each value of a <see cref="GeneralMatrixDouble"/>.
@@ -423,14 +423,9 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="m2">Right hand <see cref="GeneralMatrixDouble"/>.</param>
     /// <returns>A <see cref="GeneralMatrixDouble"/> of the of the left hand operand divided by the right hand value.</returns>
     public static GeneralMatrixDouble operator /(double m1, GeneralMatrixDouble m2) =>
-        new(m2.Matrix.PerformOperation(v => Div(m1, v)));
+        new(m2.Matrix.PerformOperation(v => TypeFunctions.Div(m1, v)));
 
     #endregion
 
-    private static bool Nez(double v) => v != 0D;
-    private static double Neg(double v) => -v;
-    private static double Add(double v1, double v2) => v1 + v2;
-    private static double Sub(double v1, double v2) => v1 - v2;
-    private static double Mul(double v1, double v2) => v1 * v2;
-    private static double Div(double v1, double v2) => v1 / v2;
+    private static readonly DoubleFunctions TypeFunctions = new();
 }

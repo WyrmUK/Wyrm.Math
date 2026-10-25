@@ -62,7 +62,7 @@ public static class DecimalExtensions
     /// <param name="imaginary">The imaginary value to create the complex number from.</param>
     /// <returns>A <see cref="GeneralComplexNumberDecimal"/>.</returns>
     public static GeneralComplexNumberDecimal AsComplex(this decimal real, decimal imaginary = 0M) =>
-        new GeneralComplexNumberDecimal(real, imaginary);
+        new(real, imaginary);
 
     /// <summary>
     /// Returns the angle whose sine is the number.
@@ -141,7 +141,7 @@ public static class DecimalExtensions
         var estimate = d;
         var prevEstimate = 0M;
         var dSqr = d.Sqr();
-        d = d * -dSqr;
+        d *= -dSqr;
         var factor = 3M;
         while (estimate != prevEstimate)
         {
