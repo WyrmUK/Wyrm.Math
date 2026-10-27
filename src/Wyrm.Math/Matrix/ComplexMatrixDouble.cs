@@ -271,6 +271,12 @@ public readonly struct ComplexMatrixDouble :
 
     #endregion
 
+    #region EigenValues EigenVectors
+
+    // TODO
+
+    #endregion
+
     #region Addition/Subtraction
 
     /// <summary>

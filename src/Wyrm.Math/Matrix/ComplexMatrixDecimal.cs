@@ -271,6 +271,12 @@ public readonly struct ComplexMatrixDecimal :
 
     #endregion
 
+    #region EigenValues EigenVectors
+
+    // TODO
+
+    #endregion
+
     #region Addition/Subtraction
 
     /// <summary>

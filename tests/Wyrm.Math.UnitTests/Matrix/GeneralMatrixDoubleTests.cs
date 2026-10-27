@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using System.Globalization;
+using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.UnitTests.TestHelpers;
@@ -290,11 +291,12 @@ public class GeneralMatrixDoubleTests
                 .Inverse());
     }
 
-    [Fact]
-    public void EigenValuesAndVectors_Should_Return_EigenValuesAndVectors()
+    [Theory]
+    [MemberData(nameof(TestEigenValuesAndVectors))]
+    public void EigenValuesAndVectors_Should_Return_EigenValuesAndVectors(GeneralMatrixDouble m, IEnumerable<EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>> expected)
     {
-        var matrix = new GeneralMatrixDouble([[1.0, 2.0], [-3.0, -4.0]]);
-        var eigenvaluesAndVectors = matrix.EigenValuesAndVectors();
+        var eigenvaluesAndVectors = m.EigenValuesAndVectors();
+        eigenvaluesAndVectors.Select(x => x.Value).ToList().ShouldBeEquivalentTo(expected.Select(x => x.Value).ToList());
         // TODO
     }
 
@@ -432,6 +434,7 @@ public class GeneralMatrixDoubleTests
     public const double TestValueNeg4 = -4.0;
     public const double TestValueNeg1 = -1.0;
     public const double TestValue0 = 0.0;
+    public const double TestValue1 = 1.0;
     public const double TestValue1_1 = 1.1;
     public const double TestValue2 = 2.0;
     public const double TestValue2_2 = 2.2;
@@ -626,6 +629,17 @@ public class GeneralMatrixDoubleTests
         {
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new GeneralMatrixDouble([[-1.818181818181819, 0.9090909090909095], [1.363636363636364, -0.4545454545454547]]) },
             { new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), new GeneralMatrixDouble([[-0.34090909090909088, 0.22727272727272727, 0.11363636363636363], [-1.5909090909090908, -0.45454545454545436, 1.1363636363636362], [1.4772727272727275, 0.22727272727272718, -0.79545454545454553]]) }
+        };
+
+    public static readonly TheoryData<GeneralMatrixDouble, IEnumerable<EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>>> TestEigenValuesAndVectors =
+        new()
+        {
+            { new GeneralMatrixDouble([[]]), new List<EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>>() },
+            { new GeneralMatrixDouble([[TestValue4]]), [new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>((GeneralComplexNumberDouble)TestValue4, new ComplexMatrixDouble([[(GeneralComplexNumberDouble)TestValue1]]))] },
+            { new GeneralMatrixDouble([[TestValue1, TestValue2], [-TestValue3, -TestValue4]]), [new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>(-(GeneralComplexNumberDouble)2.0, new ComplexMatrixDouble([[-(GeneralComplexNumberDouble)2.0], [-(GeneralComplexNumberDouble)3.0]])), new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>(-(GeneralComplexNumberDouble)1.0, new ComplexMatrixDouble([[-(GeneralComplexNumberDouble)1.0], [(GeneralComplexNumberDouble)1.0]]))] },
+            { new GeneralMatrixDouble([[TestValue4, TestValue3], [-TestValue2, -TestValue3]]), [new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>(-(GeneralComplexNumberDouble)2.0, new ComplexMatrixDouble([[-(GeneralComplexNumberDouble)1.0], [(GeneralComplexNumberDouble)2.0]])), new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>((GeneralComplexNumberDouble)3.0, new ComplexMatrixDouble([[-(GeneralComplexNumberDouble)3.0], [(GeneralComplexNumberDouble)1.0]]))] },
+            { new GeneralMatrixDouble([[-TestValue2, -TestValue1], [TestValue3, -TestValue1]]), [new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>(new GeneralComplexNumberDouble(-1.5, -1.6583123951777), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-0.16666667, -0.552771)], [(GeneralComplexNumberDouble)1.0]])), new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>(new GeneralComplexNumberDouble(-1.5, 1.6583123951777), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-0.16666667, 0.552771)], [(GeneralComplexNumberDouble)1.0]]))] },
+            { new GeneralMatrixDouble([[TestValue2_2, TestValue0, TestValue2_2], [TestValue4_4, TestValue0, TestValue0], [TestValue0, TestValue1_1, TestValue3_3]]), [new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>((GeneralComplexNumberDouble)4.4, new ComplexMatrixDouble([[(GeneralComplexNumberDouble)1.0], [(GeneralComplexNumberDouble)1.0], [(GeneralComplexNumberDouble)1.0]])), new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>(new GeneralComplexNumberDouble(0.55, 1.45516), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-0.75, -0.661438)], [new GeneralComplexNumberDouble(-2.5, 1.32288)], [(GeneralComplexNumberDouble)1.0]])), new EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>(new GeneralComplexNumberDouble(0.55, -1.45516), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-0.75, 0.661438)], [new GeneralComplexNumberDouble(-2.5, -1.32288)], [(GeneralComplexNumberDouble)1.0]]))] }
         };
 
     public static readonly TheoryData<GeneralMatrixDouble, double, GeneralMatrixDouble> TestScalarAdditionTheoryData =

@@ -8,7 +8,7 @@ namespace Wyrm.Math.Matrix.Base;
 internal readonly struct GeneralMatrix<T> where T : struct
 {
     public int Columns { get; }
-    public int Rows => Values.Length == 0 ? 0 : Values.Length / Columns;
+    public int Rows => (Values?.Length ?? 0) == 0 ? 0 : Values!.Length / Columns;
     public T[] Values { get; }
 
     public T this[int column, int row]

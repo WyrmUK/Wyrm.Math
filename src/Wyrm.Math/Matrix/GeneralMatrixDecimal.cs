@@ -272,34 +272,7 @@ public readonly struct GeneralMatrixDecimal :
 
     #region EigenValues EigenVectors
 
-    /// <summary>
-    /// Gets the eigenvalues for the matrix.
-    /// </summary>
-    /// <returns>An <see cref="ICollection{T}"/> of eigenvalues.</returns>
-    public ICollection<decimal> Eigenvalues() =>
-        Matrix.Eigenvalues(Add, Mul, Neg, x => -4M * x, x => x.Sqrti(), x => x / 2M, () => 0M);
-
-    /// <summary>
-    /// Gets the eigenvectors for the matrix (one per eigenvalue).
-    /// </summary>
-    /// <returns>An <see cref="ICollection{T}"/> of <see cref="GeneralMatrixDecimal"/> eigenvectors.</returns>
-    public ICollection<GeneralMatrixDecimal> Eigenvectors() =>
-        EigenValuesAndVectors().Select(x => x.Matrix).ToList();
-
-    /// <summary>
-    /// Gets the eigenvalues each with a matching eigenvector.
-    /// </summary>
-    /// <returns>An <see cref="ICollection{T}"/> of <see cref="ValueMatrixDecimalPair"/>s.</returns>
-    public ICollection<ValueMatrixDecimalPair> EigenValuesAndVectors()
-    {
-        var eigenvalues = Eigenvalues();
-        var valueMatrixPairs = new List<ValueMatrixDecimalPair>();
-        foreach (var eigenvalue in eigenvalues)
-        {
-            valueMatrixPairs.Add(new ValueMatrixDecimalPair(eigenvalue, new GeneralMatrixDecimal(Matrix.Eigenvector(eigenvalue, eigenvalues))));
-        }
-        return valueMatrixPairs;
-    }
+    // TODO
 
     #endregion
 

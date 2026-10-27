@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json.Serialization;
+using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -277,26 +277,22 @@ public readonly struct GeneralMatrixDouble :
     /// Gets the eigenvalues for the matrix.
     /// </summary>
     /// <returns>An <see cref="ICollection{T}"/> of eigenvalues.</returns>
-    public ICollection<double> Eigenvalues() =>
-        Matrix.Eigenvalues(Add, Mul, Neg, x => -4.0 * x, x => x.Sqrti(), x => x / 2.0);
+    public ICollection<GeneralComplexNumberDouble> Eigenvalues() =>
+        [.. EigenValuesAndVectors().Select(x => x.Value)];
 
     /// <summary>
     /// Gets the eigenvectors for the matrix (one per eigenvalue).
     /// </summary>
     /// <returns>An <see cref="ICollection{T}"/> of <see cref="GeneralMatrixDouble"/> eigenvectors.</returns>
-    public ICollection<GeneralMatrixDouble> Eigenvectors() =>
-        EigenValuesAndVectors().Select(x => x.Matrix).ToList();
+    public ICollection<ComplexMatrixDouble> Eigenvectors() =>
+        [.. EigenValuesAndVectors().Select(x => x.Matrix)];
 
     /// <summary>
     /// Gets the eigenvalues each with a matching eigenvector.
     /// </summary>
-    /// <returns>An <see cref="ICollection{T}"/> of <see cref="ValueMatrixDoublePair"/>s.</returns>
-    public ICollection<ValueMatrixDoublePair> EigenValuesAndVectors()
-    {
-        var eigenvalues = Eigenvalues();
-        var eigenvectors = Matrix.Eigenvectors(eigenvalues);
-        // TODO
-    }
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="EigenValueVectorPair{T1, T2}"/>s.</returns>
+    public ICollection<EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>> EigenValuesAndVectors() =>
+        Matrix.Eigenvectors(TypeFunctions);
 
     #endregion
 

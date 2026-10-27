@@ -1,15 +1,18 @@
 ﻿using Wyrm.Math.ComplexNumbers;
+using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.Matrix.Base;
 
-internal class GeneralComplexNumberDoubleFunctions : ITypeFunctions<GeneralComplexNumberDouble>
+internal class GeneralComplexNumberDoubleFunctions : ITypeFunctions<GeneralComplexNumberDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>
 {
-    private static readonly GeneralComplexNumberDouble Zero = new(0D, 0D);
+    private static readonly GeneralComplexNumberDouble ZeroValue = new(0D, 0D);
     private static readonly GeneralComplexNumberDouble OneValue = new(1D, 0D);
+    private static readonly GeneralComplexNumberDouble FourValue = new(4D, 0D);
 
     public GeneralComplexNumberDouble One() => OneValue;
-    public bool Eqz(GeneralComplexNumberDouble v) => v == Zero;
-    public bool Nez(GeneralComplexNumberDouble v) => v != Zero;
+    public GeneralComplexNumberDouble Four() => FourValue;
+    public bool Eqz(GeneralComplexNumberDouble v) => v == ZeroValue;
+    public bool Nez(GeneralComplexNumberDouble v) => v != ZeroValue;
     public bool Eq1(GeneralComplexNumberDouble v) => v == OneValue;
     public bool Ne1(GeneralComplexNumberDouble v) => v != OneValue;
     public GeneralComplexNumberDouble Neg(GeneralComplexNumberDouble v) => -v;
@@ -17,4 +20,10 @@ internal class GeneralComplexNumberDoubleFunctions : ITypeFunctions<GeneralCompl
     public GeneralComplexNumberDouble Sub(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => v1 - v2;
     public GeneralComplexNumberDouble Mul(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => v1 * v2;
     public GeneralComplexNumberDouble Div(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => v1 / v2;
+
+    public GeneralComplexNumberDouble Cast(GeneralComplexNumberDouble v) => v;
+    public GeneralComplexNumberDouble HalfOf(GeneralComplexNumberDouble v) => v / 2.0;
+    public GeneralComplexNumberDouble Sqrt(GeneralComplexNumberDouble v) => v.Sqrt();
+
+    public ComplexMatrixDouble ComplexMatrix(IEnumerable<IEnumerable<GeneralComplexNumberDouble>> v) => new ComplexMatrixDouble(v);
 }
