@@ -18,7 +18,15 @@ public readonly struct GeneralComplexNumberDouble :
     IEquatable<GeneralComplexNumberDouble>,
     IComparable,
     IComparable<GeneralComplexNumberDouble>,
-    IMinMaxValue<GeneralComplexNumberDouble>
+    IMinMaxValue<GeneralComplexNumberDouble>,
+    IAdditionOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    IAdditionOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>,
+    ISubtractionOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    ISubtractionOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>,
+    IMultiplyOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    IMultiplyOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>,
+    IDivisionOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    IDivisionOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>
 {
     private static readonly GeneralComplexNumberDouble I = new(0.0, 1.0);
     private static readonly GeneralComplexNumberDouble I2 = new(0.0, 0.5);

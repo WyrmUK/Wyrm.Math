@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
@@ -18,7 +19,14 @@ public readonly struct ComplexMatrixDecimal :
     IEquatable<object>,
     IEquatable<ComplexMatrixDecimal>,
     IComparable,
-    IComparable<ComplexMatrixDecimal>
+    IComparable<ComplexMatrixDecimal>,
+    IAdditionOperators<ComplexMatrixDecimal, GeneralComplexNumberDecimal, ComplexMatrixDecimal>,
+    IAdditionOperators<ComplexMatrixDecimal, ComplexMatrixDecimal, ComplexMatrixDecimal>,
+    ISubtractionOperators<ComplexMatrixDecimal, GeneralComplexNumberDecimal, ComplexMatrixDecimal>,
+    ISubtractionOperators<ComplexMatrixDecimal, ComplexMatrixDecimal, ComplexMatrixDecimal>,
+    IMultiplyOperators<ComplexMatrixDecimal, GeneralComplexNumberDecimal, ComplexMatrixDecimal>,
+    IMultiplyOperators<ComplexMatrixDecimal, ComplexMatrixDecimal, ComplexMatrixDecimal>,
+    IDivisionOperators<ComplexMatrixDecimal, GeneralComplexNumberDecimal, ComplexMatrixDecimal>
 {
     internal GeneralMatrix<GeneralComplexNumberDecimal> Matrix { get; }
 

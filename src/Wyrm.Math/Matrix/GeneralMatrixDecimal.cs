@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
@@ -17,7 +18,14 @@ public readonly struct GeneralMatrixDecimal :
     IEquatable<object>,
     IEquatable<GeneralMatrixDecimal>,
     IComparable,
-    IComparable<GeneralMatrixDecimal>
+    IComparable<GeneralMatrixDecimal>,
+    IAdditionOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>,
+    IAdditionOperators<GeneralMatrixDecimal, GeneralMatrixDecimal, GeneralMatrixDecimal>,
+    ISubtractionOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>,
+    ISubtractionOperators<GeneralMatrixDecimal, GeneralMatrixDecimal, GeneralMatrixDecimal>,
+    IMultiplyOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>,
+    IMultiplyOperators<GeneralMatrixDecimal, GeneralMatrixDecimal, GeneralMatrixDecimal>,
+    IDivisionOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>
 {
     internal GeneralMatrix<decimal> Matrix { get; }
 

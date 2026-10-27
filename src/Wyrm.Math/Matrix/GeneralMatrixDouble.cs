@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
@@ -17,7 +18,14 @@ public readonly struct GeneralMatrixDouble :
     IEquatable<object>,
     IEquatable<GeneralMatrixDouble>,
     IComparable,
-    IComparable<GeneralMatrixDouble>
+    IComparable<GeneralMatrixDouble>,
+    IAdditionOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>,
+    IAdditionOperators<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble>,
+    ISubtractionOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>,
+    ISubtractionOperators<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble>,
+    IMultiplyOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>,
+    IMultiplyOperators<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble>,
+    IDivisionOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>
 {
     internal GeneralMatrix<double> Matrix { get; }
 

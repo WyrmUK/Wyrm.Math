@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
@@ -18,7 +19,14 @@ public readonly struct ComplexMatrixDouble :
     IEquatable<object>,
     IEquatable<ComplexMatrixDouble>,
     IComparable,
-    IComparable<ComplexMatrixDouble>
+    IComparable<ComplexMatrixDouble>,
+    IAdditionOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>,
+    IAdditionOperators<ComplexMatrixDouble, ComplexMatrixDouble, ComplexMatrixDouble>,
+    ISubtractionOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>,
+    ISubtractionOperators<ComplexMatrixDouble, ComplexMatrixDouble, ComplexMatrixDouble>,
+    IMultiplyOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>,
+    IMultiplyOperators<ComplexMatrixDouble, ComplexMatrixDouble, ComplexMatrixDouble>,
+    IDivisionOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>
 {
     internal GeneralMatrix<GeneralComplexNumberDouble> Matrix { get; }
 
