@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
@@ -15,7 +16,16 @@ public readonly struct GeneralMatrixDecimal :
     ISpanParsable<GeneralMatrixDecimal>,
     IFormattable,
     IEquatable<object>,
-    IEquatable<GeneralMatrixDecimal>
+    IEquatable<GeneralMatrixDecimal>,
+    IComparable,
+    IComparable<GeneralMatrixDecimal>,
+    IAdditionOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>,
+    IAdditionOperators<GeneralMatrixDecimal, GeneralMatrixDecimal, GeneralMatrixDecimal>,
+    ISubtractionOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>,
+    ISubtractionOperators<GeneralMatrixDecimal, GeneralMatrixDecimal, GeneralMatrixDecimal>,
+    IMultiplyOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>,
+    IMultiplyOperators<GeneralMatrixDecimal, GeneralMatrixDecimal, GeneralMatrixDecimal>,
+    IDivisionOperators<GeneralMatrixDecimal, decimal, GeneralMatrixDecimal>
 {
     internal GeneralMatrix<decimal> Matrix { get; }
 
@@ -188,6 +198,20 @@ public readonly struct GeneralMatrixDecimal :
     /// <param name="right">A <see cref="GeneralMatrixDecimal"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(GeneralMatrixDecimal left, GeneralMatrixDecimal? right) => !(left == right);
+
+    #endregion
+
+    #region Comparable
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj) =>
+        obj is not GeneralMatrixDecimal value
+            ? throw new ArgumentException("Wrong type for compare.", nameof(obj))
+            : CompareTo(value);
+
+    /// <inheritdoc/>
+    public int CompareTo(GeneralMatrixDecimal obj) =>
+        Matrix.CompareTo(obj.Matrix, (v1, v2) => v1.CompareTo(v2));
 
     #endregion
 

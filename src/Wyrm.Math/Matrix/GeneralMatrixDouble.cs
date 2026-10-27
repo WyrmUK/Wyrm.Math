@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
@@ -16,7 +17,16 @@ public readonly struct GeneralMatrixDouble :
     ISpanParsable<GeneralMatrixDouble>,
     IFormattable,
     IEquatable<object>,
-    IEquatable<GeneralMatrixDouble>
+    IEquatable<GeneralMatrixDouble>,
+    IComparable,
+    IComparable<GeneralMatrixDouble>,
+    IAdditionOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>,
+    IAdditionOperators<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble>,
+    ISubtractionOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>,
+    ISubtractionOperators<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble>,
+    IMultiplyOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>,
+    IMultiplyOperators<GeneralMatrixDouble, GeneralMatrixDouble, GeneralMatrixDouble>,
+    IDivisionOperators<GeneralMatrixDouble, double, GeneralMatrixDouble>
 {
     internal GeneralMatrix<double> Matrix { get; }
 
@@ -189,6 +199,20 @@ public readonly struct GeneralMatrixDouble :
     /// <param name="right">A <see cref="GeneralMatrixDouble"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(GeneralMatrixDouble left, GeneralMatrixDouble right) => !(left == right);
+
+    #endregion
+
+    #region Comparable
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj) =>
+        obj is not GeneralMatrixDouble value
+            ? throw new ArgumentException("Wrong type for compare.", nameof(obj))
+            : CompareTo(value);
+
+    /// <inheritdoc/>
+    public int CompareTo(GeneralMatrixDouble obj) =>
+        Matrix.CompareTo(obj.Matrix, (v1, v2) => v1.CompareTo(v2));
 
     #endregion
 

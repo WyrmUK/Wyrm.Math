@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
@@ -16,7 +17,16 @@ public readonly struct ComplexMatrixDouble :
     ISpanParsable<ComplexMatrixDouble>,
     IFormattable,
     IEquatable<object>,
-    IEquatable<ComplexMatrixDouble>
+    IEquatable<ComplexMatrixDouble>,
+    IComparable,
+    IComparable<ComplexMatrixDouble>,
+    IAdditionOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>,
+    IAdditionOperators<ComplexMatrixDouble, ComplexMatrixDouble, ComplexMatrixDouble>,
+    ISubtractionOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>,
+    ISubtractionOperators<ComplexMatrixDouble, ComplexMatrixDouble, ComplexMatrixDouble>,
+    IMultiplyOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>,
+    IMultiplyOperators<ComplexMatrixDouble, ComplexMatrixDouble, ComplexMatrixDouble>,
+    IDivisionOperators<ComplexMatrixDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>
 {
     internal GeneralMatrix<GeneralComplexNumberDouble> Matrix { get; }
 
@@ -189,6 +199,20 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="right">A <see cref="ComplexMatrixDouble"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(ComplexMatrixDouble left, ComplexMatrixDouble? right) => !(left == right);
+
+    #endregion
+
+    #region Comparable
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj) =>
+        obj is not ComplexMatrixDouble value
+            ? throw new ArgumentException("Wrong type for compare.", nameof(obj))
+            : CompareTo(value);
+
+    /// <inheritdoc/>
+    public int CompareTo(ComplexMatrixDouble obj) =>
+        Matrix.CompareTo(obj.Matrix, (v1, v2) => v1.CompareTo(v2));
 
     #endregion
 

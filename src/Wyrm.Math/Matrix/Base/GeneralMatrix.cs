@@ -182,4 +182,18 @@ internal readonly struct GeneralMatrix<T> where T : struct
         }
         return end;
     }
+
+    public int CompareTo(GeneralMatrix<T> obj, Func<T, T, int> compareTo)
+    {
+        if (Columns != obj.Columns) return Columns.CompareTo(obj.Columns);
+        if (Rows != obj.Rows) return Rows.CompareTo(obj.Rows);
+
+        for (var index = 0; index < Values.Length; ++index)
+        {
+            var compare = compareTo(Values[index], obj.Values[index]);
+            if (compare != 0) return compare;
+        }
+
+        return 0;
+    }
 }

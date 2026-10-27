@@ -172,6 +172,32 @@ public class GeneralMatrixDoubleTests
     }
 
     [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CompareTo_Should_Throw_ArgumentException_If_Wrong_Type_Or_Null(bool isNull)
+    {
+        var obj = isNull ? null : new object();
+        Should.Throw<ArgumentException>(() => new GeneralMatrixDouble().CompareTo(obj));
+    }
+
+    [Theory]
+    [InlineData(2, 3, -1, 1)]
+    [InlineData(4, 3, -1, -1)]
+    [InlineData(3, 2, -1, 1)]
+    [InlineData(3, 4, -1, -1)]
+    [InlineData(3, 3, 0, -1)]
+    [InlineData(3, 3, 8, -1)]
+    public void CompareTo_Should_Return_Expected(int rows, int columns, int different, int expected)
+    {
+        var obj = new GeneralMatrixDouble(columns, rows);
+        if (different >= 0)
+        {
+            obj.Matrix.Values[different] = 1D;
+        }
+        new GeneralMatrixDouble([[0D, 0D, 0D], [0D, 0D, 0D], [0D, 0D, 0D]]).CompareTo(obj).ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<double>> values, GeneralMatrixDouble expected)
     {
