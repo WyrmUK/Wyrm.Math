@@ -140,6 +140,58 @@ public class GeneralComplexNumberDoubleTests
         complexNumber1.Equals(complexNumber2).ShouldBe(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestGeneralComplexNumberEqualityTheoryData))]
+    public void Operator_Equals_Should_Return_True_When_ComplexNumbers_Have_The_Same_Values(GeneralComplexNumberDouble complexNumber1, object? obj, bool expected)
+    {
+        if (obj is double doubleValue)
+        {
+            (complexNumber1 == doubleValue).ShouldBe(expected);
+        }
+        else
+        {
+            (complexNumber1 == (obj as GeneralComplexNumberDouble?)).ShouldBe(expected);
+        }
+    }
+
+    [Theory]
+    [MemberData(nameof(TestGeneralComplexNumberEqualityTheoryData))]
+    public void Operator_Not_Equals_Should_Return_False_When_ComplexNumbers_Have_The_Same_Values(GeneralComplexNumberDouble complexNumber1, object? obj, bool expected)
+    {
+        if (obj is double doubleValue)
+        {
+            (complexNumber1 != doubleValue).ShouldBe(!expected);
+        }
+        else
+        {
+            (complexNumber1 != (obj as GeneralComplexNumberDouble?)).ShouldBe(!expected);
+        }
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CompareTo_Should_Throw_ArgumentException_If_Wrong_Type_Or_Null(bool isNull)
+    {
+        var obj = isNull ? null : new object();
+        Should.Throw<ArgumentException>(() => new GeneralComplexNumberDouble().CompareTo(obj));
+    }
+
+    [Theory]
+    [InlineData(true, 0)]
+    [InlineData(true, 1)]
+    [InlineData(true, -1)]
+    [InlineData(false, 0)]
+    [InlineData(false, 1)]
+    [InlineData(false, -1)]
+    public void CompareTo_Should_Return_Expected(bool imaginary, int expected)
+    {
+        var obj = new GeneralComplexNumberDouble(
+            imaginary ? 0D : expected == 0 ? 0D : expected < 0 ? 0.1 : -0.1,
+            imaginary ? expected == 0 ? 0D : expected < 0 ? 0.1 : -0.1 : 0D);
+        new GeneralComplexNumberDouble().CompareTo(obj).ShouldBe(expected);
+    }
+
     [Fact]
     public void Operator_Cast_Should_Cast_To_Double()
     {
@@ -188,34 +240,6 @@ public class GeneralComplexNumberDoubleTests
     {
         var result = (GeneralComplexNumberDecimal)new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);
         result.ShouldBe(new GeneralComplexNumberDecimal((decimal)TestValue2_2, (decimal)TestValue0_0));
-    }
-
-    [Theory]
-    [MemberData(nameof(TestGeneralComplexNumberEqualityTheoryData))]
-    public void Operator_Equals_Should_Return_True_When_ComplexNumbers_Have_The_Same_Values(GeneralComplexNumberDouble complexNumber1, object? obj, bool expected)
-    {
-        if (obj is double doubleValue)
-        {
-            (complexNumber1 == doubleValue).ShouldBe(expected);
-        }
-        else
-        {
-            (complexNumber1 == (obj as GeneralComplexNumberDouble?)).ShouldBe(expected);
-        }
-    }
-
-    [Theory]
-    [MemberData(nameof(TestGeneralComplexNumberEqualityTheoryData))]
-    public void Operator_Not_Equals_Should_Return_False_When_ComplexNumbers_Have_The_Same_Values(GeneralComplexNumberDouble complexNumber1, object? obj, bool expected)
-    {
-        if (obj is double doubleValue)
-        {
-            (complexNumber1 != doubleValue).ShouldBe(!expected);
-        }
-        else
-        {
-            (complexNumber1 != (obj as GeneralComplexNumberDouble?)).ShouldBe(!expected);
-        }
     }
 
     [Fact]

@@ -16,7 +16,9 @@ public readonly struct ComplexMatrixDouble :
     ISpanParsable<ComplexMatrixDouble>,
     IFormattable,
     IEquatable<object>,
-    IEquatable<ComplexMatrixDouble>
+    IEquatable<ComplexMatrixDouble>,
+    IComparable,
+    IComparable<ComplexMatrixDouble>
 {
     internal GeneralMatrix<GeneralComplexNumberDouble> Matrix { get; }
 
@@ -189,6 +191,20 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="right">A <see cref="ComplexMatrixDouble"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(ComplexMatrixDouble left, ComplexMatrixDouble? right) => !(left == right);
+
+    #endregion
+
+    #region Comparable
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj) =>
+        obj is not ComplexMatrixDouble value
+            ? throw new ArgumentException("Wrong type for compare.", nameof(obj))
+            : CompareTo(value);
+
+    /// <inheritdoc/>
+    public int CompareTo(ComplexMatrixDouble obj) =>
+        Matrix.CompareTo(obj.Matrix, (v1, v2) => v1.CompareTo(v2));
 
     #endregion
 

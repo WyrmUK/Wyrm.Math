@@ -16,7 +16,9 @@ public readonly struct ComplexMatrixDecimal :
     ISpanParsable<ComplexMatrixDecimal>,
     IFormattable,
     IEquatable<object>,
-    IEquatable<ComplexMatrixDecimal>
+    IEquatable<ComplexMatrixDecimal>,
+    IComparable,
+    IComparable<ComplexMatrixDecimal>
 {
     internal GeneralMatrix<GeneralComplexNumberDecimal> Matrix { get; }
 
@@ -189,6 +191,20 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="right">A <see cref="ComplexMatrixDecimal"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(ComplexMatrixDecimal left, ComplexMatrixDecimal? right) => !(left == right);
+
+    #endregion
+
+    #region Comparable
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj) =>
+        obj is not ComplexMatrixDecimal value
+            ? throw new ArgumentException("Wrong type for compare.", nameof(obj))
+            : CompareTo(value);
+
+    /// <inheritdoc/>
+    public int CompareTo(ComplexMatrixDecimal obj) =>
+        Matrix.CompareTo(obj.Matrix, (v1, v2) => v1.CompareTo(v2));
 
     #endregion
 

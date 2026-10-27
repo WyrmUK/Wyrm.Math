@@ -172,6 +172,33 @@ public class ComplexMatrixDecimalTests
     }
 
     [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CompareTo_Should_Throw_ArgumentException_If_Wrong_Type_Or_Null(bool isNull)
+    {
+        var obj = isNull ? null : new object();
+        Should.Throw<ArgumentException>(() => new ComplexMatrixDecimal().CompareTo(obj));
+    }
+
+    [Theory]
+    [InlineData(2, 3, -1, 1)]
+    [InlineData(4, 3, -1, -1)]
+    [InlineData(3, 2, -1, 1)]
+    [InlineData(3, 4, -1, -1)]
+    [InlineData(3, 3, 0, -1)]
+    [InlineData(3, 3, 8, -1)]
+    public void CompareTo_Should_Return_Expected(int rows, int columns, int different, int expected)
+    {
+        var obj = new ComplexMatrixDecimal(columns, rows);
+        if (different >= 0)
+        {
+            obj.Matrix.Values[different] = (GeneralComplexNumberDecimal)1M;
+        }
+        var zero = (GeneralComplexNumberDecimal)0M;
+        new ComplexMatrixDecimal([[zero, zero, zero], [zero, zero, zero], [zero, zero, zero]]).CompareTo(obj).ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<GeneralComplexNumberDecimal>> values, ComplexMatrixDecimal expected)
     {

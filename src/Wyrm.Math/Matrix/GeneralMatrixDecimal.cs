@@ -15,7 +15,9 @@ public readonly struct GeneralMatrixDecimal :
     ISpanParsable<GeneralMatrixDecimal>,
     IFormattable,
     IEquatable<object>,
-    IEquatable<GeneralMatrixDecimal>
+    IEquatable<GeneralMatrixDecimal>,
+    IComparable,
+    IComparable<GeneralMatrixDecimal>
 {
     internal GeneralMatrix<decimal> Matrix { get; }
 
@@ -188,6 +190,20 @@ public readonly struct GeneralMatrixDecimal :
     /// <param name="right">A <see cref="GeneralMatrixDecimal"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(GeneralMatrixDecimal left, GeneralMatrixDecimal? right) => !(left == right);
+
+    #endregion
+
+    #region Comparable
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj) =>
+        obj is not GeneralMatrixDecimal value
+            ? throw new ArgumentException("Wrong type for compare.", nameof(obj))
+            : CompareTo(value);
+
+    /// <inheritdoc/>
+    public int CompareTo(GeneralMatrixDecimal obj) =>
+        Matrix.CompareTo(obj.Matrix, (v1, v2) => v1.CompareTo(v2));
 
     #endregion
 
