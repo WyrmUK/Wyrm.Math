@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers.Base;
 
@@ -14,7 +15,18 @@ public readonly struct GeneralComplexNumberDouble :
     ISpanParsable<GeneralComplexNumberDouble>,
     IFormattable,
     IEquatable<object>,
-    IEquatable<GeneralComplexNumberDouble>
+    IEquatable<GeneralComplexNumberDouble>,
+    IComparable,
+    IComparable<GeneralComplexNumberDouble>,
+    IMinMaxValue<GeneralComplexNumberDouble>,
+    IAdditionOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    IAdditionOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>,
+    ISubtractionOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    ISubtractionOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>,
+    IMultiplyOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    IMultiplyOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>,
+    IDivisionOperators<GeneralComplexNumberDouble, double, GeneralComplexNumberDouble>,
+    IDivisionOperators<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble>
 {
     private static readonly GeneralComplexNumberDouble I = new(0.0, 1.0);
     private static readonly GeneralComplexNumberDouble I2 = new(0.0, 0.5);
@@ -162,47 +174,6 @@ public readonly struct GeneralComplexNumberDouble :
 
     #endregion
 
-    #region Casts
-
-    /// <summary>
-    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a double.
-    /// If there is an imaginary part then the result is NaN.
-    /// </summary>
-    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
-    public static implicit operator double(GeneralComplexNumberDouble complexNumber) =>
-        complexNumber.Imaginary != 0.0 ? double.NaN : complexNumber.Real;
-
-    /// <summary>
-    /// Casts a double to a <see cref="GeneralComplexNumberDouble"/>.
-    /// </summary>
-    /// <param name="real">The <see cref="double"/> to convert.</param>
-    public static explicit operator GeneralComplexNumberDouble(double real) =>
-        new(real, 0.0);
-
-    /// <summary>
-    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a decimal.
-    /// </summary>
-    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
-    /// <exception cref="ArgumentException">Thrown if the imaginary part is non zero.</exception>
-    public static implicit operator decimal(GeneralComplexNumberDouble complexNumber) =>
-        complexNumber.Imaginary != 0.0 ? throw new ArgumentException("Imaginary part is non-zero.") : (decimal)complexNumber.Real;
-
-    /// <summary>
-    /// Casts a decimal to a <see cref="GeneralComplexNumberDouble"/>.
-    /// </summary>
-    /// <param name="real">The <see cref="decimal"/> to convert.</param>
-    public static explicit operator GeneralComplexNumberDouble(decimal real) =>
-        new((double)real, 0.0);
-
-    /// <summary>
-    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a <see cref="GeneralComplexNumberDecimal"/>.
-    /// </summary>
-    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
-    public static implicit operator GeneralComplexNumberDecimal(GeneralComplexNumberDouble complexNumber) =>
-        new((decimal)complexNumber.Real, (decimal)complexNumber.Imaginary);
-
-    #endregion
-
     #region operator == !=
 
     /// <summary>
@@ -252,6 +223,73 @@ public readonly struct GeneralComplexNumberDouble :
     /// <param name="right">A <see cref="GeneralComplexNumberDouble"/> to compare.</param>
     /// <returns>True if both instances are not equal.</returns>
     public static bool operator !=(GeneralComplexNumberDouble left, GeneralComplexNumberDouble? right) => !(left == right);
+
+    #endregion
+
+    #region Comparable
+
+    /// <inheritdoc/>
+    public int CompareTo(object? obj) =>
+        obj is not GeneralComplexNumberDouble value
+            ? throw new ArgumentException("Wrong type for compare.", nameof(obj))
+            : CompareTo(value);
+
+    /// <inheritdoc/>
+    public int CompareTo(GeneralComplexNumberDouble obj) =>
+        Real == obj.Real
+            ? Imaginary.CompareTo(obj.Imaginary)
+            : Real.CompareTo(obj.Real);
+
+    #endregion
+
+    #region Min Max
+
+    /// <inheritdoc/>
+    public static GeneralComplexNumberDouble MaxValue => new GeneralComplexNumberDouble(double.MaxValue, double.MaxValue);
+
+    /// <inheritdoc/>
+    public static GeneralComplexNumberDouble MinValue => new GeneralComplexNumberDouble(double.MinValue, double.MinValue);
+
+    #endregion
+
+    #region Casts
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a double.
+    /// If there is an imaginary part then the result is NaN.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
+    public static implicit operator double(GeneralComplexNumberDouble complexNumber) =>
+        complexNumber.Imaginary != 0.0 ? double.NaN : complexNumber.Real;
+
+    /// <summary>
+    /// Casts a double to a <see cref="GeneralComplexNumberDouble"/>.
+    /// </summary>
+    /// <param name="real">The <see cref="double"/> to convert.</param>
+    public static explicit operator GeneralComplexNumberDouble(double real) =>
+        new(real, 0.0);
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a decimal.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
+    /// <exception cref="ArgumentException">Thrown if the imaginary part is non zero.</exception>
+    public static implicit operator decimal(GeneralComplexNumberDouble complexNumber) =>
+        complexNumber.Imaginary != 0.0 ? throw new ArgumentException("Imaginary part is non-zero.") : (decimal)complexNumber.Real;
+
+    /// <summary>
+    /// Casts a decimal to a <see cref="GeneralComplexNumberDouble"/>.
+    /// </summary>
+    /// <param name="real">The <see cref="decimal"/> to convert.</param>
+    public static explicit operator GeneralComplexNumberDouble(decimal real) =>
+        new((double)real, 0.0);
+
+    /// <summary>
+    /// Casts a <see cref="GeneralComplexNumberDouble"/> to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// </summary>
+    /// <param name="complexNumber">The <see cref="GeneralComplexNumberDouble"/> to convert.</param>
+    public static implicit operator GeneralComplexNumberDecimal(GeneralComplexNumberDouble complexNumber) =>
+        new((decimal)complexNumber.Real, (decimal)complexNumber.Imaginary);
 
     #endregion
 

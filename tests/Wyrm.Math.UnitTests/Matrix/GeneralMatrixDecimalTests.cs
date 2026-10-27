@@ -171,6 +171,32 @@ public class GeneralMatrixDecimalTests
     }
 
     [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CompareTo_Should_Throw_ArgumentException_If_Wrong_Type_Or_Null(bool isNull)
+    {
+        var obj = isNull ? null : new object();
+        Should.Throw<ArgumentException>(() => new GeneralMatrixDecimal().CompareTo(obj));
+    }
+
+    [Theory]
+    [InlineData(2, 3, -1, 1)]
+    [InlineData(4, 3, -1, -1)]
+    [InlineData(3, 2, -1, 1)]
+    [InlineData(3, 4, -1, -1)]
+    [InlineData(3, 3, 0, -1)]
+    [InlineData(3, 3, 8, -1)]
+    public void CompareTo_Should_Return_Expected(int rows, int columns, int different, int expected)
+    {
+        var obj = new GeneralMatrixDecimal(columns, rows);
+        if (different >= 0)
+        {
+            obj.Matrix.Values[different] = 1M;
+        }
+        new GeneralMatrixDecimal([[0M, 0M, 0M], [0M, 0M, 0M], [0M, 0M, 0M]]).CompareTo(obj).ShouldBe(expected);
+    }
+
+    [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<decimal>> values, GeneralMatrixDecimal expected)
     {
