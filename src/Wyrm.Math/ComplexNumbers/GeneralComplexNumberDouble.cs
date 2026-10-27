@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers.Base;
 
@@ -16,7 +17,8 @@ public readonly struct GeneralComplexNumberDouble :
     IEquatable<object>,
     IEquatable<GeneralComplexNumberDouble>,
     IComparable,
-    IComparable<GeneralComplexNumberDouble>
+    IComparable<GeneralComplexNumberDouble>,
+    IMinMaxValue<GeneralComplexNumberDouble>
 {
     private static readonly GeneralComplexNumberDouble I = new(0.0, 1.0);
     private static readonly GeneralComplexNumberDouble I2 = new(0.0, 0.5);
@@ -229,6 +231,16 @@ public readonly struct GeneralComplexNumberDouble :
         Real == obj.Real
             ? Imaginary.CompareTo(obj.Imaginary)
             : Real.CompareTo(obj.Real);
+
+    #endregion
+
+    #region Min Max
+
+    /// <inheritdoc/>
+    public static GeneralComplexNumberDouble MaxValue => new GeneralComplexNumberDouble(double.MaxValue, double.MaxValue);
+
+    /// <inheritdoc/>
+    public static GeneralComplexNumberDouble MinValue => new GeneralComplexNumberDouble(double.MinValue, double.MinValue);
 
     #endregion
 

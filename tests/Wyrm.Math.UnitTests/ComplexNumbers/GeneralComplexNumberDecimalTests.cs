@@ -193,6 +193,18 @@ public class GeneralComplexNumberDecimalTests
     }
 
     [Fact]
+    public void MaxValue_Should_Be_Max_Value()
+    {
+        GeneralComplexNumberDecimal.MaxValue.ShouldBe(new GeneralComplexNumberDecimal(decimal.MaxValue, decimal.MaxValue));
+    }
+
+    [Fact]
+    public void MinValue_Should_Be_Min_Value()
+    {
+        GeneralComplexNumberDecimal.MinValue.ShouldBe(new GeneralComplexNumberDecimal(decimal.MinValue, decimal.MinValue));
+    }
+
+    [Fact]
     public void Operator_Cast_Should_Cast_To_Decimal()
     {
         var result = (decimal)new GeneralComplexNumberDecimal(TestValue2_2, TestValue0_0);

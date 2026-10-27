@@ -193,6 +193,18 @@ public class GeneralComplexNumberDoubleTests
     }
 
     [Fact]
+    public void MaxValue_Should_Be_Max_Value()
+    {
+        GeneralComplexNumberDouble.MaxValue.ShouldBe(new GeneralComplexNumberDouble(double.MaxValue, double.MaxValue));
+    }
+
+    [Fact]
+    public void MinValue_Should_Be_Min_Value()
+    {
+        GeneralComplexNumberDouble.MinValue.ShouldBe(new GeneralComplexNumberDouble(double.MinValue, double.MinValue));
+    }
+
+    [Fact]
     public void Operator_Cast_Should_Cast_To_Double()
     {
         var result = (double)new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);

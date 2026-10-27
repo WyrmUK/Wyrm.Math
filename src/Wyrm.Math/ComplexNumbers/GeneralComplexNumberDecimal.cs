@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers.Base;
 
@@ -16,21 +17,21 @@ public readonly struct GeneralComplexNumberDecimal :
     IEquatable<object>,
     IEquatable<GeneralComplexNumberDecimal>,
     IComparable,
-    IComparable<GeneralComplexNumberDecimal>
+    IComparable<GeneralComplexNumberDecimal>,
+    IMinMaxValue<GeneralComplexNumberDecimal>
 /*
-ISpanFormattable,
-      IConvertible,
-      ISerializable,
-      IDeserializationCallback,
+      ISpanFormattable,
+
       IFloatingPoint<decimal>,
       IMinMaxValue<decimal>,
       IUtf8SpanFormattable
-          IConvertible,
-          ISpanFormattable,
+
           IBinaryFloatingPointIeee754<double>,
           IMinMaxValue<double>,
           IUtf8SpanFormattable,
     IUtf8SpanParsable<GeneralComplexNumberDecimal>,
+
+    IAdditionOperators<TSelf, TSelf, TSelf>, IAdditiveIdentity<TSelf, TSelf>, IBinaryNumber<TSelf>, IBitwiseOperators<TSelf, TSelf, TSelf>, IComparisonOperators<TSelf, TSelf, bool>, IEqualityOperators<TSelf, TSelf, bool>, IDecrementOperators<TSelf>, IDivisionOperators<TSelf, TSelf, TSelf>, IIncrementOperators<TSelf>, IModulusOperators<TSelf, TSelf, TSelf>, IMultiplicativeIdentity<TSelf, TSelf>, IMultiplyOperators<TSelf, TSelf, TSelf>, INumber<TSelf>, INumberBase<TSelf>, ISubtractionOperators<TSelf, TSelf, TSelf>, IUnaryNegationOperators<TSelf, TSelf>, IUnaryPlusOperators<TSelf, TSelf>, IUtf8SpanFormattable, IUtf8SpanParsable<TSelf>, IExponentialFunctions<TSelf>, IFloatingPointConstants<TSelf>, IFloatingPoint<TSelf>, ISignedNumber<TSelf>, IFloatingPointIeee754<TSelf>, IHyperbolicFunctions<TSelf>, ILogarithmicFunctions<TSelf>, IPowerFunctions<TSelf>, IRootFunctions<TSelf>, ITrigonometricFunctions<TSelf>
 */
 {
     private static readonly GeneralComplexNumberDecimal I = new(0.0M, 1.0M);
@@ -244,6 +245,16 @@ ISpanFormattable,
         Real == obj.Real
             ? Imaginary.CompareTo(obj.Imaginary)
             : Real.CompareTo(obj.Real);
+
+    #endregion
+
+    #region Min Max
+
+    /// <inheritdoc/>
+    public static GeneralComplexNumberDecimal MaxValue => new GeneralComplexNumberDecimal(decimal.MaxValue, decimal.MaxValue);
+
+    /// <inheritdoc/>
+    public static GeneralComplexNumberDecimal MinValue => new GeneralComplexNumberDecimal(decimal.MinValue, decimal.MinValue);
 
     #endregion
 
