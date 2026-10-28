@@ -196,6 +196,14 @@ public class GeneralMatrixDecimalTests
         new GeneralMatrixDecimal([[0M, 0M, 0M], [0M, 0M, 0M], [0M, 0M, 0M]]).CompareTo(obj).ShouldBe(expected);
     }
 
+    [Fact]
+    public void Cast_Should_Cast_To_GeneralMatrixDouble()
+    {
+        var matrix = new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4], [TestValue5_5, TestValue6_6]]);
+        var result = (GeneralMatrixDouble)matrix;
+        result.ShouldMatch(new GeneralMatrixDouble([[(double)TestValue1_1, (double)TestValue2_2], [(double)TestValue3_3, (double)TestValue4_4], [(double)TestValue5_5, (double)TestValue6_6]]));
+    }
+
     [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<decimal>> values, GeneralMatrixDecimal expected)

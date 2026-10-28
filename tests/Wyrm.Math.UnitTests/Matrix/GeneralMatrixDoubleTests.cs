@@ -197,6 +197,14 @@ public class GeneralMatrixDoubleTests
         new GeneralMatrixDouble([[0D, 0D, 0D], [0D, 0D, 0D], [0D, 0D, 0D]]).CompareTo(obj).ShouldBe(expected);
     }
 
+    [Fact]
+    public void Cast_Should_Cast_To_GeneralMatrixDecimal()
+    {
+        var matrix = new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4], [TestValue5_5, TestValue6_6]]);
+        var result = (GeneralMatrixDecimal)matrix;
+        result.ShouldMatch(new GeneralMatrixDecimal([[(decimal)TestValue1_1, (decimal)TestValue2_2], [(decimal)TestValue3_3, (decimal)TestValue4_4], [(decimal)TestValue5_5, (decimal)TestValue6_6]]));
+    }
+
     [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<double>> values, GeneralMatrixDouble expected)

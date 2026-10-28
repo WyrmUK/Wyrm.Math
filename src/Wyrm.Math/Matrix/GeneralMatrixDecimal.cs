@@ -215,6 +215,17 @@ public readonly struct GeneralMatrixDecimal :
 
     #endregion
 
+    #region Casts
+
+    /// <summary>
+    /// Casts a <see cref="GeneralMatrixDecimal"/> to a <see cref="GeneralMatrixDouble"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="GeneralMatrixDecimal"/> to convert.</param>
+    public static implicit operator GeneralMatrixDouble(GeneralMatrixDecimal matrix) =>
+        new(new GeneralMatrix<double>(matrix.Columns, [.. matrix.Matrix.Values.Select(x => (double)x)]));
+
+    #endregion
+
     #region Properties
 
     /// <summary>
