@@ -20,10 +20,14 @@ internal interface ITypeFunctions<T> where T : struct
 internal interface ITypeFunctions<T1, T2> : ITypeFunctions<T1> where T1 : struct where T2 : struct
 {
     T2 Cast(T1 v);
+    bool Eqz(T2 v);
     T2 Neg(T2 v);
     T2 Add(T1 v1, T2 v2);
     T2 HalfOf(T2 v);
     T2 Sqrt(T1 v);
+    GeneralMatrix<T2> Sub(GeneralMatrix<T1> m1, GeneralMatrix<T2> m2);
+    GeneralMatrix<T2> Mul(T2 v, GeneralMatrix<T1> m);
+    GeneralMatrix<T2> Mul(GeneralMatrix<T2> m1, GeneralMatrix<T2> m2);
 }
 
 internal interface ITypeFunctions<T1, T2, T3> : ITypeFunctions<T1, T2> where T1 : struct where T2 : struct where T3 : struct

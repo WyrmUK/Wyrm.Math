@@ -45,7 +45,7 @@ internal static class GaussianEliminationExtensions
         return inverseMatrix;
     }
 
-    private static GeneralMatrix<T> IdentityMatrix<T>(this GeneralMatrix<T> matrix, ITypeFunctions<T> funcs) where T : struct
+    internal static GeneralMatrix<T> IdentityMatrix<T>(this GeneralMatrix<T> matrix, ITypeFunctions<T> funcs) where T : struct
     {
         var identityMatrix = new GeneralMatrix<T>(matrix.Columns, matrix.Rows);
         for (int index = 0; index < System.Math.Min(matrix.Columns, matrix.Rows); ++index)

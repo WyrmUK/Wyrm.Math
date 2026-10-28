@@ -1,5 +1,4 @@
 ﻿using Wyrm.Math.ComplexNumbers;
-using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.Matrix.Base;
 
@@ -18,10 +17,14 @@ internal class DoubleFunctions : ITypeFunctions<double, GeneralComplexNumberDoub
     public double Div(double v1, double v2) => v1 / v2;
 
     public GeneralComplexNumberDouble Cast(double v) => (GeneralComplexNumberDouble)v;
+    public bool Eqz(GeneralComplexNumberDouble v) => v != (GeneralComplexNumberDouble)0D;
     public GeneralComplexNumberDouble Neg(GeneralComplexNumberDouble v) => -v;
     public GeneralComplexNumberDouble Add(double v1, GeneralComplexNumberDouble v2) => v1 + v2;
     public GeneralComplexNumberDouble HalfOf(GeneralComplexNumberDouble v) => v / 2.0;
     public GeneralComplexNumberDouble Sqrt(double v) => v.Sqrti();
+    public GeneralMatrix<GeneralComplexNumberDouble> Sub(GeneralMatrix<double> m1, GeneralMatrix<GeneralComplexNumberDouble> m2) => (new GeneralMatrixDouble(m1) - new ComplexMatrixDouble(m2)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralComplexNumberDouble v, GeneralMatrix<double> m) => (v * new GeneralMatrixDouble(m)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralMatrix<GeneralComplexNumberDouble> m1, GeneralMatrix<GeneralComplexNumberDouble> m2) => (new ComplexMatrixDouble(m1) * new ComplexMatrixDouble(m2)).Matrix;
 
     public ComplexMatrixDouble ComplexMatrix(IEnumerable<IEnumerable<GeneralComplexNumberDouble>> v) => new ComplexMatrixDouble(v);
 }
