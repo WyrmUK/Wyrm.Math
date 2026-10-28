@@ -198,6 +198,46 @@ public class ComplexMatrixDoubleTests
         new ComplexMatrixDouble([[zero, zero, zero], [zero, zero, zero], [zero, zero, zero]]).CompareTo(obj).ShouldBe(expected);
     }
 
+    [Fact]
+    public void Cast_Should_Cast_To_GeneralMatrixDouble()
+    {
+        var matrix = new ComplexMatrixDecimal([[TestValue2, TestValue3], [TestValue4, TestValue5], [TestValue3, TestValue4]]);
+        var result = (GeneralMatrixDouble)matrix;
+        result.ShouldMatch(new GeneralMatrixDouble([[(double)TestValue2, (double)TestValue3], [(double)TestValue4, (double)TestValue5], [(double)TestValue3, (double)TestValue4]]));
+    }
+
+    [Fact]
+    public void Cast_Should_Cast_From_GeneralMatrixDouble()
+    {
+        var matrix = new GeneralMatrixDouble([[(double)TestValue2, (double)TestValue3], [(double)TestValue4, (double)TestValue5], [(double)TestValue3, (double)TestValue4]]);
+        var result = (ComplexMatrixDecimal)matrix;
+        result.ShouldMatch(new ComplexMatrixDecimal([[TestValue2, TestValue3], [TestValue4, TestValue5], [TestValue3, TestValue4]]));
+    }
+
+    [Fact]
+    public void Cast_Should_Cast_To_GeneralMatrixDecimal()
+    {
+        var matrix = new ComplexMatrixDecimal([[TestValue2, TestValue3], [TestValue4, TestValue5], [TestValue3, TestValue4]]);
+        var result = (GeneralMatrixDecimal)matrix;
+        result.ShouldMatch(new GeneralMatrixDecimal([[(decimal)TestValue2, (decimal)TestValue3], [(decimal)TestValue4, (decimal)TestValue5], [(decimal)TestValue3, (decimal)TestValue4]]));
+    }
+
+    [Fact]
+    public void Cast_Should_Cast_From_GeneralMatrixDecimal()
+    {
+        var matrix = new GeneralMatrixDecimal([[(decimal)TestValue2, (decimal)TestValue3], [(decimal)TestValue4, (decimal)TestValue5], [(decimal)TestValue3, (decimal)TestValue4]]);
+        var result = (ComplexMatrixDecimal)matrix;
+        result.ShouldMatch(new ComplexMatrixDecimal([[TestValue2, TestValue3], [TestValue4, TestValue5], [TestValue3, TestValue4]]));
+    }
+
+    [Fact]
+    public void Cast_Should_Cast_To_ComplexMatrixDecimal()
+    {
+        var matrix = new ComplexMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4], [TestValue5_5, TestValue6_6]]);
+        var result = (ComplexMatrixDecimal)matrix;
+        result.ShouldMatch(new ComplexMatrixDecimal([[(GeneralComplexNumberDecimal)TestValue1_1, (GeneralComplexNumberDecimal)TestValue2_2], [(GeneralComplexNumberDecimal)TestValue3_3, (GeneralComplexNumberDecimal)TestValue4_4], [(GeneralComplexNumberDecimal)TestValue5_5, (GeneralComplexNumberDecimal)TestValue6_6]]));
+    }
+
     [Theory]
     [MemberData(nameof(TestMatrixTheoryData))]
     public void Rows_Should_Get_Rows(IEnumerable<IEnumerable<GeneralComplexNumberDouble>> values, ComplexMatrixDouble expected)

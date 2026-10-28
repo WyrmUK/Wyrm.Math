@@ -216,6 +216,47 @@ public readonly struct ComplexMatrixDouble :
 
     #endregion
 
+    #region Casts
+
+    /// <summary>
+    /// Casts a <see cref="ComplexMatrixDouble"/> to a <see cref="GeneralMatrixDouble"/>.
+    /// If there is an imaginary part to an item then the item is NaN.
+    /// </summary>
+    /// <param name="complexMatrix">The <see cref="ComplexMatrixDouble"/> to convert.</param>
+    public static implicit operator GeneralMatrixDouble(ComplexMatrixDouble complexMatrix) =>
+        new(new GeneralMatrix<double>(complexMatrix.Columns, complexMatrix.Matrix.Values.Select(x => (double)x).ToArray()));
+
+    /// <summary>
+    /// Casts a <see cref="GeneralMatrixDouble"/> to a <see cref="ComplexMatrixDouble"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="GeneralMatrixDouble"/> to convert.</param>
+    public static explicit operator ComplexMatrixDouble(GeneralMatrixDouble matrix) =>
+        new(new GeneralMatrix<GeneralComplexNumberDouble>(matrix.Columns, matrix.Matrix.Values.Select(x => (GeneralComplexNumberDouble)x).ToArray()));
+
+    /// <summary>
+    /// Casts a <see cref="ComplexMatrixDouble"/> to a <see cref="GeneralMatrixDecimal"/>.
+    /// </summary>
+    /// <param name="complexMatrix">The <see cref="ComplexMatrixDouble"/> to convert.</param>
+    /// <exception cref="ArgumentException">Thrown if an imaginary part is non zero.</exception>
+    public static implicit operator GeneralMatrixDecimal(ComplexMatrixDouble complexMatrix) =>
+        new(new GeneralMatrix<decimal>(complexMatrix.Columns, complexMatrix.Matrix.Values.Select(x => (decimal)x).ToArray()));
+
+    /// <summary>
+    /// Casts a <see cref="GeneralMatrixDecimal"/> to a <see cref="ComplexMatrixDouble"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="GeneralMatrixDecimal"/> to convert.</param>
+    public static explicit operator ComplexMatrixDouble(GeneralMatrixDecimal matrix) =>
+        new(new GeneralMatrix<GeneralComplexNumberDouble>(matrix.Columns, matrix.Matrix.Values.Select(x => (GeneralComplexNumberDouble)x).ToArray()));
+
+    /// <summary>
+    /// Casts a <see cref="ComplexMatrixDouble"/> to a <see cref="ComplexMatrixDecimal"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="ComplexMatrixDouble"/> to convert.</param>
+    public static implicit operator ComplexMatrixDecimal(ComplexMatrixDouble matrix) =>
+        new(new GeneralMatrix<GeneralComplexNumberDecimal>(matrix.Columns, matrix.Matrix.Values.Select(x => (GeneralComplexNumberDecimal)x).ToArray()));
+
+    #endregion
+
     #region Properties
 
     /// <summary>
