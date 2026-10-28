@@ -255,7 +255,7 @@ public readonly struct GeneralComplexNumberDecimal :
     #region Casts
 
     /// <summary>
-    /// Casts a <see cref="GeneralComplexNumberDecimal"/> to a decimal.
+    /// Casts a <see cref="GeneralComplexNumberDecimal"/> to a <see cref="decimal"/>.
     /// </summary>
     /// <param name="complexNumber">The <see cref="GeneralComplexNumberDecimal"/> to convert.</param>
     /// <exception cref="ArgumentException">Thrown if the imaginary part is non zero.</exception>
@@ -263,14 +263,14 @@ public readonly struct GeneralComplexNumberDecimal :
         complexNumber.Imaginary != 0M ? throw new ArgumentException("Imaginary part is non-zero.") : complexNumber.Real;
 
     /// <summary>
-    /// Casts a decimal to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// Casts a <see cref="decimal"/> to a <see cref="GeneralComplexNumberDecimal"/>.
     /// </summary>
     /// <param name="real">The <see cref="decimal"/> to convert.</param>
     public static explicit operator GeneralComplexNumberDecimal(decimal real) =>
         new(real, 0M);
 
     /// <summary>
-    /// Casts a <see cref="GeneralComplexNumberDecimal"/> to a double.
+    /// Casts a <see cref="GeneralComplexNumberDecimal"/> to a <see cref="double"/>.
     /// If there is an imaginary part then the result is NaN.
     /// </summary>
     /// <param name="complexNumber">The <see cref="GeneralComplexNumberDecimal"/> to convert.</param>
@@ -278,7 +278,7 @@ public readonly struct GeneralComplexNumberDecimal :
         complexNumber.Imaginary != 0M ? double.NaN : (double)complexNumber.Real;
 
     /// <summary>
-    /// Casts a double to a <see cref="GeneralComplexNumberDecimal"/>.
+    /// Casts a <see cref="double"/> to a <see cref="GeneralComplexNumberDecimal"/>.
     /// </summary>
     /// <param name="real">The <see cref="double"/> to convert.</param>
     public static explicit operator GeneralComplexNumberDecimal(double real) =>

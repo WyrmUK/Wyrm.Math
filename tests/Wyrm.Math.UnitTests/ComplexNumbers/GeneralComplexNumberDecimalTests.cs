@@ -1,6 +1,7 @@
 ﻿using Shouldly;
 using System.Globalization;
 using Wyrm.Math.ComplexNumbers;
+using Wyrm.Math.Matrix;
 
 namespace Wyrm.Math.UnitTests.ComplexNumbers;
 

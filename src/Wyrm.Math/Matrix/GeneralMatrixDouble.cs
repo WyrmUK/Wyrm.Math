@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Numerics;
 using System.Text.Json.Serialization;
+using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
 
@@ -212,6 +213,17 @@ public readonly struct GeneralMatrixDouble :
     /// <inheritdoc/>
     public int CompareTo(GeneralMatrixDouble obj) =>
         Matrix.CompareTo(obj.Matrix, (v1, v2) => v1.CompareTo(v2));
+
+    #endregion
+
+    #region Casts
+
+    /// <summary>
+    /// Casts a <see cref="GeneralMatrixDouble"/> to a <see cref="GeneralMatrixDecimal"/>.
+    /// </summary>
+    /// <param name="matrix">The <see cref="GeneralMatrixDouble"/> to convert.</param>
+    public static implicit operator GeneralMatrixDecimal(GeneralMatrixDouble matrix) =>
+        new(new GeneralMatrix<decimal>(matrix.Columns, [.. matrix.Matrix.Values.Select(x => (decimal)x)]));
 
     #endregion
 
