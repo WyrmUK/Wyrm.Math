@@ -486,6 +486,38 @@ public class ComplexMatrixDoubleTests
             .ShouldMatch(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundTheoryData))]
+    public void Round_Should_Get_Round(ComplexMatrixDouble z, ComplexMatrixDouble expected)
+    {
+        var result = z.Round();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsTheoryData))]
+    public void RoundDigits_Should_Get_RoundDigits(ComplexMatrixDouble z, int digits, ComplexMatrixDouble expected)
+    {
+        var result = z.Round(digits);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundAlgorithmTheoryData))]
+    public void RoundAlgorithm_Should_Get_RoundAlgorithm(ComplexMatrixDouble z, MidpointRounding algorithm, ComplexMatrixDouble expected)
+    {
+        var result = z.Round(algorithm);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsAlgorithmTheoryData))]
+    public void RoundDigitsAlgorithm_Should_Get_RoundDigitsAlgorithm(ComplexMatrixDouble z, int digits, MidpointRounding algorithm, ComplexMatrixDouble expected)
+    {
+        var result = z.Round(digits, algorithm);
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public static readonly GeneralComplexNumberDouble TestValue = new(10.1, 1.01);
@@ -742,6 +774,38 @@ public class ComplexMatrixDoubleTests
         {
             { TestValue20_2, new ComplexMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new ComplexMatrixDouble([[TestValue20_2 / TestValue1_1, TestValue20_2 / TestValue2_2, TestValue20_2 / TestValue3_3], [TestValue20_2 / TestValue4_4, TestValue20_2 / TestValue5_5, TestValue20_2 / TestValue6_6]]) }
         };
+
+    public static readonly TheoryData<ComplexMatrixDouble, ComplexMatrixDouble> TestMatrixRoundTheoryData = new()
+    {
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.1, 2.2)], [new GeneralComplexNumberDouble(3.3, 4.4)]]), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.0, 2.0)], [new GeneralComplexNumberDouble(3.0, 4.0)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.5, 2.6)], [new GeneralComplexNumberDouble(2.5, 3.6)]]), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(2, 3)], [new GeneralComplexNumberDouble(2, 4)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.1, -2.9)], [new GeneralComplexNumberDouble(-2.2, -3.8)]]), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1, -3)], [new GeneralComplexNumberDouble(-2, -4)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.5, -2.6)], [new GeneralComplexNumberDouble(-2.5, -3.6)]]), new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-2, -3)], [new GeneralComplexNumberDouble(-2, -4)]]) }
+    };
+
+    public static readonly TheoryData<ComplexMatrixDouble, int, ComplexMatrixDouble> TestMatrixRoundDigitsTheoryData = new()
+    {
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.11, 2.25)], [new GeneralComplexNumberDouble(2.22, 3.35)]]), 1, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.1, 2.2)], [new GeneralComplexNumberDouble(2.2, 3.4)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.115, 2.225)], [new GeneralComplexNumberDouble(2.225, 3.335)]]), 2, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.12, 2.22)], [new GeneralComplexNumberDouble(2.22, 3.34)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.11, -2.25)], [new GeneralComplexNumberDouble(-2.22, -3.35)]]), 1, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.1, -2.2)], [new GeneralComplexNumberDouble(-2.2, -3.4)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.115, -2.225)], [new GeneralComplexNumberDouble(-2.225, -3.335)]]), 2, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.12, -2.22)], [new GeneralComplexNumberDouble(-2.22, -3.34)]]) }
+    };
+
+    public static readonly TheoryData<ComplexMatrixDouble, MidpointRounding, ComplexMatrixDouble> TestMatrixRoundAlgorithmTheoryData = new()
+    {
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.1, 2.2)], [new GeneralComplexNumberDouble(3.3, 4.4)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.0, 2.0)], [new GeneralComplexNumberDouble(3.0, 4.0)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.5, 2.6)], [new GeneralComplexNumberDouble(2.5, 3.6)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(2.0, 3.0)], [new GeneralComplexNumberDouble(3.0, 4.0)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.1, -2.9)], [new GeneralComplexNumberDouble(-2.2, -3.8)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.0, -3.0)], [new GeneralComplexNumberDouble(-2.0, -4.0)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.5, -2.6)], [new GeneralComplexNumberDouble(-2.5, -3.6)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-2.0, -3.0)], [new GeneralComplexNumberDouble(-3.0, -4.0)]]) }
+    };
+
+    public static readonly TheoryData<ComplexMatrixDouble, int, MidpointRounding, ComplexMatrixDouble> TestMatrixRoundDigitsAlgorithmTheoryData = new()
+    {
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.11, 2.25)], [new GeneralComplexNumberDouble(2.22, 3.35)]]), 1, MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.1, 2.3)], [new GeneralComplexNumberDouble(2.2, 3.4)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.115, 2.225)], [new GeneralComplexNumberDouble(2.225, 3.335)]]), 2, MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(1.12, 2.23)], [new GeneralComplexNumberDouble(2.23, 3.34)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.11, -2.22)], [new GeneralComplexNumberDouble(-2.22, -3.35)]]), 1, MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.1, -2.2)], [new GeneralComplexNumberDouble(-2.2, -3.4)]]) },
+        { new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.115, -2.225)], [new GeneralComplexNumberDouble(-2.225, -3.335)]]), 2, MidpointRounding.AwayFromZero, new ComplexMatrixDouble([[new GeneralComplexNumberDouble(-1.12, -2.23)], [new GeneralComplexNumberDouble(-2.23, -3.34)]]) }
+    };
 
     #endregion
 }

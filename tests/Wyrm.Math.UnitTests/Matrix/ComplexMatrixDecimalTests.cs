@@ -486,6 +486,38 @@ public class ComplexMatrixDecimalTests
             .ShouldMatch(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundTheoryData))]
+    public void Round_Should_Get_Round(ComplexMatrixDecimal z, ComplexMatrixDecimal expected)
+    {
+        var result = z.Round();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsTheoryData))]
+    public void RoundDigits_Should_Get_RoundDigits(ComplexMatrixDecimal z, int digits, ComplexMatrixDecimal expected)
+    {
+        var result = z.Round(digits);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundAlgorithmTheoryData))]
+    public void RoundAlgorithm_Should_Get_RoundAlgorithm(ComplexMatrixDecimal z, MidpointRounding algorithm, ComplexMatrixDecimal expected)
+    {
+        var result = z.Round(algorithm);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsAlgorithmTheoryData))]
+    public void RoundDigitsAlgorithm_Should_Get_RoundDigitsAlgorithm(ComplexMatrixDecimal z, int digits, MidpointRounding algorithm, ComplexMatrixDecimal expected)
+    {
+        var result = z.Round(digits, algorithm);
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public static readonly GeneralComplexNumberDecimal TestValue = new(10.1M, 1.01M);
@@ -742,6 +774,38 @@ public class ComplexMatrixDecimalTests
         {
             { TestValue20_2, new ComplexMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new ComplexMatrixDecimal([[TestValue20_2 / TestValue1_1, TestValue20_2 / TestValue2_2, TestValue20_2 / TestValue3_3], [TestValue20_2 / TestValue4_4, TestValue20_2 / TestValue5_5, TestValue20_2 / TestValue6_6]]) }
         };
+
+    public static readonly TheoryData<ComplexMatrixDecimal, ComplexMatrixDecimal> TestMatrixRoundTheoryData = new()
+    {
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.1M, 2.2M)], [new GeneralComplexNumberDecimal(3.3M, 4.4M)]]), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.0M, 2.0M)], [new GeneralComplexNumberDecimal(3.0M, 4.0M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.5M, 2.6M)], [new GeneralComplexNumberDecimal(2.5M, 3.6M)]]), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(2.0M, 3.0M)], [new GeneralComplexNumberDecimal(2.0M, 4.0M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.1M, -2.9M)], [new GeneralComplexNumberDecimal(-2.2M, -3.8M)]]), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.0M, -3.0M)], [new GeneralComplexNumberDecimal(-2.0M, -4.0M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.5M, -2.6M)], [new GeneralComplexNumberDecimal(-2.5M, -3.6M)]]), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-2.0M, -3.0M)], [new GeneralComplexNumberDecimal(-2.0M, -4.0M)]]) }
+    };
+
+    public static readonly TheoryData<ComplexMatrixDecimal, int, ComplexMatrixDecimal> TestMatrixRoundDigitsTheoryData = new()
+    {
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.11M, 2.25M)], [new GeneralComplexNumberDecimal(2.22M, 3.35M)]]), 1, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.1M, 2.2M)], [new GeneralComplexNumberDecimal(2.2M, 3.4M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.115M, 2.225M)], [new GeneralComplexNumberDecimal(2.225M, 3.335M)]]), 2, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.12M, 2.22M)], [new GeneralComplexNumberDecimal(2.22M, 3.34M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.11M, -2.25M)], [new GeneralComplexNumberDecimal(-2.22M, -3.35M)]]), 1, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.1M, -2.2M)], [new GeneralComplexNumberDecimal(-2.2M, -3.4M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.115M, -2.225M)], [new GeneralComplexNumberDecimal(-2.225M, -3.335M)]]), 2, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.12M, -2.22M)], [new GeneralComplexNumberDecimal(-2.22M, -3.34M)]]) }
+    };
+
+    public static readonly TheoryData<ComplexMatrixDecimal, MidpointRounding, ComplexMatrixDecimal> TestMatrixRoundAlgorithmTheoryData = new()
+    {
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.1M, 2.2M)], [new GeneralComplexNumberDecimal(3.3M, 4.4M)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.0M, 2.0M)], [new GeneralComplexNumberDecimal(3.0M, 4.0M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.5M, 2.6M)], [new GeneralComplexNumberDecimal(2.5M, 3.6M)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(2.0M, 3.0M)], [new GeneralComplexNumberDecimal(3.0M, 4.0M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.1M, -2.9M)], [new GeneralComplexNumberDecimal(-2.2M, -3.8M)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.0M, -3.0M)], [new GeneralComplexNumberDecimal(-2.0M, -4.0M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.5M, -2.6M)], [new GeneralComplexNumberDecimal(-2.5M, -3.6M)]]), MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-2.0M, -3.0M)], [new GeneralComplexNumberDecimal(-3.0M, -4.0M)]]) }
+    };
+
+    public static readonly TheoryData<ComplexMatrixDecimal, int, MidpointRounding, ComplexMatrixDecimal> TestMatrixRoundDigitsAlgorithmTheoryData = new()
+    {
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.11M, 2.25M)], [new GeneralComplexNumberDecimal(2.22M, 3.35M)]]), 1, MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.1M, 2.3M)], [new GeneralComplexNumberDecimal(2.2M, 3.4M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.115M, 2.225M)], [new GeneralComplexNumberDecimal(2.225M, 3.335M)]]), 2, MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(1.12M, 2.23M)], [new GeneralComplexNumberDecimal(2.23M, 3.34M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.11M, -2.22M)], [new GeneralComplexNumberDecimal(-2.22M, -3.35M)]]), 1, MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.1M, -2.2M)], [new GeneralComplexNumberDecimal(-2.2M, -3.4M)]]) },
+        { new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.115M, -2.225M)], [new GeneralComplexNumberDecimal(-2.225M, -3.335M)]]), 2, MidpointRounding.AwayFromZero, new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1.12M, -2.23M)], [new GeneralComplexNumberDecimal(-2.23M, -3.34M)]]) }
+    };
 
     #endregion
 }

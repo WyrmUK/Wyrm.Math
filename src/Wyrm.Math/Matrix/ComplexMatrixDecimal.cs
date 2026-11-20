@@ -462,5 +462,49 @@ public readonly struct ComplexMatrixDecimal :
 
     #endregion
 
+    #region Maths Methods
+
+    /// <summary>
+    /// Rounds the matrix values to the nearest integral value, and rounds midpoint values to the nearest even number.
+    /// </summary>
+    /// <returns>A new <see cref="ComplexMatrixDecimal"/> with values rounded to the nearest integral value.</returns>
+    public ComplexMatrixDecimal Round()
+    {
+        return new ComplexMatrixDecimal(new GeneralMatrix<GeneralComplexNumberDecimal>(Columns, Matrix.Values.Select(x => x.Round()).ToArray()));
+    }
+
+    /// <summary>
+    /// Rounds the matrix values to a specified number of fractional digits, and rounds midpoint values to the nearest even number.
+    /// </summary>
+    /// <param name="digits">The number of fractional digits to round to.</param>
+    /// <returns>A new <see cref="ComplexMatrixDecimal"/> with values rounded to the specified number of fractional digits.</returns>
+    public ComplexMatrixDecimal Round(int digits)
+    {
+        return new ComplexMatrixDecimal(new GeneralMatrix<GeneralComplexNumberDecimal>(Columns, Matrix.Values.Select(x => x.Round(digits)).ToArray()));
+    }
+
+    /// <summary>
+    /// Rounds the matrix values to an integer using the specified rounding convention.
+    /// </summary>
+    /// <param name="algorithm">The rounding convention to use.</param>
+    /// <returns>A new <see cref="ComplexMatrixDecimal"/> with values rounded to an integer using the specified rounding convention.</returns>
+    public ComplexMatrixDecimal Round(MidpointRounding algorithm)
+    {
+        return new ComplexMatrixDecimal(new GeneralMatrix<GeneralComplexNumberDecimal>(Columns, Matrix.Values.Select(x => x.Round(algorithm)).ToArray()));
+    }
+
+    /// <summary>
+    /// Rounds the matrix values to a specified number of fractional digits using the specified rounding convention.
+    /// </summary>
+    /// <param name="digits">The number of fractional digits to round to.</param>
+    /// <param name="algorithm">The rounding convention to use.</param>
+    /// <returns>A new <see cref="ComplexMatrixDecimal"/> with values rounded to the specified number of fractional digits using the specified rounding convention.</returns>
+    public ComplexMatrixDecimal Round(int digits, MidpointRounding algorithm)
+    {
+        return new ComplexMatrixDecimal(new GeneralMatrix<GeneralComplexNumberDecimal>(Columns, Matrix.Values.Select(x => x.Round(digits, algorithm)).ToArray()));
+    }
+
+    #endregion
+
     private static readonly GeneralComplexNumberDecimalFunctions TypeFunctions = new();
 }

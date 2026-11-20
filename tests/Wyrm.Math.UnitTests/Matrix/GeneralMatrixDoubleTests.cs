@@ -202,7 +202,7 @@ public class GeneralMatrixDoubleTests
     {
         var matrix = new GeneralMatrixDouble([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4], [TestValue5_5, TestValue6_6]]);
         var result = (GeneralMatrixDecimal)matrix;
-        result.ShouldMatch(new GeneralMatrixDecimal([[(decimal)TestValue1_1, (decimal)TestValue2_2], [(decimal)TestValue3_3, (decimal)TestValue4_4], [(decimal)TestValue5_5, (decimal)TestValue6_6]]));
+        result.ShouldMatch(new GeneralMatrixDecimal([[(decimal)matrix[0, 0], (decimal)matrix[1, 0]], [(decimal)matrix[0, 1], (decimal)matrix[1, 1]], [(decimal)matrix[0, 2], (decimal)matrix[1, 2]]]));
     }
 
     [Theory]
@@ -453,12 +453,45 @@ public class GeneralMatrixDoubleTests
             .ShouldMatch(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundTheoryData))]
+    public void Round_Should_Get_Round(GeneralMatrixDouble z, GeneralMatrixDouble expected)
+    {
+        var result = z.Round();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsTheoryData))]
+    public void RoundDigits_Should_Get_RoundDigits(GeneralMatrixDouble z, int digits, GeneralMatrixDouble expected)
+    {
+        var result = z.Round(digits);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundAlgorithmTheoryData))]
+    public void RoundAlgorithm_Should_Get_RoundAlgorithm(GeneralMatrixDouble z, MidpointRounding algorithm, GeneralMatrixDouble expected)
+    {
+        var result = z.Round(algorithm);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsAlgorithmTheoryData))]
+    public void RoundDigitsAlgorithm_Should_Get_RoundDigitsAlgorithm(GeneralMatrixDouble z, int digits, MidpointRounding algorithm, GeneralMatrixDouble expected)
+    {
+        var result = z.Round(digits, algorithm);
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const double TestValue = 10.1;
     public const double TestValueNeg4 = -4.0;
     public const double TestValueNeg1 = -1.0;
     public const double TestValue0 = 0.0;
+    public const double TestValue1 = 1.0;
     public const double TestValue1_1 = 1.1;
     public const double TestValue2 = 2.0;
     public const double TestValue2_2 = 2.2;
@@ -709,6 +742,38 @@ public class GeneralMatrixDoubleTests
         {
             { TestValue20_2, new GeneralMatrixDouble([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDouble([[TestValue20_2 / TestValue1_1, TestValue20_2 / TestValue2_2, TestValue20_2 / TestValue3_3], [TestValue20_2 / TestValue4_4, TestValue20_2 / TestValue5_5, TestValue20_2 / TestValue6_6]]) }
         };
+
+    public static readonly TheoryData<GeneralMatrixDouble, GeneralMatrixDouble> TestMatrixRoundTheoryData = new()
+    {
+        { new GeneralMatrixDouble([[TestValue1_1], [TestValue2_2]]), new GeneralMatrixDouble([[TestValue1], [TestValue2]]) },
+        { new GeneralMatrixDouble([[1.5], [2.5]]), new GeneralMatrixDouble([[TestValue2], [TestValue2]]) },
+        { new GeneralMatrixDouble([[-TestValue1_1], [-TestValue2_2]]), new GeneralMatrixDouble([[-TestValue1], [-TestValue2]]) },
+        { new GeneralMatrixDouble([[-1.5], [-2.5]]), new GeneralMatrixDouble([[-TestValue2], [-TestValue2]]) }
+    };
+
+    public static readonly TheoryData<GeneralMatrixDouble, int, GeneralMatrixDouble> TestMatrixRoundDigitsTheoryData = new()
+    {
+        { new GeneralMatrixDouble([[1.11], [2.22]]), 1, new GeneralMatrixDouble([[1.1], [2.2]]) },
+        { new GeneralMatrixDouble([[1.115], [2.225]]), 2, new GeneralMatrixDouble([[1.12], [2.22]]) },
+        { new GeneralMatrixDouble([[-1.11], [-2.22]]), 1, new GeneralMatrixDouble([[-1.1], [-2.2]]) },
+        { new GeneralMatrixDouble([[-1.115], [-2.225]]), 2, new GeneralMatrixDouble([[-1.12], [-2.22]]) }
+    };
+
+    public static readonly TheoryData<GeneralMatrixDouble, MidpointRounding, GeneralMatrixDouble> TestMatrixRoundAlgorithmTheoryData = new()
+    {
+        { new GeneralMatrixDouble([[TestValue1_1], [TestValue2_2]]), MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[TestValue1], [TestValue2]]) },
+        { new GeneralMatrixDouble([[1.5], [2.5]]), MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[TestValue2], [TestValue3]]) },
+        { new GeneralMatrixDouble([[-TestValue1_1], [-TestValue2_2]]), MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[-TestValue1], [-TestValue2]]) },
+        { new GeneralMatrixDouble([[-1.5], [-2.5]]), MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[-TestValue2], [-TestValue3]]) }
+    };
+
+    public static readonly TheoryData<GeneralMatrixDouble, int, MidpointRounding, GeneralMatrixDouble> TestMatrixRoundDigitsAlgorithmTheoryData = new()
+    {
+        { new GeneralMatrixDouble([[1.11], [2.22]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[1.1], [2.2]]) },
+        { new GeneralMatrixDouble([[1.15], [2.25]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[1.2], [2.3]]) },
+        { new GeneralMatrixDouble([[-1.11], [-2.22]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[-1.1], [-2.2]]) },
+        { new GeneralMatrixDouble([[-1.15], [-2.25]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDouble([[-1.2], [-2.3]]) }
+    };
 
     #endregion
 }
