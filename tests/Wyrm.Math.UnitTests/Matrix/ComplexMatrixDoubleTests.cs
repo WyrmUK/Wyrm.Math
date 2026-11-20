@@ -364,7 +364,7 @@ public class ComplexMatrixDoubleTests
     {
         var eigenvaluesAndVectors = m.EigenValuesAndVectors();
         eigenvaluesAndVectors.Select(x => x.Value.Round(14)).ToList().ShouldBeEquivalentTo(expected.Select(x => x.Value).ToList());
-        eigenvaluesAndVectors.Select(x => x.Matrix).ToList().ShouldBeEquivalentTo(expected.Select(x => x.Matrix).ToList());
+        eigenvaluesAndVectors.Select(x => new ComplexMatrixDouble(x.Matrix.Round(14))).ToList().ShouldBeEquivalentTo(expected.Select(x => x.Matrix).ToList());
     }
 
     [Theory]
