@@ -24,9 +24,12 @@ internal class GeneralComplexNumberDoubleFunctions : ITypeFunctions<GeneralCompl
     public GeneralComplexNumberDouble Cast(GeneralComplexNumberDouble v) => v;
     public GeneralComplexNumberDouble HalfOf(GeneralComplexNumberDouble v) => v / 2.0;
     public GeneralComplexNumberDouble Sqrt(GeneralComplexNumberDouble v) => v.Sqrt();
+    public bool AboveTolerance(GeneralComplexNumberDouble v) => v.Abs() > 1e-10;
+    public GeneralMatrix<GeneralComplexNumberDouble> Cast(GeneralMatrix<GeneralComplexNumberDouble> m) => new ComplexMatrixDouble(m).Matrix;
     public GeneralMatrix<GeneralComplexNumberDouble> Sub(GeneralMatrix<GeneralComplexNumberDouble> m1, GeneralMatrix<GeneralComplexNumberDouble> m2) => (new ComplexMatrixDouble(m1) - new ComplexMatrixDouble(m2)).Matrix;
     public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralComplexNumberDouble v, GeneralMatrix<GeneralComplexNumberDouble> m) => (v * new ComplexMatrixDouble(m)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralMatrix<GeneralComplexNumberDouble> m, GeneralComplexNumberDouble v) => (new ComplexMatrixDouble(m) * v).Matrix;
     public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralMatrix<GeneralComplexNumberDouble> m1, GeneralMatrix<GeneralComplexNumberDouble> m2) => (new ComplexMatrixDouble(m1) * new ComplexMatrixDouble(m2)).Matrix;
 
-    public ComplexMatrixDouble ComplexMatrix(IEnumerable<IEnumerable<GeneralComplexNumberDouble>> v) => new ComplexMatrixDouble(v);
+    public ComplexMatrixDouble ComplexMatrix(GeneralMatrix<GeneralComplexNumberDouble> m) => new(m);
 }

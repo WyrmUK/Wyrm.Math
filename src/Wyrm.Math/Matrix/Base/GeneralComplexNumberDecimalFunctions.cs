@@ -23,9 +23,12 @@ internal class GeneralComplexNumberDecimalFunctions : ITypeFunctions<GeneralComp
     public GeneralComplexNumberDecimal Cast(GeneralComplexNumberDecimal v) => v;
     public GeneralComplexNumberDecimal HalfOf(GeneralComplexNumberDecimal v) => v / 2M;
     public GeneralComplexNumberDecimal Sqrt(GeneralComplexNumberDecimal v) => v.Sqrt();
+    public bool AboveTolerance(GeneralComplexNumberDecimal v) => v.Abs() > (decimal)1e-10;
+    public GeneralMatrix<GeneralComplexNumberDecimal> Cast(GeneralMatrix<GeneralComplexNumberDecimal> m) => new ComplexMatrixDecimal(m).Matrix;
     public GeneralMatrix<GeneralComplexNumberDecimal> Sub(GeneralMatrix<GeneralComplexNumberDecimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => (new ComplexMatrixDecimal(m1) - new ComplexMatrixDecimal(m2)).Matrix;
     public GeneralMatrix<GeneralComplexNumberDecimal> Mul(GeneralComplexNumberDecimal v, GeneralMatrix<GeneralComplexNumberDecimal> m) => (v * new ComplexMatrixDecimal(m)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDecimal> Mul(GeneralMatrix<GeneralComplexNumberDecimal> m, GeneralComplexNumberDecimal v) => (new ComplexMatrixDecimal(m) * v).Matrix;
     public GeneralMatrix<GeneralComplexNumberDecimal> Mul(GeneralMatrix<GeneralComplexNumberDecimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => (new ComplexMatrixDecimal(m1) * new ComplexMatrixDecimal(m2)).Matrix;
 
-    public ComplexMatrixDecimal ComplexMatrix(IEnumerable<IEnumerable<GeneralComplexNumberDecimal>> v) => new ComplexMatrixDecimal(v);
+    public ComplexMatrixDecimal ComplexMatrix(GeneralMatrix<GeneralComplexNumberDecimal> m) => new(m);
 }

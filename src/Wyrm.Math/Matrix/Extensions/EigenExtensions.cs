@@ -38,13 +38,82 @@ internal static class EigenExtensions
 
     private static ICollection<T2> QrAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {
-        // TODO
-        throw new NotImplementedException();
+        var matrixB = funcs.Cast(matrix);
+
+        for (var iteration = 0; iteration < 10000; ++iteration)
+        {
+            if (matrixB.IsConvergent(funcs)) break;
+
+            var qr = matrixB.QrDecomposition(funcs);
+            matrixB = funcs.Mul(qr.R, qr.Q);
+        }
+
+        return Enumerable.Range(0, matrix.Columns)
+            .Select(x => matrixB[x, x])
+            .ToList();
+    }
+
+    private static bool IsConvergent<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
+    {
+        for (var row = 0; row < matrix.Rows; ++row)
+        {
+            for (var col = 0; col < matrix.Columns; ++col)
+            {
+                if (col == row) continue;
+                if (funcs.AboveTolerance(matrix[col, row])) return false;
+            }
+        }
+        return true;
+    }
+
+    private static (GeneralMatrix<T2> Q, GeneralMatrix<T2> R) QrDecomposition<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
+    {
+        var q = new GeneralMatrix<T2>(matrix);
+
+        for (var col = 1; col < matrix.Columns; ++col)
+        {
+            var u = q.Column(col);
+            var v = q.Column(col);
+
+            for (var qCol = col - 1; qCol >= 0; --qCol)
+            {
+                var uk = q.Column(qCol);
+                var p = funcs.Mul(uk, funcs.Div(uk.DotProduct(v, funcs), uk.DotProduct(uk, funcs)));
+                u = funcs.Sub(u, p);
+            }
+
+            for (var row = 0; row < matrix.Rows; ++row)
+            {
+                q[col, row] = u[0, row];
+            }
+        }
+
+        for (var qCol = 0; qCol < matrix.Columns; ++qCol)
+        {
+            var u = q.Column(qCol);
+            var magnitude = funcs.Sqrt(u.DotProduct(u, funcs));
+
+            for (var row = 0; row < matrix.Rows; ++row)
+            {
+                q[qCol, row] = funcs.Div(u[0, row], magnitude);
+            }
+        }
+
+        var r = funcs.Mul(q.Transpose(), matrix);
+
+        return (q, r);
+    }
+
+    private static T2 DotProduct<T1, T2>(this GeneralMatrix<T2> matrix1, GeneralMatrix<T2> matrix2, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
+    {
+        return Enumerable.Range(0, matrix1.Values.Length)
+            .Select(x => funcs.Mul(matrix1.Values[x], matrix2.Values[x]))
+            .Aggregate(funcs.Add);
     }
 
     private static ICollection<EigenValueVectorPair<T2, T3>> CayleyHamiltonVectors<T1, T2, T3>(this GeneralMatrix<T1> matrix, ICollection<T2> eigenvalues, ITypeFunctions<T1, T2, T3> funcs) where T1 : struct where T2 : struct where T3 : struct
     {
-        var distinctEigenvalues = eigenvalues.Distinct().OrderDescending().ToList();
+        var distinctEigenvalues = eigenvalues.Distinct().ToList();
         var eigenValueVectors = new List<EigenValueVectorPair<T2, T3>>();
         for (var index = 0; index < distinctEigenvalues.Count; ++index)
         {
@@ -62,34 +131,37 @@ internal static class EigenExtensions
                     matrixProduct = CayleyHamiltonTerm(matrix, distinctEigenvalues[val], funcs);
                 }
             }
-            eigenValueVectors.Add(new EigenValueVectorPair<T2, T3>(distinctEigenvalues[index], matrixProduct!.Value.FirstNonZeroColumn(funcs)));
+            eigenValueVectors.Add(new EigenValueVectorPair<T2, T3>(distinctEigenvalues[index], funcs.ComplexMatrix(matrixProduct!.Value.FirstNonZeroColumn(funcs).Normalise())));
         }
         return eigenValueVectors;
     }
 
-    private static GeneralMatrix<T2> CayleyHamiltonTerm<T1, T2, T3>(this GeneralMatrix<T1> matrix, T2 eigenvalue, ITypeFunctions<T1, T2, T3> funcs) where T1 : struct where T2 : struct where T3 : struct =>
+    private static GeneralMatrix<T2> CayleyHamiltonTerm<T1, T2>(this GeneralMatrix<T1> matrix, T2 eigenvalue, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct =>
         funcs.Sub(matrix, funcs.Mul(eigenvalue, matrix.IdentityMatrix(funcs)));
 
-    private static T3 FirstNonZeroColumn<T1, T2, T3>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2, T3> funcs) where T1 : struct where T2 : struct where T3 : struct
+    private static GeneralMatrix<T2> FirstNonZeroColumn<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {
-        T2[]? first = null;
-        for (var column = 0; column < matrix.Columns; ++column)
+        for (var col = 0; col < matrix.Columns; ++col)
         {
-            var values = new T2[matrix.Rows];
-            for (var row = 0; row < matrix.Rows; ++row)
-            {
-                values[row] = matrix[column, row];
-            }
+            var column = matrix.Column(col);
+            if (column.Values.All(funcs.Eqz)) continue;
 
-            if (first != null)
-            {
-                first = values;
-            }
-
-            if (values.All(funcs.Eqz)) continue;
-
-            return funcs.ComplexMatrix(values.Select(v => new[] { v }));
+            return column;
         }
-        return first!;
+        return matrix.Column(0);
+    }
+
+    private static GeneralMatrix<T2> Column<T2>(this GeneralMatrix<T2> matrix, int column) where T2 : struct
+    {
+        var values = Enumerable.Range(0, matrix.Rows)
+            .Select(r => matrix[column, r])
+            .ToArray();
+        return new GeneralMatrix<T2>(1, values);
+    }
+
+    private static GeneralMatrix<T2> Normalise<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
+    {
+        // TODO
+        return matrix;
     }
 }

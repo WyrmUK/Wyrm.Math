@@ -17,14 +17,22 @@ internal class DecimalFunctions : ITypeFunctions<decimal, GeneralComplexNumberDe
     public decimal Div(decimal v1, decimal v2) => v1 / v2;
 
     public GeneralComplexNumberDecimal Cast(decimal v) => (GeneralComplexNumberDecimal)v;
-    public bool Eqz(GeneralComplexNumberDecimal v) => v != (GeneralComplexNumberDecimal)0M;
+    public bool Eqz(GeneralComplexNumberDecimal v) => v == (GeneralComplexNumberDecimal)0M;
     public GeneralComplexNumberDecimal Neg(GeneralComplexNumberDecimal v) => -v;
     public GeneralComplexNumberDecimal Add(decimal v1, GeneralComplexNumberDecimal v2) => v1 + v2;
+    public GeneralComplexNumberDecimal Add(GeneralComplexNumberDecimal v1, GeneralComplexNumberDecimal v2) => v1 + v2;
+    public GeneralComplexNumberDecimal Mul(GeneralComplexNumberDecimal v1, GeneralComplexNumberDecimal v2) => v1 * v2;
     public GeneralComplexNumberDecimal HalfOf(GeneralComplexNumberDecimal v) => v / 2M;
+    public GeneralComplexNumberDecimal Div(GeneralComplexNumberDecimal v1, GeneralComplexNumberDecimal v2) => v1 / v2;
     public GeneralComplexNumberDecimal Sqrt(decimal v) => v.Sqrti();
-    public GeneralMatrix<GeneralComplexNumberDecimal> Sub(GeneralMatrix<decimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => (new GeneralMatrixDecimal(m1) - new ComplexMatrixDecimal(m2)).Matrix;
-    public GeneralMatrix<GeneralComplexNumberDecimal> Mul(GeneralComplexNumberDecimal v, GeneralMatrix<decimal> m) => (v * new GeneralMatrixDecimal(m)).Matrix;
+    public GeneralComplexNumberDecimal Sqrt(GeneralComplexNumberDecimal v) => v.Sqrt();
+    public bool AboveTolerance(GeneralComplexNumberDecimal v) => v.Abs() > (decimal)1e-10;
+    public GeneralMatrix<GeneralComplexNumberDecimal> Cast(GeneralMatrix<decimal> m) => ((ComplexMatrixDecimal)new GeneralMatrixDecimal(m)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDecimal> Sub(GeneralMatrix<decimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => ((ComplexMatrixDecimal)new GeneralMatrixDecimal(m1) - new ComplexMatrixDecimal(m2)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDecimal> Sub(GeneralMatrix<GeneralComplexNumberDecimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => (new ComplexMatrixDecimal(m1) - new ComplexMatrixDecimal(m2)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDecimal> Mul(GeneralComplexNumberDecimal v, GeneralMatrix<decimal> m) => (v * (ComplexMatrixDecimal)new GeneralMatrixDecimal(m)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDecimal> Mul(GeneralMatrix<GeneralComplexNumberDecimal> m, GeneralComplexNumberDecimal v) => (new ComplexMatrixDecimal(m) * v).Matrix;
     public GeneralMatrix<GeneralComplexNumberDecimal> Mul(GeneralMatrix<GeneralComplexNumberDecimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => (new ComplexMatrixDecimal(m1) * new ComplexMatrixDecimal(m2)).Matrix;
 
-    public ComplexMatrixDecimal ComplexMatrix(IEnumerable<IEnumerable<GeneralComplexNumberDecimal>> v) => new ComplexMatrixDecimal(v);
+    public ComplexMatrixDecimal ComplexMatrix(GeneralMatrix<GeneralComplexNumberDecimal> m) => new(m);
 }
