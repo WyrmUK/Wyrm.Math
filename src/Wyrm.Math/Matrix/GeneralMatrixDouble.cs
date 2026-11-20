@@ -318,7 +318,7 @@ public readonly struct GeneralMatrixDouble :
     /// <summary>
     /// Gets the eigenvectors for the matrix (one per eigenvalue).
     /// </summary>
-    /// <returns>An <see cref="ICollection{T}"/> of <see cref="GeneralMatrixDouble"/> eigenvectors.</returns>
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="ComplexMatrixDouble"/> eigenvectors.</returns>
     public ICollection<ComplexMatrixDouble> Eigenvectors() =>
         [.. EigenValuesAndVectors().Select(x => x.Matrix)];
 

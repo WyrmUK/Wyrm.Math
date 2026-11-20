@@ -1,5 +1,4 @@
 ﻿using Wyrm.Math.ComplexNumbers;
-using Wyrm.Math.ComplexNumbers.Base;
 
 namespace Wyrm.Math.Matrix.Base;
 
@@ -20,8 +19,11 @@ internal class GeneralComplexNumberDoubleFunctions : ITypeFunctions<GeneralCompl
     public GeneralComplexNumberDouble Sub(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => v1 - v2;
     public GeneralComplexNumberDouble Mul(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => v1 * v2;
     public GeneralComplexNumberDouble Div(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => v1 / v2;
+    public GeneralComplexNumberDouble Mod(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => (GeneralComplexNumberDouble)(v1.Real % v2.Real);
 
     public GeneralComplexNumberDouble Cast(GeneralComplexNumberDouble v) => v;
+    public bool Ltz(GeneralComplexNumberDouble v) => v.Real < 0D;
+    public GeneralComplexNumberDouble Abs(GeneralComplexNumberDouble v) => (GeneralComplexNumberDouble)v.Abs();
     public GeneralComplexNumberDouble HalfOf(GeneralComplexNumberDouble v) => v / 2.0;
     public GeneralComplexNumberDouble Sqrt(GeneralComplexNumberDouble v) => v.Sqrt();
     public bool AboveTolerance(GeneralComplexNumberDouble v) => v.Abs() > 1e-10;
@@ -30,6 +32,8 @@ internal class GeneralComplexNumberDoubleFunctions : ITypeFunctions<GeneralCompl
     public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralComplexNumberDouble v, GeneralMatrix<GeneralComplexNumberDouble> m) => (v * new ComplexMatrixDouble(m)).Matrix;
     public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralMatrix<GeneralComplexNumberDouble> m, GeneralComplexNumberDouble v) => (new ComplexMatrixDouble(m) * v).Matrix;
     public GeneralMatrix<GeneralComplexNumberDouble> Mul(GeneralMatrix<GeneralComplexNumberDouble> m1, GeneralMatrix<GeneralComplexNumberDouble> m2) => (new ComplexMatrixDouble(m1) * new ComplexMatrixDouble(m2)).Matrix;
+    public GeneralMatrix<GeneralComplexNumberDouble> Div(GeneralMatrix<GeneralComplexNumberDouble> m, GeneralComplexNumberDouble v) => (new ComplexMatrixDouble(m) / v).Matrix;
+    public bool IsInteger(GeneralComplexNumberDouble v) => v.Imaginary == 0D && double.IsInteger(v.Real);
 
     public ComplexMatrixDouble ComplexMatrix(GeneralMatrix<GeneralComplexNumberDouble> m) => new(m);
 }

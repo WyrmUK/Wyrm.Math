@@ -229,8 +229,9 @@ public class GeneralComplexNumberDoubleTests
     [Fact]
     public void Operator_Cast_Should_Cast_To_Decimal()
     {
-        var result = (decimal)new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);
-        result.ShouldBe((decimal)TestValue2_2);
+        var complexNumber = new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);
+        var result = (decimal)complexNumber;
+        result.ShouldBe((decimal)complexNumber.Real);
     }
 
     [Fact]
@@ -250,8 +251,9 @@ public class GeneralComplexNumberDoubleTests
     [Fact]
     public void Operator_Cast_Should_Cast_To_GeneralComplexNumberDecimal()
     {
-        var result = (GeneralComplexNumberDecimal)new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);
-        result.ShouldBe(new GeneralComplexNumberDecimal((decimal)TestValue2_2, (decimal)TestValue0_0));
+        var complexNumber = new GeneralComplexNumberDouble(TestValue2_2, TestValue0_0);
+        var result = (GeneralComplexNumberDecimal)complexNumber;
+        result.ShouldBe(new GeneralComplexNumberDecimal((decimal)complexNumber.Real, (decimal)TestValue0_0));
     }
 
     [Fact]

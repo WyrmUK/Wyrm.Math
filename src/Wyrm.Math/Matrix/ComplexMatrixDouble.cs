@@ -338,7 +338,26 @@ public readonly struct ComplexMatrixDouble :
 
     #region EigenValues EigenVectors
 
-    // TODO
+    /// <summary>
+    /// Gets the eigenvalues for the matrix.
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of eigenvalues.</returns>
+    public ICollection<GeneralComplexNumberDouble> Eigenvalues() =>
+        [.. EigenValuesAndVectors().Select(x => x.Value)];
+
+    /// <summary>
+    /// Gets the eigenvectors for the matrix (one per eigenvalue).
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="ComplexMatrixDouble"/> eigenvectors.</returns>
+    public ICollection<ComplexMatrixDouble> Eigenvectors() =>
+        [.. EigenValuesAndVectors().Select(x => x.Matrix)];
+
+    /// <summary>
+    /// Gets the eigenvalues each with a matching eigenvector.
+    /// </summary>
+    /// <returns>An <see cref="ICollection{T}"/> of <see cref="EigenValueVectorPair{T1, T2}"/>s.</returns>
+    public ICollection<EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>> EigenValuesAndVectors() =>
+        Matrix.Eigenvectors(TypeFunctions);
 
     #endregion
 

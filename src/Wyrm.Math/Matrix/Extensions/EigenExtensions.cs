@@ -19,7 +19,7 @@ internal static class EigenExtensions
         return matrix.Rows switch
         {
             0 => [],
-            1 => [new EigenValueVectorPair<T2, T3>(eigenvalues.First(), funcs.ComplexMatrix([[funcs.Cast(funcs.One())]])) ],
+            1 => [new EigenValueVectorPair<T2, T3>(eigenvalues.First(), funcs.ComplexMatrix(new GeneralMatrix<T2>([[funcs.Cast(funcs.One())]]))) ],
             _ => matrix.CayleyHamiltonVectors(eigenvalues, funcs)
         };
     }
@@ -131,7 +131,7 @@ internal static class EigenExtensions
                     matrixProduct = CayleyHamiltonTerm(matrix, distinctEigenvalues[val], funcs);
                 }
             }
-            eigenValueVectors.Add(new EigenValueVectorPair<T2, T3>(distinctEigenvalues[index], funcs.ComplexMatrix(matrixProduct!.Value.FirstNonZeroColumn(funcs).Normalise())));
+            eigenValueVectors.Add(new EigenValueVectorPair<T2, T3>(distinctEigenvalues[index], funcs.ComplexMatrix(matrixProduct!.Value.FirstNonZeroColumn(funcs).Normalise(funcs))));
         }
         return eigenValueVectors;
     }
@@ -161,7 +161,41 @@ internal static class EigenExtensions
 
     private static GeneralMatrix<T2> Normalise<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {
-        // TODO
-        return matrix;
+        if (matrix.Values.All(funcs.IsInteger))
+        {
+            var intDivisor = matrix.LargestDivisor(funcs);
+            if (funcs.Eqz(intDivisor)) return matrix;
+
+            if (funcs.Ltz(matrix.Values[matrix.Rows - 1]))
+            {
+                intDivisor = funcs.Neg(intDivisor);
+            }
+            var normalised = funcs.Div(matrix, intDivisor);
+            return funcs.Eq1(intDivisor)
+                ? matrix
+                : funcs.Div(matrix, intDivisor);
+        }
+
+        var divisor = matrix.Values[matrix.Rows - 1];
+        return funcs.Eqz(divisor)
+            ? matrix
+            : funcs.Div(matrix, divisor);
+    }
+
+    private static T1 LargestDivisor<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
+    {
+        var divisors = matrix.Values.Select(funcs.Abs).Distinct().ToList();
+        if (divisors.Count == 1) return divisors[0];
+        while (divisors.All(funcs.Nez))
+        {
+            var index = divisors.IndexOf(divisors.Min());
+            var divisor = divisors[index];
+            for (var val = 0; val < divisors.Count; ++val)
+            {
+                if (val == index) continue;
+                divisors[val] = funcs.Mod(divisors[val], divisor);
+            }
+        }
+        return divisors.First(funcs.Nez);
     }
 }

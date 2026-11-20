@@ -359,6 +359,15 @@ public class ComplexMatrixDecimalTests
     }
 
     [Theory]
+    [MemberData(nameof(TestEigenValuesAndVectors))]
+    public void EigenValuesAndVectors_Should_Return_EigenValuesAndVectors(ComplexMatrixDecimal m, IEnumerable<EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>> expected)
+    {
+        var eigenvaluesAndVectors = m.EigenValuesAndVectors();
+        eigenvaluesAndVectors.Select(x => x.Value).ToList().ShouldBeEquivalentTo(expected.Select(x => x.Value).ToList());
+        eigenvaluesAndVectors.Select(x => x.Matrix).ToList().ShouldBeEquivalentTo(expected.Select(x => x.Matrix).ToList());
+    }
+
+    [Theory]
     [MemberData(nameof(TestScalarAdditionTheoryData))]
     public void Operator_Add_Should_Add_Complex_Decimal_To_Matrix(ComplexMatrixDecimal m, GeneralComplexNumberDecimal value, ComplexMatrixDecimal expected)
     {
@@ -492,6 +501,7 @@ public class ComplexMatrixDecimalTests
     public static readonly GeneralComplexNumberDecimal TestValueNeg4 = new(-4.0M, 0.0M);
     public static readonly GeneralComplexNumberDecimal TestValueNeg1 = new(-1.0M, 0.0M);
     public static readonly GeneralComplexNumberDecimal TestValue0 = new(0.0M, 0.0M);
+    public static readonly GeneralComplexNumberDecimal TestValue1 = new(1.0M, 0.0M);
     public static readonly GeneralComplexNumberDecimal TestValue1_1 = new(1M, 1M);
     public static readonly GeneralComplexNumberDecimal TestValue2 = new(2.0M, 0.0M);
     public static readonly GeneralComplexNumberDecimal TestValue2_2 = new(2M, 2M);
@@ -686,6 +696,19 @@ public class ComplexMatrixDecimalTests
         {
             { new ComplexMatrixDecimal([[TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4]]), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-1M, 1M), new GeneralComplexNumberDecimal(0.5M, -0.5M)], [new GeneralComplexNumberDecimal(0.75M, -0.75M), new GeneralComplexNumberDecimal(-0.25M, 0.25M)]]) },
             { new ComplexMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue1_1, TestValue2_2], [TestValue3_3, TestValue4_4, TestValue5_5]]), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-0.1875000000000000000000000006M, 0.1875000000000000000000000006M), new GeneralComplexNumberDecimal(0.1249999999999999999999999998M, -0.1249999999999999999999999998M), new GeneralComplexNumberDecimal(0.0625000000000000000000000004M, -0.0625000000000000000000000004M)], [new GeneralComplexNumberDecimal(-0.8749999999999999999999999992M, 0.8749999999999999999999999992M), new GeneralComplexNumberDecimal(-0.2499999999999999999999999998M, 0.2499999999999999999999999998M), new GeneralComplexNumberDecimal(0.6249999999999999999999999994M, -0.6249999999999999999999999994M)], [new GeneralComplexNumberDecimal(0.8124999999999999999999999995M, -0.8124999999999999999999999995M), new GeneralComplexNumberDecimal(0.1249999999999999999999999998M, -0.1249999999999999999999999998M), new GeneralComplexNumberDecimal(-0.4374999999999999999999999996M, 0.4374999999999999999999999996M)]]) }
+        };
+
+    public static readonly TheoryData<ComplexMatrixDecimal, IEnumerable<EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>>> TestEigenValuesAndVectors =
+        new()
+        {
+            { new ComplexMatrixDecimal([[]]), new List<EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>>() },
+            { new ComplexMatrixDecimal([[TestValue4]]), [new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(TestValue4, new ComplexMatrixDecimal([[TestValue1]]))] },
+            { new ComplexMatrixDecimal([[TestValue1, TestValue2], [-TestValue3, -TestValue4]]), [new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(-(GeneralComplexNumberDecimal)2.0M, new ComplexMatrixDecimal([[-(GeneralComplexNumberDecimal)2.0M], [(GeneralComplexNumberDecimal)3.0M]])), new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(-(GeneralComplexNumberDecimal)1.0M, new ComplexMatrixDecimal([[-(GeneralComplexNumberDecimal)0.9999999999999999999999999999M], [(GeneralComplexNumberDecimal)0.9999999999999999999999999999M]]))] },
+            { new ComplexMatrixDecimal([[TestValue4, TestValue3], [-TestValue2, -TestValue3]]), [new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(-(GeneralComplexNumberDecimal)2.0M, new ComplexMatrixDecimal([[-(GeneralComplexNumberDecimal)1.0M], [(GeneralComplexNumberDecimal)2.0M]])), new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>((GeneralComplexNumberDecimal)3.0M, new ComplexMatrixDecimal([[-(GeneralComplexNumberDecimal)3.0M], [(GeneralComplexNumberDecimal)1.0M]]))] },
+            { new ComplexMatrixDecimal([[-TestValue2, -TestValue1], [TestValue3, -TestValue1]]), [new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(-1.5M, -1.6583123951776999245574663683M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-0.1666666666666666666666666666M, -0.5527707983925666415191554560M)], [(GeneralComplexNumberDecimal)0.9999999999999999999999999999M]])), new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(-1.5M, 1.6583123951776999245574663683M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-0.1666666666666666666666666666M, 0.5527707983925666415191554560M)], [(GeneralComplexNumberDecimal)0.9999999999999999999999999999M]]))] },
+            { new ComplexMatrixDecimal([[TestValue5_5, TestValue4_4], [TestValue3_3, -TestValue2_2]]), [new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(-3.424428900898052360873105708M, -3.424428900898052360873105707M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-0.4748096336326841202910352359M, 0.0000000000000000000000000001M)], [(GeneralComplexNumberDecimal)1.0000000000000000000000000002M]])), new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(6.424428900898052360873105708M, 6.424428900898052360873105707M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(2.8081429669660174536243685697M, -0.0000000000000000000000000001M)], [(GeneralComplexNumberDecimal)1.0000000000000000000000000002M]]))] },
+            { new ComplexMatrixDecimal([[-TestValue5_5, TestValue4_4], [-TestValue3_3, -TestValue2_2]]), [new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(-6.622498999199199102923446561M, -0.3775010008008008970765534396M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(0.5000000000000000000000000002M, -1.0408329997330663676411488538M)], [(GeneralComplexNumberDecimal)1.0000000000000000000000000002M]])), new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(-0.3775010008008008970765534391M, -6.6224989991991991029234465605M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(0.5M, 1.0408329997330663676411488538M)], [(GeneralComplexNumberDecimal)1.0000000000000000000000000002M]]))] }/*,
+            { new ComplexMatrixDecimal([[TestValue2_2, TestValue0, TestValue2_2], [TestValue4_4, TestValue0, TestValue0], [TestValue0, TestValue1_1, TestValue3_3]]), [new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>((GeneralComplexNumberDecimal)4.4M, new ComplexMatrixDecimal([[(GeneralComplexNumberDecimal)1.0M], [(GeneralComplexNumberDecimal)1.0M], [(GeneralComplexNumberDecimal)1.0M]])), new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(0.55M, 1.45516M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-0.75M, -0.661438M)], [new GeneralComplexNumberDecimal(-2.5M, 1.32288M)], [(GeneralComplexNumberDecimal)1.0M]])), new EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>(new GeneralComplexNumberDecimal(0.55M, -1.45516M), new ComplexMatrixDecimal([[new GeneralComplexNumberDecimal(-0.75M, 0.661438M)], [new GeneralComplexNumberDecimal(-2.5M, -1.32288M)], [(GeneralComplexNumberDecimal)1.0M]]))] }*/
         };
 
     public static readonly TheoryData<ComplexMatrixDecimal, GeneralComplexNumberDecimal, ComplexMatrixDecimal> TestScalarAdditionTheoryData =
