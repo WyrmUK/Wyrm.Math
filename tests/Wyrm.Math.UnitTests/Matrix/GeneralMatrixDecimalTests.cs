@@ -462,6 +462,38 @@ public class GeneralMatrixDecimalTests
             .ShouldMatch(expected);
     }
 
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundTheoryData))]
+    public void Round_Should_Get_Round(GeneralMatrixDecimal z, GeneralMatrixDecimal expected)
+    {
+        var result = z.Round();
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsTheoryData))]
+    public void RoundDigits_Should_Get_RoundDigits(GeneralMatrixDecimal z, int digits, GeneralMatrixDecimal expected)
+    {
+        var result = z.Round(digits);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundAlgorithmTheoryData))]
+    public void RoundAlgorithm_Should_Get_RoundAlgorithm(GeneralMatrixDecimal z, MidpointRounding algorithm, GeneralMatrixDecimal expected)
+    {
+        var result = z.Round(algorithm);
+        result.ShouldBe(expected);
+    }
+
+    [Theory]
+    [MemberData(nameof(TestMatrixRoundDigitsAlgorithmTheoryData))]
+    public void RoundDigitsAlgorithm_Should_Get_RoundDigitsAlgorithm(GeneralMatrixDecimal z, int digits, MidpointRounding algorithm, GeneralMatrixDecimal expected)
+    {
+        var result = z.Round(digits, algorithm);
+        result.ShouldBe(expected);
+    }
+
     #region Test Data
 
     public const decimal TestValue = 10.1M;
@@ -732,6 +764,38 @@ public class GeneralMatrixDecimalTests
         {
             { TestValue20_2, new GeneralMatrixDecimal([[TestValue1_1, TestValue2_2, TestValue3_3], [TestValue4_4, TestValue5_5, TestValue6_6]]), new GeneralMatrixDecimal([[TestValue20_2 / TestValue1_1, TestValue20_2 / TestValue2_2, TestValue20_2 / TestValue3_3], [TestValue20_2 / TestValue4_4, TestValue20_2 / TestValue5_5, TestValue20_2 / TestValue6_6]]) }
         };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, GeneralMatrixDecimal> TestMatrixRoundTheoryData = new()
+    {
+        { new GeneralMatrixDecimal([[TestValue1_1], [TestValue2_2]]), new GeneralMatrixDecimal([[TestValue1], [TestValue2]]) },
+        { new GeneralMatrixDecimal([[1.5M], [2.5M]]), new GeneralMatrixDecimal([[TestValue2], [TestValue2]]) },
+        { new GeneralMatrixDecimal([[-TestValue1_1], [-TestValue2_2]]), new GeneralMatrixDecimal([[-TestValue1], [-TestValue2]]) },
+        { new GeneralMatrixDecimal([[-1.5M], [-2.5M]]), new GeneralMatrixDecimal([[-TestValue2], [-TestValue2]]) }
+    };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, int, GeneralMatrixDecimal> TestMatrixRoundDigitsTheoryData = new()
+    {
+        { new GeneralMatrixDecimal([[1.11M], [2.22M]]), 1, new GeneralMatrixDecimal([[1.1M], [2.2M]]) },
+        { new GeneralMatrixDecimal([[1.115M], [2.225M]]), 2, new GeneralMatrixDecimal([[1.12M], [2.22M]]) },
+        { new GeneralMatrixDecimal([[-1.11M], [-2.22M]]), 1, new GeneralMatrixDecimal([[-1.1M], [-2.2M]]) },
+        { new GeneralMatrixDecimal([[-1.115M], [-2.225M]]), 2, new GeneralMatrixDecimal([[-1.12M], [-2.22M]]) }
+    };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, MidpointRounding, GeneralMatrixDecimal> TestMatrixRoundAlgorithmTheoryData = new()
+    {
+        { new GeneralMatrixDecimal([[TestValue1_1], [TestValue2_2]]), MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[TestValue1], [TestValue2]]) },
+        { new GeneralMatrixDecimal([[1.5M], [2.5M]]), MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[TestValue2], [TestValue3]]) },
+        { new GeneralMatrixDecimal([[-TestValue1_1], [-TestValue2_2]]), MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[-TestValue1], [-TestValue2]]) },
+        { new GeneralMatrixDecimal([[-1.5M], [-2.5M]]), MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[-TestValue2], [-TestValue3]]) }
+    };
+
+    public static readonly TheoryData<GeneralMatrixDecimal, int, MidpointRounding, GeneralMatrixDecimal> TestMatrixRoundDigitsAlgorithmTheoryData = new()
+    {
+        { new GeneralMatrixDecimal([[1.11M], [2.22M]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[1.1M], [2.2M]]) },
+        { new GeneralMatrixDecimal([[1.15M], [2.25M]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[1.2M], [2.3M]]) },
+        { new GeneralMatrixDecimal([[-1.11M], [-2.22M]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[-1.1M], [-2.2M]]) },
+        { new GeneralMatrixDecimal([[-1.15M], [-2.25M]]), 1, MidpointRounding.AwayFromZero, new GeneralMatrixDecimal([[-1.2M], [-2.3M]]) }
+    };
 
     #endregion
 }
