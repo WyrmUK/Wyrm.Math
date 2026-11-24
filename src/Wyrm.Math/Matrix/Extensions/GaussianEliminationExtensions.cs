@@ -1,5 +1,6 @@
 ﻿using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
+using Wyrm.Math.TypeFunctions;
 
 namespace Wyrm.Math.Matrix.Extensions;
 

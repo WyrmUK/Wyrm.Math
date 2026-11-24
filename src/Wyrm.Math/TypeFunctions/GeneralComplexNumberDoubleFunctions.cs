@@ -1,13 +1,19 @@
 ﻿using Wyrm.Math.ComplexNumbers;
+using Wyrm.Math.Matrix;
+using Wyrm.Math.Matrix.Base;
 
-namespace Wyrm.Math.Matrix.Base;
+namespace Wyrm.Math.TypeFunctions;
 
 internal class GeneralComplexNumberDoubleFunctions : CommonComplexDoubleFunctions, ITypeFunctions<GeneralComplexNumberDouble, GeneralComplexNumberDouble, ComplexMatrixDouble>
 {
+    public static readonly GeneralComplexNumberDoubleFunctions TypeFunctions = new();
+
     private static readonly GeneralComplexNumberDouble OneValue = new(1D, 0D);
+    private static readonly GeneralComplexNumberDouble TwoValue = new(2D, 0D);
     private static readonly GeneralComplexNumberDouble FourValue = new(4D, 0D);
 
     public GeneralComplexNumberDouble One() => OneValue;
+    public GeneralComplexNumberDouble Two() => TwoValue;
     public GeneralComplexNumberDouble Four() => FourValue;
     public bool Nez(GeneralComplexNumberDouble v) => v != ZeroValue;
     public bool Eq1(GeneralComplexNumberDouble v) => v == OneValue;

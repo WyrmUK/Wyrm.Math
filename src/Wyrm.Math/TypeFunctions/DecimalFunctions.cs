@@ -1,10 +1,15 @@
 ﻿using Wyrm.Math.ComplexNumbers;
+using Wyrm.Math.Matrix;
+using Wyrm.Math.Matrix.Base;
 
-namespace Wyrm.Math.Matrix.Base;
+namespace Wyrm.Math.TypeFunctions;
 
 internal class DecimalFunctions : CommonComplexDecimalFunctions, ITypeFunctions<decimal, GeneralComplexNumberDecimal, ComplexMatrixDecimal>
 {
+    public static readonly DecimalFunctions TypeFunctions = new();
+
     public decimal One() => 1M;
+    public decimal Two() => 2M;
     public decimal Four() => 4M;
     public bool Eqz(decimal v) => v == 0M;
     public bool Nez(decimal v) => v != 0M;
@@ -20,6 +25,7 @@ internal class DecimalFunctions : CommonComplexDecimalFunctions, ITypeFunctions<
     public GeneralComplexNumberDecimal Cast(decimal v) => (GeneralComplexNumberDecimal)v;
     public decimal Abs(GeneralComplexNumberDecimal v) => v.Abs();
     public GeneralComplexNumberDecimal Add(decimal v1, GeneralComplexNumberDecimal v2) => v1 + v2;
+    public GeneralComplexNumberDecimal Div(GeneralComplexNumberDecimal v1, decimal v2) => v1 / v2;
     public GeneralComplexNumberDecimal Sqrt(decimal v) => v.Sqrti();
     public GeneralMatrix<GeneralComplexNumberDecimal> CopyAs(GeneralMatrix<decimal> m) => new(m.Columns, [.. m.Values.Select(x => (GeneralComplexNumberDecimal)x)]);
     public GeneralMatrix<GeneralComplexNumberDecimal> Sub(GeneralMatrix<decimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => ((ComplexMatrixDecimal)new GeneralMatrixDecimal(m1) - new ComplexMatrixDecimal(m2)).Matrix;

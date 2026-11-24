@@ -1,4 +1,6 @@
-﻿using Wyrm.Math.Matrix.Base;
+﻿using Wyrm.Math.Formula.Base;
+using Wyrm.Math.Matrix.Base;
+using Wyrm.Math.TypeFunctions;
 
 namespace Wyrm.Math.Matrix.Extensions;
 
@@ -12,7 +14,7 @@ internal static class EigenExtensions
         {
             0 => [],
             1 => [funcs.Cast(matrix[0, 0])],
-            2 => matrix.Quadratic(funcs),
+            2 => matrix.QuadraticAlgorithm(funcs),
             _ => matrix.QrAlgorithm(funcs)
         };
 
@@ -24,17 +26,8 @@ internal static class EigenExtensions
         };
     }
 
-    private static ICollection<T2> Quadratic<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
-    {
-        var b = matrix.Trace(funcs);
-        var c = matrix.Determinant(funcs);
-        var gap = funcs.Sqrt(funcs.Sub(funcs.Mul(b, b), funcs.Mul(funcs.Four(), c)));
-        return
-        [
-            funcs.HalfOf(funcs.Add(b, funcs.Neg(gap))),
-            funcs.HalfOf(funcs.Add(b, gap))
-        ];
-    }
+    private static ICollection<T2> QuadraticAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct =>
+        Quadratic<T1, T2>.Roots(funcs.One(), matrix.Trace(funcs), matrix.Determinant(funcs), funcs);
 
     private static List<T2> QrAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {
@@ -111,25 +104,24 @@ internal static class EigenExtensions
 
     private static List<EigenValueVectorPair<T2, T3>> CayleyHamiltonVectors<T1, T2, T3>(this GeneralMatrix<T1> matrix, ICollection<T2> eigenvalues, ITypeFunctions<T1, T2, T3> funcs) where T1 : struct where T2 : struct where T3 : struct
     {
-        var distinctEigenvalues = eigenvalues.Distinct().ToList();
         var eigenValueVectors = new List<EigenValueVectorPair<T2, T3>>();
-        for (var index = 0; index < distinctEigenvalues.Count; ++index)
+        for (var index = 0; index < eigenvalues.Count; ++index)
         {
             GeneralMatrix<T2>? matrixProduct = null;
-            for (var val = 0; val < distinctEigenvalues.Count; ++val)
+            for (var val = 0; val < eigenvalues.Count; ++val)
             {
                 if (val == index) continue;
 
                 if (matrixProduct.HasValue)
                 {
-                    funcs.Mul(matrixProduct.Value, CayleyHamiltonTerm(matrix, distinctEigenvalues[val], funcs));
+                    funcs.Mul(matrixProduct.Value, CayleyHamiltonTerm(matrix, eigenvalues.ElementAt(val), funcs));
                 }
                 else
                 {
-                    matrixProduct = CayleyHamiltonTerm(matrix, distinctEigenvalues[val], funcs);
+                    matrixProduct = CayleyHamiltonTerm(matrix, eigenvalues.ElementAt(val), funcs);
                 }
             }
-            eigenValueVectors.Add(new EigenValueVectorPair<T2, T3>(distinctEigenvalues[index], funcs.ComplexMatrix(matrixProduct!.Value.FirstNonZeroColumn(funcs).Normalise(funcs))));
+            eigenValueVectors.Add(new EigenValueVectorPair<T2, T3>(eigenvalues.ElementAt(index), funcs.ComplexMatrix(matrixProduct!.Value.FirstNonZeroColumn(funcs).Normalise(funcs))));
         }
         return eigenValueVectors;
     }

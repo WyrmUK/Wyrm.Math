@@ -1,13 +1,19 @@
 ﻿using Wyrm.Math.ComplexNumbers;
+using Wyrm.Math.Matrix;
+using Wyrm.Math.Matrix.Base;
 
-namespace Wyrm.Math.Matrix.Base;
+namespace Wyrm.Math.TypeFunctions;
 
 internal class GeneralComplexNumberDecimalFunctions : CommonComplexDecimalFunctions, ITypeFunctions<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal, ComplexMatrixDecimal>
 {
+    public static readonly GeneralComplexNumberDecimalFunctions TypeFunctions = new();
+
     private static readonly GeneralComplexNumberDecimal OneValue = new(1M, 0M);
+    private static readonly GeneralComplexNumberDecimal TwoValue = new(2M, 0M);
     private static readonly GeneralComplexNumberDecimal FourValue = new(4M, 0M);
 
     public GeneralComplexNumberDecimal One() => OneValue;
+    public GeneralComplexNumberDecimal Two() => TwoValue;
     public GeneralComplexNumberDecimal Four() => FourValue;
     public bool Nez(GeneralComplexNumberDecimal v) => v != ZeroValue;
     public bool Eq1(GeneralComplexNumberDecimal v) => v == OneValue;

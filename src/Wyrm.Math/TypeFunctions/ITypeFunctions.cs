@@ -1,8 +1,11 @@
-﻿namespace Wyrm.Math.Matrix.Base;
+﻿using Wyrm.Math.Matrix.Base;
+
+namespace Wyrm.Math.TypeFunctions;
 
 internal interface ITypeFunctions<T> where T : struct
 {
     T One();
+    T Two();
     T Four();
     bool Eqz(T v);
     bool Nez(T v);
@@ -39,6 +42,7 @@ internal interface ITypeFunctions<T1, T2> : ITypeFunctions<T1>, IComplexTypeFunc
     T2 Cast(T1 v);
     T1 Abs(T2 v);
     T2 Add(T1 v1, T2 v2);
+    T2 Div(T2 v1, T1 v2);
     T2 Sqrt(T1 v);
     GeneralMatrix<T2> CopyAs(GeneralMatrix<T1> m);
     GeneralMatrix<T2> Sub(GeneralMatrix<T1> m1, GeneralMatrix<T2> m2);

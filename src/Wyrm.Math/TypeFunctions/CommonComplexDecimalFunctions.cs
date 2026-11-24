@@ -1,6 +1,8 @@
 ﻿using Wyrm.Math.ComplexNumbers;
+using Wyrm.Math.Matrix;
+using Wyrm.Math.Matrix.Base;
 
-namespace Wyrm.Math.Matrix.Base;
+namespace Wyrm.Math.TypeFunctions;
 
 internal class CommonComplexDecimalFunctions : IComplexTypeFunctions<GeneralComplexNumberDecimal, ComplexMatrixDecimal>
 {

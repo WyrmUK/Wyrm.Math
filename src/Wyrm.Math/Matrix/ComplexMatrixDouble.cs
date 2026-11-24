@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
+using Wyrm.Math.TypeFunctions;
 
 namespace Wyrm.Math.Matrix;
 
@@ -306,33 +307,33 @@ public readonly struct ComplexMatrixDouble :
     /// </summary>
     /// <returns>The Trace.</returns>
     /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
-    public GeneralComplexNumberDouble Trace() => Matrix.Trace(TypeFunctions);
+    public GeneralComplexNumberDouble Trace() => Matrix.Trace(GeneralComplexNumberDoubleFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the Determinant of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The Determinant as a <see cref="GeneralComplexNumberDouble"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square.</exception>
-    public GeneralComplexNumberDouble Determinant() => Matrix.Determinant(TypeFunctions);
+    public GeneralComplexNumberDouble Determinant() => Matrix.Determinant(GeneralComplexNumberDoubleFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the rank of a matrix.
     /// </summary>
     /// <returns>The rank.</returns>
-    public int Rank() => Matrix.Rank(TypeFunctions);
+    public int Rank() => Matrix.Rank(GeneralComplexNumberDoubleFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the nullity of a matrix.
     /// </summary>
     /// <returns>The nullity.</returns>
-    public int Nullity() => Matrix.Nullity(TypeFunctions);
+    public int Nullity() => Matrix.Nullity(GeneralComplexNumberDoubleFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the inverse of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The inverse as a <see cref="ComplexMatrixDouble"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
-    public ComplexMatrixDouble Inverse() => new(Matrix.Inverse(TypeFunctions));
+    public ComplexMatrixDouble Inverse() => new(Matrix.Inverse(GeneralComplexNumberDoubleFunctions.TypeFunctions));
 
     #endregion
 
@@ -357,7 +358,7 @@ public readonly struct ComplexMatrixDouble :
     /// </summary>
     /// <returns>An <see cref="ICollection{T}"/> of <see cref="EigenValueVectorPair{T1, T2}"/>s.</returns>
     public ICollection<EigenValueVectorPair<GeneralComplexNumberDouble, ComplexMatrixDouble>> EigenValuesAndVectors() =>
-        Matrix.Eigenvectors(TypeFunctions);
+        Matrix.Eigenvectors(GeneralComplexNumberDoubleFunctions.TypeFunctions);
 
     #endregion
 
@@ -370,7 +371,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the sum of the two operands.</returns>
     public static ComplexMatrixDouble operator +(ComplexMatrixDouble m, GeneralComplexNumberDouble scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Add(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Add(v, scalar)));
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="ComplexMatrixDouble"/>.
@@ -379,7 +380,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="m">Right hand <see cref="ComplexMatrixDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the sum of the two operands.</returns>
     public static ComplexMatrixDouble operator +(GeneralComplexNumberDouble scalar, ComplexMatrixDouble m) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Add(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Add(v, scalar)));
 
     /// <summary>
     /// Adds two <see cref="ComplexMatrixDouble"/>s together.
@@ -389,7 +390,7 @@ public readonly struct ComplexMatrixDouble :
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the sum of the two operands.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static ComplexMatrixDouble operator +(ComplexMatrixDouble m1, ComplexMatrixDouble m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, TypeFunctions.Add));
+        new(m1.Matrix.PerformOperation(m2.Matrix, GeneralComplexNumberDoubleFunctions.TypeFunctions.Add));
 
     /// <summary>
     /// Generates a new <see cref="ComplexMatrixDouble"/> from an existing one.
@@ -406,7 +407,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the of the left hand operand minus the right hand value.</returns>
     public static ComplexMatrixDouble operator -(ComplexMatrixDouble m, GeneralComplexNumberDouble scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Sub(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Sub(v, scalar)));
 
     /// <summary>
     /// Subtracts each value of a <see cref="ComplexMatrixDouble"/> from a scalar.
@@ -415,7 +416,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="m">Right hand <see cref="ComplexMatrixDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the of the left hand operand minus the right hand value.</returns>
     public static ComplexMatrixDouble operator -(GeneralComplexNumberDouble scalar, ComplexMatrixDouble m) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Sub(scalar, v)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Sub(scalar, v)));
 
     /// <summary>
     /// Subtracts one <see cref="ComplexMatrixDouble"/> from another.
@@ -425,7 +426,7 @@ public readonly struct ComplexMatrixDouble :
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the left hand operand minus the right hand operand.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static ComplexMatrixDouble operator -(ComplexMatrixDouble m1, ComplexMatrixDouble m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, TypeFunctions.Sub));
+        new(m1.Matrix.PerformOperation(m2.Matrix, GeneralComplexNumberDoubleFunctions.TypeFunctions.Sub));
 
     /// <summary>
     /// Negates all values in a <see cref="ComplexMatrixDouble"/>.
@@ -433,7 +434,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="m">The <see cref="ComplexMatrixDouble"/> to negate.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> which is the negated operand.</returns>
     public static ComplexMatrixDouble operator -(ComplexMatrixDouble m) =>
-        new(m.Matrix.PerformOperation(TypeFunctions.Neg));
+        new(m.Matrix.PerformOperation(GeneralComplexNumberDoubleFunctions.TypeFunctions.Neg));
 
     #endregion
 
@@ -446,7 +447,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static ComplexMatrixDouble operator *(ComplexMatrixDouble m, GeneralComplexNumberDouble scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Mul(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Mul(v, scalar)));
 
     /// <summary>
     /// Multiplies a scalar with each value of a <see cref="ComplexMatrixDouble"/>.
@@ -455,7 +456,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="m2">Right hand <see cref="ComplexMatrixDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static ComplexMatrixDouble operator *(GeneralComplexNumberDouble m1, ComplexMatrixDouble m2) =>
-        new(m2.Matrix.PerformOperation(v => TypeFunctions.Mul(m1, v)));
+        new(m2.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Mul(m1, v)));
 
     /// <summary>
     /// Multiplies each value of a <see cref="ComplexMatrixDouble"/> with another <see cref="ComplexMatrixDouble"/>.
@@ -465,7 +466,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="m2">Right hand <see cref="ComplexMatrixDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static ComplexMatrixDouble operator *(ComplexMatrixDouble m1, ComplexMatrixDouble m2) =>
-        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, TypeFunctions));
+        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, GeneralComplexNumberDoubleFunctions.TypeFunctions));
 
     /// <summary>
     /// Divides a each value of a <see cref="ComplexMatrixDouble"/> with a scalar.
@@ -474,7 +475,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the of the left hand operand divided by the right hand value.</returns>
     public static ComplexMatrixDouble operator /(ComplexMatrixDouble m, GeneralComplexNumberDouble scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Div(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Div(v, scalar)));
 
     /// <summary>
     /// Divides a scalar with each value of a <see cref="ComplexMatrixDouble"/>.
@@ -483,7 +484,7 @@ public readonly struct ComplexMatrixDouble :
     /// <param name="m2">Right hand <see cref="ComplexMatrixDouble"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDouble"/> of the of the left hand operand divided by the right hand value.</returns>
     public static ComplexMatrixDouble operator /(GeneralComplexNumberDouble m1, ComplexMatrixDouble m2) =>
-        new(m2.Matrix.PerformOperation(v => TypeFunctions.Div(m1, v)));
+        new(m2.Matrix.PerformOperation(v => GeneralComplexNumberDoubleFunctions.TypeFunctions.Div(m1, v)));
 
     #endregion
 
@@ -530,6 +531,4 @@ public readonly struct ComplexMatrixDouble :
     }
 
     #endregion
-
-    private static readonly GeneralComplexNumberDoubleFunctions TypeFunctions = new();
 }

@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Wyrm.Math.ComplexNumbers;
 using Wyrm.Math.Matrix.Base;
 using Wyrm.Math.Matrix.Extensions;
+using Wyrm.Math.TypeFunctions;
 
 namespace Wyrm.Math.Matrix;
 
@@ -306,33 +307,33 @@ public readonly struct ComplexMatrixDecimal :
     /// </summary>
     /// <returns>The Trace.</returns>
     /// <exception cref="ArgumentException">Throw if the matrix isn't square.</exception>
-    public GeneralComplexNumberDecimal Trace() => Matrix.Trace(TypeFunctions);
+    public GeneralComplexNumberDecimal Trace() => Matrix.Trace(GeneralComplexNumberDecimalFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the Determinant of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The Determinant as a <see cref="GeneralComplexNumberDecimal"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square.</exception>
-    public GeneralComplexNumberDecimal Determinant() => Matrix.Determinant(TypeFunctions);
+    public GeneralComplexNumberDecimal Determinant() => Matrix.Determinant(GeneralComplexNumberDecimalFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the rank of a matrix.
     /// </summary>
     /// <returns>The rank.</returns>
-    public int Rank() => Matrix.Rank(TypeFunctions);
+    public int Rank() => Matrix.Rank(GeneralComplexNumberDecimalFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the nullity of a matrix.
     /// </summary>
     /// <returns>The nullity.</returns>
-    public int Nullity() => Matrix.Nullity(TypeFunctions);
+    public int Nullity() => Matrix.Nullity(GeneralComplexNumberDecimalFunctions.TypeFunctions);
 
     /// <summary>
     /// Returns the inverse of a square matrix (same number of columns as rows).
     /// </summary>
     /// <returns>The inverse as a <see cref="ComplexMatrixDecimal"/>.</returns>
     /// <exception cref="ArgumentException">Thrown if the matrix isn't square or invertible.</exception>
-    public ComplexMatrixDecimal Inverse() => new(Matrix.Inverse(TypeFunctions));
+    public ComplexMatrixDecimal Inverse() => new(Matrix.Inverse(GeneralComplexNumberDecimalFunctions.TypeFunctions));
 
     #endregion
 
@@ -357,7 +358,7 @@ public readonly struct ComplexMatrixDecimal :
     /// </summary>
     /// <returns>An <see cref="ICollection{T}"/> of <see cref="EigenValueVectorPair{T1, T2}"/>s.</returns>
     public ICollection<EigenValueVectorPair<GeneralComplexNumberDecimal, ComplexMatrixDecimal>> EigenValuesAndVectors() =>
-        Matrix.Eigenvectors(TypeFunctions);
+        Matrix.Eigenvectors(GeneralComplexNumberDecimalFunctions.TypeFunctions);
 
     #endregion
 
@@ -370,7 +371,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the sum of the two operands.</returns>
     public static ComplexMatrixDecimal operator +(ComplexMatrixDecimal m, GeneralComplexNumberDecimal scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Add(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Add(v, scalar)));
 
     /// <summary>
     /// Adds a scalar value to each value of a <see cref="ComplexMatrixDecimal"/>.
@@ -379,7 +380,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="m">Right hand <see cref="ComplexMatrixDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the sum of the two operands.</returns>
     public static ComplexMatrixDecimal operator +(GeneralComplexNumberDecimal scalar, ComplexMatrixDecimal m) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Add(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Add(v, scalar)));
 
     /// <summary>
     /// Adds two <see cref="ComplexMatrixDecimal"/>s together.
@@ -389,7 +390,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the sum of the two operands.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static ComplexMatrixDecimal operator +(ComplexMatrixDecimal m1, ComplexMatrixDecimal m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, TypeFunctions.Add));
+        new(m1.Matrix.PerformOperation(m2.Matrix, GeneralComplexNumberDecimalFunctions.TypeFunctions.Add));
 
     /// <summary>
     /// Generates a new <see cref="ComplexMatrixDecimal"/> from an existing one.
@@ -406,7 +407,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the of the left hand operand minus the right hand value.</returns>
     public static ComplexMatrixDecimal operator -(ComplexMatrixDecimal m, GeneralComplexNumberDecimal scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Sub(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Sub(v, scalar)));
 
     /// <summary>
     /// Subtracts each value of a <see cref="ComplexMatrixDecimal"/> from a scalar.
@@ -415,7 +416,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="m">Right hand <see cref="ComplexMatrixDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the of the left hand operand minus the right hand value.</returns>
     public static ComplexMatrixDecimal operator -(GeneralComplexNumberDecimal scalar, ComplexMatrixDecimal m) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Sub(scalar, v)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Sub(scalar, v)));
 
     /// <summary>
     /// Subtracts one <see cref="ComplexMatrixDecimal"/> from another.
@@ -425,7 +426,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the left hand operand minus the right hand operand.</returns>
     /// <exception cref="ArgumentException">Thrown when the shapes of the two matrices differ.</exception>
     public static ComplexMatrixDecimal operator -(ComplexMatrixDecimal m1, ComplexMatrixDecimal m2) =>
-        new(m1.Matrix.PerformOperation(m2.Matrix, TypeFunctions.Sub));
+        new(m1.Matrix.PerformOperation(m2.Matrix, GeneralComplexNumberDecimalFunctions.TypeFunctions.Sub));
 
     /// <summary>
     /// Negates all values in a <see cref="ComplexMatrixDecimal"/>.
@@ -433,7 +434,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="m">The <see cref="ComplexMatrixDecimal"/> to negate.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> which is the negated operand.</returns>
     public static ComplexMatrixDecimal operator -(ComplexMatrixDecimal m) =>
-        new(m.Matrix.PerformOperation(TypeFunctions.Neg));
+        new(m.Matrix.PerformOperation(GeneralComplexNumberDecimalFunctions.TypeFunctions.Neg));
 
     #endregion
 
@@ -446,7 +447,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static ComplexMatrixDecimal operator *(ComplexMatrixDecimal m, GeneralComplexNumberDecimal scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Mul(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Mul(v, scalar)));
 
     /// <summary>
     /// Multiplies a scalar with each value of a <see cref="ComplexMatrixDecimal"/>.
@@ -455,7 +456,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="m2">Right hand <see cref="ComplexMatrixDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static ComplexMatrixDecimal operator *(GeneralComplexNumberDecimal m1, ComplexMatrixDecimal m2) =>
-        new(m2.Matrix.PerformOperation(v => TypeFunctions.Mul(m1, v)));
+        new(m2.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Mul(m1, v)));
 
     /// <summary>
     /// Multiplies each value of a <see cref="ComplexMatrixDecimal"/> with another <see cref="ComplexMatrixDecimal"/>.
@@ -465,7 +466,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="m2">Right hand <see cref="ComplexMatrixDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the of the left hand operand multiplied by the right hand value.</returns>
     public static ComplexMatrixDecimal operator *(ComplexMatrixDecimal m1, ComplexMatrixDecimal m2) =>
-        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, TypeFunctions));
+        new(m1.Matrix.PerformMultiplyOperation(m2.Matrix, GeneralComplexNumberDecimalFunctions.TypeFunctions));
 
     /// <summary>
     /// Divides a each value of a <see cref="ComplexMatrixDecimal"/> with a scalar.
@@ -474,7 +475,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="scalar">Right hand <see cref="GeneralComplexNumberDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the of the left hand operand divided by the right hand value.</returns>
     public static ComplexMatrixDecimal operator /(ComplexMatrixDecimal m, GeneralComplexNumberDecimal scalar) =>
-        new(m.Matrix.PerformOperation(v => TypeFunctions.Div(v, scalar)));
+        new(m.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Div(v, scalar)));
 
     /// <summary>
     /// Divides a scalar with each value of a <see cref="ComplexMatrixDecimal"/>.
@@ -483,7 +484,7 @@ public readonly struct ComplexMatrixDecimal :
     /// <param name="m2">Right hand <see cref="ComplexMatrixDecimal"/>.</param>
     /// <returns>A <see cref="ComplexMatrixDecimal"/> of the of the left hand operand divided by the right hand value.</returns>
     public static ComplexMatrixDecimal operator /(GeneralComplexNumberDecimal m1, ComplexMatrixDecimal m2) =>
-        new(m2.Matrix.PerformOperation(v => TypeFunctions.Div(m1, v)));
+        new(m2.Matrix.PerformOperation(v => GeneralComplexNumberDecimalFunctions.TypeFunctions.Div(m1, v)));
 
     #endregion
 
@@ -530,6 +531,4 @@ public readonly struct ComplexMatrixDecimal :
     }
 
     #endregion
-
-    private static readonly GeneralComplexNumberDecimalFunctions TypeFunctions = new();
 }

@@ -309,8 +309,27 @@ The number of columns of the first matrix must be the same as the number of rows
 {Mv} = n / {M}
 
 Divides a scalar value into every element in a matrix or divides each value in a matrix into a scalar, creating a new matrix.
+#### Rounding
+Mr = M.Round()
+
+Mr = M.Round(N)
+
+Mr = M.Round(MidPointRounding)
+
+Mr = M.Round(N, MidPointRounding)
+
+Returns a matrix with all the elements rounded.
 ### Extensions
 #### Create matrix
 M = [[],...].AsMatrix()
 
 Creates a matrix from an enumerable of enumerable decimal or double values.
+
+## Wyrm.Math.Formula
+Provides common formula.
+### Quadratic
+Quadratic equation formula.
+#### Roots
+Calculates the roots of a quadratic equation.
+The parameters can be decimal, double, complex decimal, or complex double.
+The roots are returned as complex numbers (decimal or double).
