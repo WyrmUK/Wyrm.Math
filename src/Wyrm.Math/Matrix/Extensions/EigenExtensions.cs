@@ -36,21 +36,19 @@ internal static class EigenExtensions
         ];
     }
 
-    private static ICollection<T2> QrAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
+    private static List<T2> QrAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {
-        var matrixB = funcs.Cast(matrix);
+        var matrixB = funcs.CopyAs(matrix);
 
-        for (var iteration = 0; iteration < 10000; ++iteration)
+        for (var iteration = 0; iteration < 1000; ++iteration)
         {
             if (matrixB.IsConvergent(funcs)) break;
 
-            var qr = matrixB.QrDecomposition(funcs);
-            matrixB = funcs.Mul(qr.R, qr.Q);
+            var (Q, R) = matrixB.QrDecomposition(funcs);
+            matrixB = funcs.Mul(R, Q);
         }
 
-        return Enumerable.Range(0, matrix.Columns)
-            .Select(x => matrixB[x, x])
-            .ToList();
+        return [.. Enumerable.Range(0, matrix.Columns).Select(x => matrixB[x, x])];
     }
 
     private static bool IsConvergent<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
@@ -68,7 +66,7 @@ internal static class EigenExtensions
 
     private static (GeneralMatrix<T2> Q, GeneralMatrix<T2> R) QrDecomposition<T1, T2>(this GeneralMatrix<T2> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {
-        var q = new GeneralMatrix<T2>(matrix);
+        var q = new GeneralMatrix<T2>(matrix.Columns, [..matrix.Values]);
 
         for (var col = 1; col < matrix.Columns; ++col)
         {
@@ -111,7 +109,7 @@ internal static class EigenExtensions
             .Aggregate(funcs.Add);
     }
 
-    private static ICollection<EigenValueVectorPair<T2, T3>> CayleyHamiltonVectors<T1, T2, T3>(this GeneralMatrix<T1> matrix, ICollection<T2> eigenvalues, ITypeFunctions<T1, T2, T3> funcs) where T1 : struct where T2 : struct where T3 : struct
+    private static List<EigenValueVectorPair<T2, T3>> CayleyHamiltonVectors<T1, T2, T3>(this GeneralMatrix<T1> matrix, ICollection<T2> eigenvalues, ITypeFunctions<T1, T2, T3> funcs) where T1 : struct where T2 : struct where T3 : struct
     {
         var distinctEigenvalues = eigenvalues.Distinct().ToList();
         var eigenValueVectors = new List<EigenValueVectorPair<T2, T3>>();
