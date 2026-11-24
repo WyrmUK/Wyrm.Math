@@ -7,8 +7,10 @@ namespace Wyrm.Math.TypeFunctions;
 internal class CommonComplexDecimalFunctions : IComplexTypeFunctions<GeneralComplexNumberDecimal, ComplexMatrixDecimal>
 {
     protected static readonly GeneralComplexNumberDecimal ZeroValue = new(0M, 0M);
+    protected static readonly GeneralComplexNumberDecimal EpsilonValue = (-1M + (-3M).Sqrti()) / 2M;
     private const decimal Tolerance = 1e-10M;
 
+    public GeneralComplexNumberDecimal Epsilon() => EpsilonValue;
     public bool Eqz(GeneralComplexNumberDecimal v) => v == ZeroValue;
     public bool Ltz(GeneralComplexNumberDecimal v) => v.Real < ZeroValue.Real;
     public GeneralComplexNumberDecimal Neg(GeneralComplexNumberDecimal v) => -v;
@@ -17,6 +19,7 @@ internal class CommonComplexDecimalFunctions : IComplexTypeFunctions<GeneralComp
     public GeneralComplexNumberDecimal HalfOf(GeneralComplexNumberDecimal v) => v / 2M;
     public GeneralComplexNumberDecimal Div(GeneralComplexNumberDecimal v1, GeneralComplexNumberDecimal v2) => v1 / v2;
     public GeneralComplexNumberDecimal Sqrt(GeneralComplexNumberDecimal v) => v.Sqrt();
+    public GeneralComplexNumberDecimal Cbrt(GeneralComplexNumberDecimal v) => v.Cbrt();
     public bool AboveTolerance(GeneralComplexNumberDecimal v) => v.Abs() > Tolerance;
 
     public GeneralMatrix<GeneralComplexNumberDecimal> Sub(GeneralMatrix<GeneralComplexNumberDecimal> m1, GeneralMatrix<GeneralComplexNumberDecimal> m2) => (new ComplexMatrixDecimal(m1) - new ComplexMatrixDecimal(m2)).Matrix;

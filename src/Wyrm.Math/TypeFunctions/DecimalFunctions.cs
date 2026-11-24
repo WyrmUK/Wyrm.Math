@@ -10,7 +10,12 @@ internal class DecimalFunctions : CommonComplexDecimalFunctions, ITypeFunctions<
 
     public decimal One() => 1M;
     public decimal Two() => 2M;
+    public decimal Three() => 3M;
     public decimal Four() => 4M;
+    public decimal Nine() => 9M;
+    public decimal TwentySeven() => 27M;
+    public decimal NegHalf() => -0.5M;
+    public decimal NegOne() => -1M;
     public bool Eqz(decimal v) => v == 0M;
     public bool Nez(decimal v) => v != 0M;
     public bool Eq1(decimal v) => v == 1M;
@@ -19,13 +24,19 @@ internal class DecimalFunctions : CommonComplexDecimalFunctions, ITypeFunctions<
     public decimal Add(decimal v1, decimal v2) => v1 + v2;
     public decimal Sub(decimal v1, decimal v2) => v1 - v2;
     public decimal Mul(decimal v1, decimal v2) => v1 * v2;
+    public decimal Mul(decimal v1, decimal v2, decimal v3) => v1 * v2 * v3;
+    public decimal Mul(decimal v1, decimal v2, decimal v3, decimal v4) => v1 * v2 * v3 * v4;
     public decimal Div(decimal v1, decimal v2) => v1 / v2;
     public decimal Mod(decimal v1, decimal v2) => v1 % v2;
+    public GeneralMatrix<decimal> Mul(GeneralMatrix<decimal> m1, GeneralMatrix<decimal> m2) => (new GeneralMatrixDecimal(m1) * new GeneralMatrixDecimal(m2)).Matrix;
 
     public GeneralComplexNumberDecimal Cast(decimal v) => (GeneralComplexNumberDecimal)v;
     public decimal Abs(GeneralComplexNumberDecimal v) => v.Abs();
     public GeneralComplexNumberDecimal Add(decimal v1, GeneralComplexNumberDecimal v2) => v1 + v2;
+    public GeneralComplexNumberDecimal Add(decimal v1, GeneralComplexNumberDecimal v2, GeneralComplexNumberDecimal v3) => v1 + v2 + v3;
     public GeneralComplexNumberDecimal Sub(decimal v1, GeneralComplexNumberDecimal v2) => v1 - v2;
+    public GeneralComplexNumberDecimal Mul(decimal v1, GeneralComplexNumberDecimal v2) => v1 * v2;
+    public GeneralComplexNumberDecimal Div(decimal v1, GeneralComplexNumberDecimal v2) => v1 / v2;
     public GeneralComplexNumberDecimal Div(GeneralComplexNumberDecimal v1, decimal v2) => v1 / v2;
     public GeneralComplexNumberDecimal Sqrt(decimal v) => v.Sqrti();
     public GeneralMatrix<GeneralComplexNumberDecimal> CopyAs(GeneralMatrix<decimal> m) => new(m.Columns, [.. m.Values.Select(x => (GeneralComplexNumberDecimal)x)]);

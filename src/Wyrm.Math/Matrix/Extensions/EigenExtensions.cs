@@ -15,6 +15,7 @@ internal static class EigenExtensions
             0 => [],
             1 => [funcs.Cast(matrix[0, 0])],
             2 => matrix.QuadraticAlgorithm(funcs),
+            3 => matrix.CubicAlgorithm(funcs),
             _ => matrix.QrAlgorithm(funcs)
         };
 
@@ -28,6 +29,13 @@ internal static class EigenExtensions
 
     private static ICollection<T2> QuadraticAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct =>
         Quadratic<T1, T2>.Roots(funcs.One(), funcs.Neg(matrix.Trace(funcs)), matrix.Determinant(funcs), funcs);
+
+    private static ICollection<T2> CubicAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
+    {
+        var trace = matrix.Trace(funcs);
+        var sqrC = funcs.Mul(funcs.NegHalf(), funcs.Sub(funcs.Mul(trace, trace), funcs.Mul(matrix, matrix).Trace(funcs)));
+        return Cubic<T1, T2>.Roots(funcs.NegOne(), trace, sqrC, matrix.Determinant(funcs), funcs);
+    }
 
     private static List<T2> QrAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {

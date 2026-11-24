@@ -333,3 +333,9 @@ Quadratic equation formula.
 Calculates the roots of a quadratic equation.
 The parameters can be decimal, double, complex decimal, or complex double.
 The roots are returned as complex numbers (decimal or double).
+### Cubic
+Cubic equation formula.
+#### Roots
+Calculates the roots of a cubic equation.
+The parameters can be decimal, double, complex decimal, or complex double.
+The roots are returned as complex numbers (decimal or double).

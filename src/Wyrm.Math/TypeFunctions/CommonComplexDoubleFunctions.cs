@@ -7,8 +7,10 @@ namespace Wyrm.Math.TypeFunctions;
 internal class CommonComplexDoubleFunctions : IComplexTypeFunctions<GeneralComplexNumberDouble, ComplexMatrixDouble>
 {
     protected static readonly GeneralComplexNumberDouble ZeroValue = new(0D, 0D);
+    protected static readonly GeneralComplexNumberDouble EpsilonValue = (-1D + (-3D).Sqrti()) / 2D;
     private const double Tolerance = 1e-10;
 
+    public GeneralComplexNumberDouble Epsilon() => EpsilonValue;
     public bool Eqz(GeneralComplexNumberDouble v) => v == ZeroValue;
     public bool Ltz(GeneralComplexNumberDouble v) => v.Real < ZeroValue.Real;
     public GeneralComplexNumberDouble Neg(GeneralComplexNumberDouble v) => -v;
@@ -17,6 +19,7 @@ internal class CommonComplexDoubleFunctions : IComplexTypeFunctions<GeneralCompl
     public GeneralComplexNumberDouble HalfOf(GeneralComplexNumberDouble v) => v / 2.0;
     public GeneralComplexNumberDouble Div(GeneralComplexNumberDouble v1, GeneralComplexNumberDouble v2) => v1 / v2;
     public GeneralComplexNumberDouble Sqrt(GeneralComplexNumberDouble v) => v.Sqrt();
+    public GeneralComplexNumberDouble Cbrt(GeneralComplexNumberDouble v) => v.Cbrt();
     public bool AboveTolerance(GeneralComplexNumberDouble v) => v.Abs() > Tolerance;
 
     public GeneralMatrix<GeneralComplexNumberDouble> Sub(GeneralMatrix<GeneralComplexNumberDouble> m1, GeneralMatrix<GeneralComplexNumberDouble> m2) => (new ComplexMatrixDouble(m1) - new ComplexMatrixDouble(m2)).Matrix;

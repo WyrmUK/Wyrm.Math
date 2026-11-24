@@ -42,6 +42,7 @@ public class QuadraticTests
 
     public static TheoryData<decimal, decimal, decimal, GeneralComplexNumberDecimal[]> RootsDecimalTests = new()
     {
+        { 0M, 2M, 3M, [new GeneralComplexNumberDecimal(-1.5M, 0M)] },
         { 2M, 3M, 4M, [new GeneralComplexNumberDecimal(-0.75M, -1.198957880828179885399359516M), new GeneralComplexNumberDecimal(-0.75M, 1.198957880828179885399359516M)] },
         { 2M, 3M, -4M, [new GeneralComplexNumberDecimal(-2.3507810593582121716220544185M, 0M), new GeneralComplexNumberDecimal(0.8507810593582121716220544186M, 0M)] },
         { 2M, -3M, 4M, [new GeneralComplexNumberDecimal(0.75M, -1.198957880828179885399359516M), new GeneralComplexNumberDecimal(0.75M, 1.198957880828179885399359516M)] },
@@ -54,6 +55,7 @@ public class QuadraticTests
 
     public static TheoryData<double, double, double, GeneralComplexNumberDouble[]> RootsDoubleTests = new()
     {
+        { 0D, 2D, 3D, [new GeneralComplexNumberDouble(-1.5D, 0D)] },
         { 2D, 3D, 4D, [new GeneralComplexNumberDouble(-0.7500000000000001, -1.1989578808281798), new GeneralComplexNumberDouble(-0.7499999999999999, 1.1989578808281798)] },
         { 2D, 3D, -4D, [new GeneralComplexNumberDouble(-2.350781059358212, 0), new GeneralComplexNumberDouble(0.8507810593582121, 0)] },
         { 2D, -3D, 4D, [new GeneralComplexNumberDouble(0.7499999999999999, -1.1989578808281798), new GeneralComplexNumberDouble(0.7500000000000001, 1.1989578808281798)] },
@@ -66,6 +68,7 @@ public class QuadraticTests
 
     public static TheoryData<GeneralComplexNumberDecimal, GeneralComplexNumberDecimal, GeneralComplexNumberDecimal, GeneralComplexNumberDecimal[]> RootsGeneralComplexNumberDecimalTests = new()
     {
+        { new GeneralComplexNumberDecimal(0M, 0M), new GeneralComplexNumberDecimal(2M, 0M), new GeneralComplexNumberDecimal(3M, 0M), [new GeneralComplexNumberDecimal(-1.5M, 0M)] },
         { new GeneralComplexNumberDecimal(2M, 0M), new GeneralComplexNumberDecimal(3M, 0M), new GeneralComplexNumberDecimal(4M, 0M), [new GeneralComplexNumberDecimal(-0.75M, -1.1989578808281798853993595160M), new GeneralComplexNumberDecimal(-0.75M, 1.1989578808281798853993595160M)] },
         { new GeneralComplexNumberDecimal(2M, 0M), new GeneralComplexNumberDecimal(3M, 0M), new GeneralComplexNumberDecimal(-4M, 1M), [new GeneralComplexNumberDecimal(-2.3583104211836217919618486280M, 0.1554426289273277959622841876M), new GeneralComplexNumberDecimal(0.8583104211836217919618486279M, -0.1554426289273277959622841876M)] },
         { new GeneralComplexNumberDecimal(2M, 0M), new GeneralComplexNumberDecimal(-3M, 1M), new GeneralComplexNumberDecimal(4M, 0M), [new GeneralComplexNumberDecimal(0.5980713825399857293511030290M, 0.9841322071817554478822864499M), new GeneralComplexNumberDecimal(0.9019286174600142706488969710M, -1.4841322071817554478822864499M)] },
@@ -78,6 +81,7 @@ public class QuadraticTests
 
     public static TheoryData<GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble, GeneralComplexNumberDouble[]> RootsGeneralComplexNumberDoubleTests = new()
     {
+        { new GeneralComplexNumberDouble(0D, 0D), new GeneralComplexNumberDouble(2D, 0D), new GeneralComplexNumberDouble(3D, 0D), [new GeneralComplexNumberDouble(-1.5D, 0D)] },
         { new GeneralComplexNumberDouble(2D, 0D), new GeneralComplexNumberDouble(3D, 0D), new GeneralComplexNumberDouble(4D, 0D), [new GeneralComplexNumberDouble(-0.7500000000000001, -1.1989578808281798), new GeneralComplexNumberDouble(-0.7499999999999999, 1.1989578808281798)] },
         { new GeneralComplexNumberDouble(2D, 0D), new GeneralComplexNumberDouble(3D, 0D), new GeneralComplexNumberDouble(-4D, 1D), [new GeneralComplexNumberDouble(-2.3583104211836217, 0.1554426289273278), new GeneralComplexNumberDouble(0.8583104211836217, -0.1554426289273278)] },
         { new GeneralComplexNumberDouble(2D, 0D), new GeneralComplexNumberDouble(-3D, 1D), new GeneralComplexNumberDouble(4D, 0D), [new GeneralComplexNumberDouble(0.5980713825399856, 0.9841322071817555), new GeneralComplexNumberDouble(0.9019286174600144, -1.4841322071817555)] },

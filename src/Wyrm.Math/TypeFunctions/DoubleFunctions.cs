@@ -10,7 +10,12 @@ internal class DoubleFunctions : CommonComplexDoubleFunctions, ITypeFunctions<do
 
     public double One() => 1D;
     public double Two() => 2D;
+    public double Three() => 3D;
     public double Four() => 4D;
+    public double Nine() => 9D;
+    public double TwentySeven() => 27D;
+    public double NegHalf() => -0.5;
+    public double NegOne() => -1D;
     public bool Eqz(double v) => v == 0D;
     public bool Nez(double v) => v != 0D;
     public bool Eq1(double v) => v == 1D;
@@ -19,13 +24,19 @@ internal class DoubleFunctions : CommonComplexDoubleFunctions, ITypeFunctions<do
     public double Add(double v1, double v2) => v1 + v2;
     public double Sub(double v1, double v2) => v1 - v2;
     public double Mul(double v1, double v2) => v1 * v2;
+    public double Mul(double v1, double v2, double v3) => v1 * v2 * v3;
+    public double Mul(double v1, double v2, double v3, double v4) => v1 * v2 * v3 * v4;
     public double Div(double v1, double v2) => v1 / v2;
     public double Mod(double v1, double v2) => v1 % v2;
+    public GeneralMatrix<double> Mul(GeneralMatrix<double> m1, GeneralMatrix<double> m2) => (new GeneralMatrixDouble(m1) * new GeneralMatrixDouble(m2)).Matrix;
 
     public GeneralComplexNumberDouble Cast(double v) => (GeneralComplexNumberDouble)v;
     public double Abs(GeneralComplexNumberDouble v) => v.Abs();
     public GeneralComplexNumberDouble Add(double v1, GeneralComplexNumberDouble v2) => v1 + v2;
+    public GeneralComplexNumberDouble Add(double v1, GeneralComplexNumberDouble v2, GeneralComplexNumberDouble v3) => v1 + v2 + v3;
     public GeneralComplexNumberDouble Sub(double v1, GeneralComplexNumberDouble v2) => v1 - v2;
+    public GeneralComplexNumberDouble Mul(double v1, GeneralComplexNumberDouble v2) => v1 * v2;
+    public GeneralComplexNumberDouble Div(double v1, GeneralComplexNumberDouble v2) => v1 / v2;
     public GeneralComplexNumberDouble Div(GeneralComplexNumberDouble v1, double v2) => v1 / v2;
     public GeneralComplexNumberDouble Sqrt(double v) => v.Sqrti();
     public GeneralMatrix<GeneralComplexNumberDouble> CopyAs(GeneralMatrix<double> m) => new(m.Columns, [.. m.Values.Select(x => (GeneralComplexNumberDouble)x)]);
