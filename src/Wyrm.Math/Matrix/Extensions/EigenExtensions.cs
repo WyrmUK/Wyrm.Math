@@ -27,7 +27,7 @@ internal static class EigenExtensions
     }
 
     private static ICollection<T2> QuadraticAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct =>
-        Quadratic<T1, T2>.Roots(funcs.One(), matrix.Trace(funcs), matrix.Determinant(funcs), funcs);
+        Quadratic<T1, T2>.Roots(funcs.One(), funcs.Neg(matrix.Trace(funcs)), matrix.Determinant(funcs), funcs);
 
     private static List<T2> QrAlgorithm<T1, T2>(this GeneralMatrix<T1> matrix, ITypeFunctions<T1, T2> funcs) where T1 : struct where T2 : struct
     {

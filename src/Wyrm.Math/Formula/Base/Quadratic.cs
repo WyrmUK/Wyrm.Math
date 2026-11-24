@@ -10,8 +10,8 @@ internal static class Quadratic<T1, T2> where T1 : struct where T2 : struct
         var divisor = funcs.Mul(funcs.Two(), a);
         return
             [
-                funcs.Div(funcs.Add(b, funcs.Neg(gap)), divisor),
-                funcs.Div(funcs.Add(b, gap), divisor)
+                funcs.Div(funcs.Add(funcs.Neg(b), funcs.Neg(gap)), divisor),
+                funcs.Div(funcs.Add(funcs.Neg(b), gap), divisor)
             ];
     }
 }
