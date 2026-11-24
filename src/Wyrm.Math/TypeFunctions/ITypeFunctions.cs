@@ -42,6 +42,7 @@ internal interface ITypeFunctions<T1, T2> : ITypeFunctions<T1>, IComplexTypeFunc
     T2 Cast(T1 v);
     T1 Abs(T2 v);
     T2 Add(T1 v1, T2 v2);
+    T2 Sub(T1 v1, T2 v2);
     T2 Div(T2 v1, T1 v2);
     T2 Sqrt(T1 v);
     GeneralMatrix<T2> CopyAs(GeneralMatrix<T1> m);

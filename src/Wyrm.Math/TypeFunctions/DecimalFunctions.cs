@@ -25,6 +25,7 @@ internal class DecimalFunctions : CommonComplexDecimalFunctions, ITypeFunctions<
     public GeneralComplexNumberDecimal Cast(decimal v) => (GeneralComplexNumberDecimal)v;
     public decimal Abs(GeneralComplexNumberDecimal v) => v.Abs();
     public GeneralComplexNumberDecimal Add(decimal v1, GeneralComplexNumberDecimal v2) => v1 + v2;
+    public GeneralComplexNumberDecimal Sub(decimal v1, GeneralComplexNumberDecimal v2) => v1 - v2;
     public GeneralComplexNumberDecimal Div(GeneralComplexNumberDecimal v1, decimal v2) => v1 / v2;
     public GeneralComplexNumberDecimal Sqrt(decimal v) => v.Sqrti();
     public GeneralMatrix<GeneralComplexNumberDecimal> CopyAs(GeneralMatrix<decimal> m) => new(m.Columns, [.. m.Values.Select(x => (GeneralComplexNumberDecimal)x)]);

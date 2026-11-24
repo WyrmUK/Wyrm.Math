@@ -25,6 +25,7 @@ internal class DoubleFunctions : CommonComplexDoubleFunctions, ITypeFunctions<do
     public GeneralComplexNumberDouble Cast(double v) => (GeneralComplexNumberDouble)v;
     public double Abs(GeneralComplexNumberDouble v) => v.Abs();
     public GeneralComplexNumberDouble Add(double v1, GeneralComplexNumberDouble v2) => v1 + v2;
+    public GeneralComplexNumberDouble Sub(double v1, GeneralComplexNumberDouble v2) => v1 - v2;
     public GeneralComplexNumberDouble Div(GeneralComplexNumberDouble v1, double v2) => v1 / v2;
     public GeneralComplexNumberDouble Sqrt(double v) => v.Sqrti();
     public GeneralMatrix<GeneralComplexNumberDouble> CopyAs(GeneralMatrix<double> m) => new(m.Columns, [.. m.Values.Select(x => (GeneralComplexNumberDouble)x)]);
